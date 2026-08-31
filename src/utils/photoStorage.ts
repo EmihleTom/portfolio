@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { personalInfo } from '../data/portfolioData';
 
-const STORAGE_KEY = 'emihle_profile_photo_v9';
-const LEGACY_STORAGE_KEYS = ['emihle_profile_photo_v8', 'emihle_profile_photo_v7', 'emihle_profile_photo_v6', 'emihle_profile_photo_v5', 'emihle_profile_photo_v4', 'emihle_profile_photo_v3', 'emihle_profile_photo_v2', 'emihle_profile_photo'];
+const STORAGE_KEY = 'emihle_profile_photo_v10';
+const LEGACY_STORAGE_KEYS = ['emihle_profile_photo_v9', 'emihle_profile_photo_v8', 'emihle_profile_photo_v7', 'emihle_profile_photo_v6', 'emihle_profile_photo_v5', 'emihle_profile_photo_v4', 'emihle_profile_photo_v3', 'emihle_profile_photo_v2', 'emihle_profile_photo'];
 const EVENT_NAME = 'emihle_profile_photo_updated';
 
 export function getStoredProfilePhoto(): string {
@@ -23,7 +23,7 @@ export function getStoredProfilePhoto(): string {
   }
   return personalInfo.profileImageUrl && personalInfo.profileImageUrl.trim() !== ''
     ? personalInfo.profileImageUrl
-    : '';
+    : '/profile.jpg';
 }
 
 export function saveProfilePhoto(photoUrl: string): void {

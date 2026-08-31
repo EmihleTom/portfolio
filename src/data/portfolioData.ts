@@ -31,7 +31,7 @@ I bring a proactive problem-solving mindset, disciplined technical communication
   linkedinUrl: 'https://linkedin.com/in/emihle-tom',
   location: 'Western Cape, Cape Town',
   status: 'Available for Opportunities',
-  profileImageUrl: '',
+  profileImageUrl: '/profile.jpg',
 };
 
 export const educationList: EducationItem[] = [
