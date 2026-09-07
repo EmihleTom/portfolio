@@ -24,6 +24,7 @@ export interface EducationItem {
   status: string;
   description: string;
   focusAreas?: string[];
+  logoUrl?: string;
 }
 
 export interface SkillCategory {
@@ -66,12 +67,28 @@ export interface CertificationItem {
   name: string;
   provider: string;
   date: string;
+  category?: 'Specialization' | 'Course' | 'Professional Certificate' | 'Academic Diploma';
+  partner?: string;
+  partnerLogoUrl?: string;
+  recipientName?: string;
   credentialId?: string;
   credentialUrl?: string;
   focus?: string;
   skillsVerified?: string[];
-  badgeType?: 'capaciti' | 'cct' | 'cisco' | 'google' | 'comptia' | 'matric' | 'general';
+  badgeType?:
+    | 'capaciti'
+    | 'cct'
+    | 'cisco'
+    | 'google'
+    | 'google-cloud'
+    | 'deeplearning'
+    | 'stanford'
+    | 'ibm'
+    | 'comptia'
+    | 'matric'
+    | 'general';
   issuerLogoPlaceholder?: string;
+  logoUrl?: string;
   isPlaceholder?: boolean;
 }
 

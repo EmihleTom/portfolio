@@ -170,14 +170,8 @@ function getInitialState(): PortfolioState {
       ) {
         loadedPersonalInfo.status = defaultPersonalInfo.status;
       }
-      if (
-        !loadedPersonalInfo.profileImageUrl ||
-        loadedPersonalInfo.profileImageUrl === '/emihle-profile.jpg' ||
-        loadedPersonalInfo.profileImageUrl === '/profile.jpg' ||
-        loadedPersonalInfo.profileImageUrl === ''
-      ) {
-        loadedPersonalInfo.profileImageUrl = defaultPersonalInfo.profileImageUrl;
-      }
+      // Permanently lock profile image to official portrait
+      loadedPersonalInfo.profileImageUrl = defaultPersonalInfo.profileImageUrl;
 
       // Migrate outdated single-sentence boilerplate bio or capaciti bio if present
       if (
@@ -222,57 +216,75 @@ function getInitialState(): PortfolioState {
       }
 
       // Update education records:
-      // - "it support technician certification" -> "2026-present"
-      // - "cisco it specialist(ccna)" -> "2025-2025"
+      // - Remove "IT Support Technician Certification" as requested by user
+      // - "Cisco IT Specialist (CCNA)" -> uses official CCT logo /logos/cct-logo.svg
       // - Ensure Matric in 2024 is in the education section
       let loadedEducation = parsed.educationList;
       if (loadedEducation && Array.isArray(loadedEducation)) {
-        loadedEducation = loadedEducation.map((edu: EducationItem) => {
-          if (
-            edu.institution.toLowerCase().includes('capaciti') ||
-            edu.qualification.toLowerCase().includes('it support')
-          ) {
-            return {
-              ...edu,
-              qualification: 'IT Support Technician Certification',
-              startDate: '2026',
-              endDate: 'Present',
-              status: 'In Progress',
-            };
+        loadedEducation = loadedEducation
+          .filter((edu: EducationItem) => {
+            const inst = (edu.institution || '').toLowerCase();
+            const qual = (edu.qualification || '').toLowerCase();
+            if (qual.includes('it support technician') || edu.id.includes('capaciti-it-support')) {
+              return false;
+            }
+            if (inst.includes('capaciti') && qual.includes('it support')) {
+              return false;
+            }
+            return true;
+          })
+          .map((edu: EducationItem) => {
+            let logoUrl = edu.logoUrl;
+            if (!logoUrl) {
+              const match = defaultEducationList.find(
+                (d) => d.id === edu.id || d.institution.toLowerCase() === edu.institution.toLowerCase()
+              );
+              logoUrl = match?.logoUrl;
+            }
+            if (
+              edu.institution.toLowerCase().includes('college of cape town') ||
+              edu.qualification.toLowerCase().includes('cisco') ||
+              edu.qualification.toLowerCase().includes('information technology qualification')
+            ) {
+              return {
+                ...edu,
+                qualification: 'Cisco IT Specialist (CCNA)',
+                institution: 'College of Cape Town',
+                startDate: '2025',
+                endDate: '2025',
+                status: 'Completed',
+                logoUrl: '/logos/cct-logo.svg',
+                description:
+                  'Specialized enterprise networking and systems qualification focused on Cisco Certified Network Associate (CCNA) curricula — routing, switching, IPv4/IPv6 subnetting, Packet Tracer topologies, network security, and infrastructure diagnostics.',
+                focusAreas: [
+                  'CCNA Routing & Switching Architecture',
+                  'IP Addressing, IPv4/IPv6 Subnetting & VLSM',
+                  'Cisco Packet Tracer Network Simulations',
+                  'VLANs, Trunks, STP & Router Configuration',
+                  'Network Security, Firewalls & Troubleshooting',
+                  'Hardware Diagnostics & System Infrastructure',
+                ],
+              };
+            }
+            if (edu.qualification.toLowerCase().includes('matric')) {
+              return {
+                ...edu,
+                startDate: '2024',
+                endDate: '2024',
+                status: 'Completed',
+                logoUrl: '/logos/dbe-symbol.png',
+              };
+            }
+            return { ...edu, logoUrl };
+          });
+
+        // Ensure College of Cape Town Cisco IT is present
+        if (!loadedEducation.some((e: EducationItem) => e.qualification.toLowerCase().includes('cisco'))) {
+          const defaultCisco = defaultEducationList.find((e) => e.qualification.toLowerCase().includes('cisco'));
+          if (defaultCisco) {
+            loadedEducation.unshift(defaultCisco);
           }
-          if (
-            edu.institution.toLowerCase().includes('college of cape town') ||
-            edu.qualification.toLowerCase().includes('cisco') ||
-            edu.qualification.toLowerCase().includes('information technology qualification')
-          ) {
-            return {
-              ...edu,
-              qualification: 'Cisco IT Specialist (CCNA)',
-              startDate: '2025',
-              endDate: '2025',
-              status: 'Completed',
-              description:
-                'Specialized enterprise networking and systems qualification focused on Cisco Certified Network Associate (CCNA) curricula — routing, switching, IPv4/IPv6 subnetting, Packet Tracer topologies, network security, and infrastructure diagnostics.',
-              focusAreas: [
-                'CCNA Routing & Switching Architecture',
-                'IP Addressing, IPv4/IPv6 Subnetting & VLSM',
-                'Cisco Packet Tracer Network Simulations',
-                'VLANs, Trunks, STP & Router Configuration',
-                'Network Security, Firewalls & Troubleshooting',
-                'Hardware Diagnostics & System Infrastructure',
-              ],
-            };
-          }
-          if (edu.qualification.toLowerCase().includes('matric')) {
-            return {
-              ...edu,
-              startDate: '2024',
-              endDate: '2024',
-              status: 'Completed',
-            };
-          }
-          return edu;
-        });
+        }
 
         // Ensure Matric is included in education
         if (!loadedEducation.some((e: EducationItem) => e.qualification.toLowerCase().includes('matric'))) {
@@ -282,78 +294,50 @@ function getInitialState(): PortfolioState {
           }
         }
       }
-      if (!loadedEducation || !loadedEducation.some((e: EducationItem) => e.institution.toLowerCase().includes('capaciti'))) {
+      if (!loadedEducation || loadedEducation.length === 0) {
         loadedEducation = defaultEducationList;
       }
 
       // Update certifications list:
-      // - IT Support: '2026 – Present'
-      // - Cisco IT Specialist: '2025 – 2025'
-      // - Matric Certificate: '2024'
+      // Ensure all credentials from defaultCertificationsList are merged in without removing existing ones
       let loadedCertifications = parsed.certificationsList;
       if (loadedCertifications && Array.isArray(loadedCertifications)) {
+        // Map existing with latest info and ensure all default fields are up-to-date
         loadedCertifications = loadedCertifications.map((cert: CertificationItem) => {
-          if (
-            cert.name.toLowerCase().includes('it support') ||
-            cert.id === 'cert-capaciti-it-support'
-          ) {
+          const match = defaultCertificationsList.find(
+            (d) => d.id === cert.id || d.name.toLowerCase() === cert.name.toLowerCase()
+          );
+          if (match) {
             return {
               ...cert,
-              name: 'IT Support Technician Certification',
-              date: '2026 – Present',
-              credentialId: 'CAP-IT-2026-884',
+              ...match,
+              recipientName: 'Emihle Liyema Tom',
             };
           }
-          if (
-            cert.name.toLowerCase().includes('cisco it specialist') ||
-            cert.name.toLowerCase().includes('information technology qualification') ||
-            cert.id === 'cert-cct-it-diploma' ||
-            cert.id === 'cert-cct-cisco-specialist'
-          ) {
-            return {
-              ...cert,
-              id: 'cert-cct-cisco-specialist',
-              name: 'Cisco IT Specialist (CCNA)',
-              provider: 'College of Cape Town / Cisco Networking Academy',
-              focus: 'Cisco Certified Network Associate (CCNA) — Routing, Switching, Subnetting & Network Security',
-              badgeType: 'cisco',
-              issuerLogoPlaceholder: 'College of Cape Town',
-              date: '2025 – 2025',
-              credentialId: 'CCT-CISCO-CCNA-2025',
-              skillsVerified: [
-                'CCNA Routing & Switching',
-                'IPv4 & IPv6 Subnetting',
-                'Cisco Packet Tracer',
-                'VLANs & Trunks',
-                'Network Security Protocols',
-                'Hardware & Systems Diagnostics',
-              ],
-            };
+          let logoUrl = cert.logoUrl;
+          if (!logoUrl) {
+            const fallbackMatch = defaultCertificationsList.find(
+              (d) => d.provider.toLowerCase() === cert.provider.toLowerCase() || d.badgeType === cert.badgeType
+            );
+            logoUrl = fallbackMatch?.logoUrl;
           }
-          if (cert.name.toLowerCase().includes('matric')) {
-            return {
-              ...cert,
-              date: '2024',
-              focus: 'National Senior Certificate (Grade 12 Matric Qualification - Completed 2024)',
-              credentialId: 'DBE-NSC-MATRIC-2024',
-            };
-          }
-          return cert;
+          return { ...cert, logoUrl };
         });
 
-        // Ensure Matric Certificate is present in certifications list
-        if (!loadedCertifications.some((c: CertificationItem) => c.name.toLowerCase().includes('matric'))) {
-          const matricCert = defaultCertificationsList.find((c) => c.name.toLowerCase().includes('matric'));
-          if (matricCert) {
-            loadedCertifications.splice(2, 0, matricCert);
+        // Add any missing certifications from defaultCertificationsList (preserves existing, adds missing)
+        for (const defaultCert of defaultCertificationsList) {
+          const exists = loadedCertifications.some(
+            (c: CertificationItem) => c.id === defaultCert.id || c.name.toLowerCase() === defaultCert.name.toLowerCase()
+          );
+          if (!exists) {
+            loadedCertifications.push(defaultCert);
           }
         }
-      }
-      if (!loadedCertifications || loadedCertifications.length <= 1) {
+      } else {
         loadedCertifications = defaultCertificationsList;
       }
 
-      // Ensure it-support skills have Active Directory and Hardware Repair
+      // Ensure it-support skills and ai-technology skills are up to date
       let loadedSkillCategories = parsed.skillCategories;
       if (loadedSkillCategories && Array.isArray(loadedSkillCategories)) {
         loadedSkillCategories = loadedSkillCategories.map((cat: SkillCategory) => {
@@ -361,6 +345,21 @@ function getInitialState(): PortfolioState {
             const currentSkills = new Set(cat.skills);
             ['Technical Support', 'System Maintenance', 'Troubleshooting', 'Active Directory', 'Hardware Repair', 'Helpdesk Support'].forEach((s) => currentSkills.add(s));
             return { ...cat, skills: Array.from(currentSkills) };
+          }
+          if (cat.id === 'ai-technology') {
+            return {
+              ...cat,
+              name: 'AI & Machine Learning',
+              description: 'Generative AI, supervised & unsupervised machine learning, prompt engineering, and ethical AI systems.',
+              skills: [
+                'Generative AI',
+                'Prompt Engineering',
+                'Supervised & Unsupervised ML',
+                'Large Language Models (LLMs)',
+                'Responsible AI & Ethics',
+                'AI Productivity Tools',
+              ],
+            };
           }
           return cat;
         });

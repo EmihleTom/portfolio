@@ -1,9 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowDown, Mail, Github, Check, Copy, Sparkles, Terminal, Code2, Network, Camera, Upload, SlidersHorizontal, Download, FileText, Loader2 } from 'lucide-react';
+import { ArrowDown, Mail, Github, Check, Copy, Sparkles, Terminal, Code2, Network, ShieldCheck, Download, FileText, Loader2 } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
-import { useProfilePhoto, processAndOptimizeImage } from '../utils/photoStorage';
-import { ProfilePhotoModal } from './ProfilePhotoModal';
+import { useProfilePhoto } from '../utils/photoStorage';
 import { downloadResumePDF } from '../utils/generateResume';
 
 export const Hero: React.FC = () => {
@@ -14,29 +13,11 @@ export const Hero: React.FC = () => {
     projectsList,
     experienceList,
     certificationsList,
-    isEditMode,
   } = usePortfolioData();
   const [copied, setCopied] = useState(false);
   const [isDownloadingCV, setIsDownloadingCV] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
-  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
-  const { photo, updatePhoto } = useProfilePhoto();
-  const heroFileInputRef = useRef<HTMLInputElement>(null);
-  const [isDraggingOverAvatar, setIsDraggingOverAvatar] = useState(false);
-  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
-
-  const handleDirectFileUpload = async (file: File) => {
-    if (!file.type.startsWith('image/')) return;
-    setIsUploadingPhoto(true);
-    try {
-      const optimized = await processAndOptimizeImage(file);
-      updatePhoto(optimized);
-    } catch (err) {
-      console.error('Failed to process image:', err);
-    } finally {
-      setIsUploadingPhoto(false);
-    }
-  };
+  const { photo } = useProfilePhoto();
 
   const copyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -227,112 +208,31 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
             className="lg:col-span-4 frosted-glass-card bento-item p-6 sm:p-8 flex flex-col items-center justify-center text-center border border-white/70"
           >
-            {/* Hidden native file picker for instant 1-click photo update */}
-            <input
-              ref={heroFileInputRef}
-              type="file"
-              accept="image/jpeg,image/png,image/webp,image/jpg"
-              className="hidden"
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  handleDirectFileUpload(e.target.files[0]);
-                  e.target.value = '';
-                }
-              }}
-            />
-
-            {/* Elegant Frosted Photo Container with Direct Dropzone and Upload Trigger */}
+            {/* Locked-in Official Portrait Container */}
             <div
-              className={`relative mb-3 group transition-all duration-200 rounded-3xl ${
-                isDraggingOverAvatar ? 'ring-4 ring-blue-500 scale-105 shadow-xl' : ''
-              }`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setIsDraggingOverAvatar(true);
-              }}
-              onDragLeave={(e) => {
-                e.preventDefault();
-                setIsDraggingOverAvatar(false);
-              }}
-              onDrop={(e) => {
-                e.preventDefault();
-                setIsDraggingOverAvatar(false);
-                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                  handleDirectFileUpload(e.dataTransfer.files[0]);
-                }
-              }}
+              id="hero-locked-profile-card"
+              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-white shadow-md flex items-center justify-center overflow-hidden transition-transform duration-300 hover:scale-[1.01]"
             >
-              <button
-                id="hero-profile-photo-trigger"
-                type="button"
-                onClick={() => heroFileInputRef.current?.click()}
-                className={`${
-                  photo ? 'w-48 sm:w-56 aspect-[3/4]' : 'w-32 h-32 sm:w-36 sm:h-36'
-                } rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-white shadow-md flex items-center justify-center relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.01] focus:outline-hidden focus:ring-2 focus:ring-blue-400 group`}
-                title={photo ? "Click to change to your original photo or drag & drop" : "Click to select your photo from your device"}
-                aria-label={photo ? "Change profile photo" : "Upload your profile photo"}
-              >
-                {isUploadingPhoto ? (
-                  <div className="flex flex-col items-center justify-center p-2 text-blue-600 gap-1.5 animate-pulse">
-                    <Upload className="w-6 h-6 animate-bounce" />
-                    <span className="text-[10px] font-semibold">Updating...</span>
-                  </div>
-                ) : isDraggingOverAvatar ? (
-                  <div className="flex flex-col items-center justify-center p-2 text-blue-600 gap-1 bg-blue-50/90 inset-0 absolute">
-                    <Upload className="w-7 h-7 animate-bounce" />
-                    <span className="text-[11px] font-bold">Drop photo!</span>
-                  </div>
-                ) : photo ? (
-                  <>
-                    <img
-                      src={photo}
-                      alt={personalInfo.name}
-                      className="w-full h-full object-cover object-top"
-                      referrerPolicy="no-referrer"
-                    />
-                    {/* Hover change overlay */}
-                    <div className="absolute inset-0 bg-slate-950/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-semibold gap-1 backdrop-blur-xs">
-                      <Camera className="w-5 h-5 text-white" />
-                      <span className="text-[11px] font-medium">Upload Original Photo</span>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="w-16 h-16 border-2 border-blue-200 border-dashed rounded-2xl flex flex-col items-center justify-center text-blue-500 group-hover:border-blue-400 transition-colors">
-                      <span className="font-mono text-xl font-bold text-blue-600">ET</span>
-                      <span className="text-[9px] font-mono text-blue-400">Add Photo</span>
-                    </div>
-                    {/* Camera indicator badge */}
-                    <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-xs border border-white group-hover:scale-110 transition-transform">
-                      <Upload className="w-3.5 h-3.5" />
-                    </div>
-                  </>
-                )}
-              </button>
+              <img
+                id="hero-profile-image"
+                src={photo}
+                alt={personalInfo.name}
+                className="w-full h-full object-cover object-top"
+                referrerPolicy="no-referrer"
+              />
+              {/* Official Verified Badge */}
+              <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/20 text-white flex items-center gap-1.5 shadow-xs pointer-events-none">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                <span className="text-[10px] font-semibold tracking-wide uppercase">Verified</span>
+              </div>
             </div>
 
-            {/* Quick Action Buttons */}
-            <div className="flex items-center gap-1.5 mb-3">
-              <button
-                id="hero-upload-photo-btn"
-                type="button"
-                onClick={() => heroFileInputRef.current?.click()}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-[11px] font-semibold hover:bg-blue-700 transition-all shadow-2xs cursor-pointer active:scale-95 min-h-[34px]"
-                title="Select a photo from your computer or phone"
-              >
-                <Upload className="w-3.5 h-3.5" />
-                <span>{photo ? 'Change Photo' : 'Upload Photo'}</span>
-              </button>
-              <button
-                id="hero-photo-options-btn"
-                type="button"
-                onClick={() => setIsPhotoModalOpen(true)}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl frosted-pill border border-white/90 text-[11px] font-medium text-slate-700 hover:text-slate-900 hover:bg-white transition-all shadow-2xs cursor-pointer min-h-[34px]"
-                title="More photo options (GitHub, URL, or remove)"
-              >
-                <SlidersHorizontal className="w-3 h-3 text-slate-500" />
-                <span>Options</span>
-              </button>
+            {/* Locked Profile Status Pill */}
+            <div className="flex items-center gap-2 mb-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-xs font-semibold shadow-2xs">
+                <Sparkles className="w-3 h-3 text-blue-600" />
+                <span>Official Portrait</span>
+              </span>
             </div>
 
             <h3 className="text-lg font-bold text-slate-950 mb-1">
@@ -366,14 +266,6 @@ export const Hero: React.FC = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Profile Photo Upload / Edit Modal */}
-      {isEditMode && (
-        <ProfilePhotoModal
-          isOpen={isPhotoModalOpen}
-          onClose={() => setIsPhotoModalOpen(false)}
-        />
-      )}
     </section>
   );
 };

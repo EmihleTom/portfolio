@@ -9,17 +9,12 @@ import {
   CheckCircle2,
   Copy,
   Check,
+  CheckCheck,
   Pencil,
-  Terminal,
-  Server,
-  Network,
-  Cpu,
-  Layers,
-  Wrench,
-  Search,
-  Filter,
   Eye,
-  GraduationCap,
+  Linkedin,
+  Sparkles,
+  BookOpen,
 } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
 import { CertificationItem } from '../types';
@@ -27,15 +22,164 @@ import { AddCertificationModal } from './AddCertificationModal';
 import { CredentialVerificationModal } from './CredentialVerificationModal';
 import { SectionReveal } from './SectionReveal';
 
+interface CertificateThumbnailProps {
+  cert: CertificationItem;
+  recipientName: string;
+  onClick: () => void;
+}
+
+const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
+  cert,
+  recipientName,
+  onClick,
+}) => {
+  const isSpecialization = cert.category === 'Specialization';
+  const isCoursera =
+    cert.credentialUrl?.includes('coursera') ||
+    cert.category === 'Specialization' ||
+    cert.category === 'Course';
+
+  let issuerLogo = cert.logoUrl;
+  let partnerLogo = cert.partnerLogoUrl;
+  const p = cert.provider.toLowerCase();
+  const b = (cert.badgeType || '').toLowerCase();
+
+  if (p.includes('deeplearning') || b === 'deeplearning') {
+    issuerLogo = '/logos/deeplearning-trimmed.png';
+    if (p.includes('stanford') || cert.partner?.toLowerCase().includes('stanford')) {
+      partnerLogo = '/logos/stanford-logo.svg';
+    }
+  } else if (p.includes('stanford') || b === 'stanford') {
+    issuerLogo = '/logos/stanford-logo.svg';
+  } else if (p.includes('ibm') || b === 'ibm') {
+    issuerLogo = '/logos/ibm-logo.svg';
+  } else if (p.includes('google cloud') || b === 'google-cloud') {
+    issuerLogo = '/logos/google_cloud-logo.svg';
+  } else if (p.includes('cisco') || b === 'cisco') {
+    issuerLogo = '/logos/cisco-logo.svg';
+  } else if (p.includes('capaciti') || b === 'capaciti') {
+    issuerLogo = '/logos/capaciti-symbol.webp';
+  } else if (p.includes('college of cape town') || p.includes('cct') || b === 'cct') {
+    issuerLogo = '/logos/cct-logo.svg';
+  } else if (p.includes('google') || b === 'google') {
+    issuerLogo = '/logos/google-logo.svg';
+  } else if (p.includes('coursera') || b === 'coursera') {
+    issuerLogo = '/logos/coursera-logo.webp';
+  } else if (p.includes('matric') || p.includes('basic education') || p.includes('umalusi') || b === 'matric') {
+    issuerLogo = '/logos/dbe-symbol.png';
+    partnerLogo = '/logos/umalusi-logo.webp';
+  }
+
+  const displayName = cert.recipientName || recipientName || 'Emihle Liyema Tom';
+
+  return (
+    <div
+      onClick={onClick}
+      className={`w-full aspect-[16/10] rounded-2xl border shadow-2xs hover:shadow-md transition-all p-3 sm:p-4 flex flex-col justify-between relative overflow-hidden group/thumb cursor-pointer select-none ${
+        isSpecialization
+          ? 'bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/40 border-blue-200/90 hover:border-blue-400'
+          : 'bg-gradient-to-b from-white via-slate-50/30 to-slate-100/40 border-slate-200/90 hover:border-blue-300'
+      }`}
+      title="Click to view full credential certificate"
+    >
+      {/* Decorative double border */}
+      <div className="absolute inset-1.5 border border-slate-200/70 rounded-xl pointer-events-none" />
+
+      {/* Top row: Logos & Certificate Category */}
+      <div className="flex items-center justify-between relative z-10">
+        <div className="flex items-center gap-2">
+          {issuerLogo && (
+            <img
+              src={issuerLogo}
+              alt=""
+              className="h-4 sm:h-5 max-w-[80px] object-contain"
+              referrerPolicy="no-referrer"
+            />
+          )}
+          {partnerLogo && (
+            <>
+              <span className="text-slate-300 text-xs">•</span>
+              <img
+                src={partnerLogo}
+                alt=""
+                className="h-4 sm:h-5 max-w-[70px] object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </>
+          )}
+        </div>
+
+        <span
+          className={`text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider ${
+            isSpecialization
+              ? 'text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded-full'
+              : 'text-slate-400'
+          }`}
+        >
+          {isSpecialization ? 'Specialization' : 'Course'}
+        </span>
+      </div>
+
+      {/* Center content: Recipient and Title */}
+      <div className="text-center my-auto py-1 relative z-10">
+        <p className="text-[9px] sm:text-[10px] text-slate-400 font-serif italic">This is to certify that</p>
+        <p className="text-xs sm:text-sm font-serif font-bold text-slate-900 tracking-tight leading-tight">
+          {displayName}
+        </p>
+        <p className="text-[8px] sm:text-[9px] text-slate-400 font-serif italic mt-0.5">has successfully completed</p>
+        <p className="text-[11px] sm:text-xs font-bold text-blue-950 line-clamp-2 leading-snug mt-0.5 max-w-[90%] mx-auto">
+          {cert.name}
+        </p>
+      </div>
+
+      {/* Bottom row: Signature & Verification seal */}
+      <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 relative z-10 text-[9px] text-slate-400">
+        <div className="flex items-center gap-1 font-serif italic text-slate-600">
+          <span className="truncate max-w-[130px]">{cert.provider}</span>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          {isCoursera && (
+            <span className="text-[8px] font-mono font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200/60">
+              Coursera
+            </span>
+          )}
+          <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 p-0.5 flex items-center justify-center shadow-xs">
+            <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
+              <ShieldCheck className="w-2.5 h-2.5 text-amber-300" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Hover overlay hint */}
+      <div className="absolute inset-0 bg-blue-950/0 group-hover/thumb:bg-blue-950/10 transition-colors flex items-center justify-center">
+        <span className="opacity-0 group-hover/thumb:opacity-100 transition-opacity px-2.5 py-1 rounded-lg bg-slate-900/90 text-white text-[10px] font-medium shadow-sm flex items-center gap-1">
+          <Eye className="w-3 h-3" />
+          <span>View Certificate</span>
+        </span>
+      </div>
+    </div>
+  );
+};
+
 export const Certifications: React.FC = () => {
-  const { certificationsList, personalInfo, addCertification, editCertification, deleteCertification, isEditMode } =
-    usePortfolioData();
+  const {
+    certificationsList,
+    personalInfo,
+    addCertification,
+    editCertification,
+    deleteCertification,
+    isEditMode,
+  } = usePortfolioData();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingCert, setEditingCert] = useState<CertificationItem | null>(null);
   const [verifyingCert, setVerifyingCert] = useState<CertificationItem | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState<'all' | 'it-support' | 'networking' | 'qualifications'>('all');
+  const [selectedFilter, setSelectedFilter] = useState<
+    'all' | 'ai-ml' | 'it-support' | 'networking' | 'qualifications'
+  >('all');
 
   const handleOpenAdd = () => {
     setEditingCert(null);
@@ -68,71 +212,74 @@ export const Certifications: React.FC = () => {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Helper to render issuer logo placeholder with modern IT/tech styling
-  const renderIssuerLogo = (provider: string, badgeType?: string) => {
+  // Helper to render official issuer logo
+  const renderIssuerLogo = (
+    provider: string,
+    badgeType?: string,
+    logoUrl?: string,
+    partnerLogoUrl?: string
+  ) => {
+    let finalLogo = logoUrl;
     const p = provider.toLowerCase();
+    const b = (badgeType || '').toLowerCase();
 
-    if (p.includes('capaciti') || badgeType === 'capaciti') {
-      return (
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-700 via-indigo-700 to-slate-900 text-white flex flex-col items-center justify-center shadow-md shrink-0 border border-blue-400/30">
-          <span className="font-mono text-[9px] font-black tracking-tighter uppercase leading-none text-blue-200">
-            CAPACITI
-          </span>
-          <Wrench className="w-4 h-4 text-white mt-0.5" />
-        </div>
-      );
-    }
-
-    if (p.includes('college of cape town') || p.includes('cct') || badgeType === 'cct') {
-      return (
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white flex flex-col items-center justify-center shadow-md shrink-0 border border-slate-700">
-          <span className="font-mono text-[10px] font-black tracking-wider text-amber-300">
-            CCT
-          </span>
-          <Server className="w-3.5 h-3.5 text-blue-300 mt-0.5" />
-        </div>
-      );
-    }
-
-    if (p.includes('cisco') || badgeType === 'cisco') {
-      return (
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-600 via-blue-700 to-slate-900 text-white flex flex-col items-center justify-center shadow-md shrink-0 border border-sky-400/30">
-          <span className="font-mono text-[9px] font-black tracking-widest text-sky-200 uppercase">
-            CISCO
-          </span>
-          <Network className="w-4 h-4 text-white mt-0.5" />
-        </div>
-      );
-    }
-
-    if (p.includes('google') || badgeType === 'google') {
-      return (
-        <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center shadow-md shrink-0 text-slate-800">
-          <span className="font-mono text-[10px] font-black tracking-wider text-blue-600">
-            G
-          </span>
-          <Cpu className="w-3.5 h-3.5 text-emerald-600 mt-0.5" />
-        </div>
-      );
-    }
-
-    if (
+    if (p.includes('cisco') || b === 'cisco') {
+      finalLogo = '/logos/cisco-logo.svg';
+    } else if (p.includes('deeplearning') || b === 'deeplearning') {
+      finalLogo = '/logos/deeplearning-trimmed.png';
+    } else if (p.includes('stanford') || b === 'stanford') {
+      finalLogo = '/logos/stanford-logo.svg';
+    } else if (p.includes('ibm') || b === 'ibm') {
+      finalLogo = '/logos/ibm-logo.svg';
+    } else if (p.includes('google cloud') || b === 'google-cloud') {
+      finalLogo = '/logos/google_cloud-logo.svg';
+    } else if (p.includes('capaciti') || b === 'capaciti') {
+      finalLogo = '/logos/capaciti-symbol.webp';
+    } else if (p.includes('college of cape town') || p.includes('cct') || b === 'cct') {
+      finalLogo = '/logos/cct-logo.svg';
+    } else if (p.includes('google') || b === 'google') {
+      finalLogo = '/logos/google-logo.svg';
+    } else if (p.includes('coursera') || b === 'coursera') {
+      finalLogo = '/logos/coursera-logo.webp';
+    } else if (
       p.includes('matric') ||
       p.includes('basic education') ||
       p.includes('umalusi') ||
-      badgeType === 'matric'
+      b === 'matric'
     ) {
+      finalLogo = '/logos/dbe-symbol.png';
+    }
+
+    if (partnerLogoUrl) {
       return (
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-600 via-amber-700 to-slate-900 text-white flex flex-col items-center justify-center shadow-md shrink-0 border border-amber-400/30">
-          <span className="font-mono text-[9px] font-black tracking-wider text-amber-200 uppercase">
-            NSC
-          </span>
-          <GraduationCap className="w-4 h-4 text-white mt-0.5" />
+        <div className="flex items-center -space-x-2 shrink-0">
+          <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center p-1.5 overflow-hidden z-10">
+            <img
+              src={finalLogo || '/logos/deeplearning-trimmed.png'}
+              alt="Provider"
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+          <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center p-1.5 overflow-hidden z-0">
+            <img src={partnerLogoUrl} alt="Partner" className="max-w-full max-h-full object-contain" />
+          </div>
         </div>
       );
     }
 
-    // Default monogram logo placeholder
+    if (finalLogo) {
+      return (
+        <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center p-2 shrink-0 overflow-hidden group-hover/card:border-blue-300 transition-colors">
+          <img
+            src={finalLogo}
+            alt={`${provider} logo`}
+            className="max-w-full max-h-full object-contain"
+            referrerPolicy="no-referrer"
+          />
+        </div>
+      );
+    }
+
     const initials = provider
       .split(' ')
       .slice(0, 2)
@@ -147,7 +294,6 @@ export const Certifications: React.FC = () => {
     );
   };
 
-  // Helper to determine if a credential is a Matric / Secondary school certificate
   const isMatricCertificate = (cert: CertificationItem): boolean => {
     const name = (cert.name || '').toLowerCase();
     const provider = (cert.provider || '').toLowerCase();
@@ -168,18 +314,125 @@ export const Certifications: React.FC = () => {
   // Filter certifications based on category
   const filteredList = certificationsList.filter((cert) => {
     if (selectedFilter === 'all') return true;
-    const text = (cert.name + ' ' + cert.provider + ' ' + (cert.focus || '')).toLowerCase();
+    const text = (
+      cert.name +
+      ' ' +
+      cert.provider +
+      ' ' +
+      (cert.focus || '') +
+      ' ' +
+      (cert.category || '') +
+      ' ' +
+      (cert.badgeType || '')
+    ).toLowerCase();
+
+    if (selectedFilter === 'ai-ml') {
+      return (
+        text.includes('ai') ||
+        text.includes('learning') ||
+        text.includes('prompt') ||
+        text.includes('deeplearning') ||
+        text.includes('generative') ||
+        text.includes('stanford') ||
+        text.includes('ibm') ||
+        cert.badgeType === 'deeplearning' ||
+        cert.badgeType === 'google-cloud' ||
+        cert.badgeType === 'ibm' ||
+        cert.id.includes('goog-ai') ||
+        cert.id.includes('dl-')
+      );
+    }
     if (selectedFilter === 'it-support') {
-      return text.includes('support') || text.includes('technician') || text.includes('maintenance') || text.includes('helpdesk');
+      return (
+        text.includes('support') ||
+        text.includes('technician') ||
+        text.includes('maintenance') ||
+        text.includes('helpdesk') ||
+        text.includes('capaciti')
+      );
     }
     if (selectedFilter === 'networking') {
-      return text.includes('network') || text.includes('cisco') || text.includes('routing') || text.includes('protocols');
+      return (
+        text.includes('network') ||
+        text.includes('cisco') ||
+        text.includes('ccna') ||
+        text.includes('ccst') ||
+        text.includes('routing')
+      );
     }
     if (selectedFilter === 'qualifications') {
-      return text.includes('diploma') || text.includes('qualification') || text.includes('college') || text.includes('matric') || text.includes('nsc');
+      return (
+        text.includes('diploma') ||
+        text.includes('qualification') ||
+        text.includes('college') ||
+        text.includes('matric') ||
+        text.includes('nsc') ||
+        text.includes('senior certificate') ||
+        cert.category === 'Academic Diploma'
+      );
     }
     return true;
   });
+
+  // Calculate counts for filters
+  const aiCount = certificationsList.filter((c) => {
+    const t = (c.name + ' ' + c.provider + ' ' + (c.focus || '')).toLowerCase();
+    return (
+      t.includes('ai') ||
+      t.includes('learning') ||
+      t.includes('prompt') ||
+      t.includes('deeplearning') ||
+      t.includes('generative') ||
+      t.includes('stanford') ||
+      t.includes('ibm')
+    );
+  }).length;
+
+  const itSupportCount = certificationsList.filter((c) => {
+    const t = (c.name + ' ' + c.provider + ' ' + (c.focus || '')).toLowerCase();
+    return t.includes('support') || t.includes('technician') || t.includes('helpdesk');
+  }).length;
+
+  const networkingCount = certificationsList.filter((c) => {
+    const t = (c.name + ' ' + c.provider + ' ' + (c.focus || '')).toLowerCase();
+    return t.includes('network') || t.includes('cisco');
+  }).length;
+
+  const qualificationsCount = certificationsList.filter((c) => {
+    const t = (c.name + ' ' + c.provider + ' ' + (c.focus || '')).toLowerCase();
+    return (
+      t.includes('diploma') ||
+      t.includes('matric') ||
+      t.includes('nsc') ||
+      c.category === 'Academic Diploma'
+    );
+  }).length;
+
+  // Extract year & month for LinkedIn helper
+  const getLinkedInUrl = (cert: CertificationItem) => {
+    const yearMatch = cert.date.match(/\b(20\d{2})\b/);
+    const issueYear = yearMatch ? yearMatch[1] : '2026';
+    const months: { [key: string]: string } = {
+      january: '1', february: '2', march: '3', april: '4', may: '5', june: '6',
+      july: '7', august: '8', september: '9', october: '10', november: '11', december: '12'
+    };
+    let issueMonth = '8';
+    const lowerDate = cert.date.toLowerCase();
+    for (const [mName, mNum] of Object.entries(months)) {
+      if (lowerDate.includes(mName)) {
+        issueMonth = mNum;
+        break;
+      }
+    }
+
+    return `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(
+      cert.name
+    )}&organizationName=${encodeURIComponent(
+      cert.provider
+    )}&issueYear=${issueYear}&issueMonth=${issueMonth}&certUrl=${encodeURIComponent(
+      cert.credentialUrl || ''
+    )}&certId=${encodeURIComponent(cert.credentialId || '')}`;
+  };
 
   return (
     <section
@@ -187,7 +440,7 @@ export const Certifications: React.FC = () => {
       aria-labelledby="certifications-heading"
       className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/60 scroll-mt-20 relative"
     >
-      <SectionReveal className="max-w-6xl mx-auto">
+      <SectionReveal className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
           <div>
@@ -201,8 +454,8 @@ export const Certifications: React.FC = () => {
             >
               Certifications & Qualifications
             </h2>
-            <p className="mt-2 text-slate-600 text-base sm:text-lg max-w-2xl leading-relaxed">
-              Formally verified technical certifications, IT support credentials, and academic diplomas earned through <strong>CAPACITI</strong>, the <strong>College of Cape Town</strong>, and leading industry bodies.
+            <p className="mt-2 text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
+              Formally verified professional credentials across <strong>AI & Machine Learning</strong>, <strong>Generative AI</strong>, <strong>Prompt Engineering</strong>, <strong>IT Support</strong>, <strong>Cisco Networking</strong>, and accredited education diplomas.
             </p>
           </div>
 
@@ -227,203 +480,269 @@ export const Certifications: React.FC = () => {
               onClick={() => setSelectedFilter('all')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 selectedFilter === 'all'
-                  ? 'bg-blue-600 text-white shadow-2xs'
+                  ? 'bg-blue-600 text-white shadow-2xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
               All Credentials ({certificationsList.length})
             </button>
             <button
-              onClick={() => setSelectedFilter('it-support')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
-                selectedFilter === 'it-support'
-                  ? 'bg-blue-600 text-white shadow-2xs'
+              onClick={() => setSelectedFilter('ai-ml')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
+                selectedFilter === 'ai-ml'
+                  ? 'bg-blue-600 text-white shadow-2xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
-              IT Support & Systems
+              <Sparkles className="w-3 h-3" />
+              <span>AI & Machine Learning ({aiCount})</span>
+            </button>
+            <button
+              onClick={() => setSelectedFilter('it-support')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
+                selectedFilter === 'it-support'
+                  ? 'bg-blue-600 text-white shadow-2xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+              }`}
+            >
+              IT Support & Systems ({itSupportCount})
             </button>
             <button
               onClick={() => setSelectedFilter('networking')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 selectedFilter === 'networking'
-                  ? 'bg-blue-600 text-white shadow-2xs'
+                  ? 'bg-blue-600 text-white shadow-2xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
-              Networking & Infrastructure
+              Networking & Infrastructure ({networkingCount})
             </button>
             <button
               onClick={() => setSelectedFilter('qualifications')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 selectedFilter === 'qualifications'
-                  ? 'bg-blue-600 text-white shadow-2xs'
+                  ? 'bg-blue-600 text-white shadow-2xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
-              Formal Diplomas
+              Formal Diplomas ({qualificationsCount})
             </button>
           </div>
 
           <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-slate-500 pr-2">
-            <span>Registry Status: Active & Authentic</span>
+            <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Registry Status: Active & Fully Verified</span>
           </div>
         </div>
 
-        {/* Responsive Grid Layout: 1 col on mobile, 2-3 cols on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredList.map((cert) => (
-            <div
-              key={cert.id}
-              id={`cert-card-${cert.id}`}
-              className="group/card bg-white/85 backdrop-blur-md rounded-3xl border border-white/90 p-6 flex flex-col justify-between shadow-2xs hover:shadow-md hover:border-blue-200 transition-all duration-300 relative overflow-hidden"
-            >
-              {/* Subtle top accent bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400 opacity-80" />
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredList.map((cert) => {
+            const isSpecialization = cert.category === 'Specialization';
+            const linkedInUrl = getLinkedInUrl(cert);
 
-              <div>
-                {/* Header: Logo placeholder, Badge, and Action Buttons */}
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  {/* Issuing Organization Logo Placeholder */}
-                  <div className="flex items-center gap-3">
-                    {renderIssuerLogo(cert.provider, cert.badgeType)}
-                    <div>
-                      <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-blue-700 block">
-                        {cert.provider}
-                      </span>
-                      <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
-                          <span>Verified</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+            return (
+              <div
+                key={cert.id}
+                id={`cert-card-${cert.id}`}
+                className={`group/card bg-white/90 backdrop-blur-md rounded-3xl border p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden ${
+                  isSpecialization
+                    ? 'border-blue-300 ring-1 ring-blue-100 hover:border-blue-400'
+                    : 'border-white/90 hover:border-blue-200'
+                }`}
+              >
+                {/* Subtle top accent bar */}
+                <div
+                  className={`absolute top-0 left-0 right-0 h-1.5 ${
+                    isSpecialization
+                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-amber-400'
+                      : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400'
+                  } opacity-90`}
+                />
 
-                  {/* Actions (Owner Mode Only) */}
-                  {isEditMode && (
-                    <div className="flex items-center gap-1 opacity-80 group-hover/card:opacity-100 transition-opacity">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenEdit(cert)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer"
-                        title="Edit Certification Details"
-                        aria-label={`Edit ${cert.name}`}
-                      >
-                        <Pencil className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(cert.id, cert.name)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-                        title="Delete Certification"
-                        aria-label={`Delete ${cert.name}`}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  )}
-                </div>
+                <div className="space-y-4">
+                  {/* Top Certificate Preview Thumbnail */}
+                  <CertificateThumbnail
+                    cert={cert}
+                    recipientName={personalInfo.name}
+                    onClick={() => setVerifyingCert(cert)}
+                  />
 
-                {/* Certificate Title */}
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-snug mb-2 group-hover/card:text-blue-600 transition-colors">
-                  {cert.name}
-                </h3>
-
-                {/* Curriculum Focus Tag if applicable */}
-                {cert.focus && (
-                  <p className="text-xs text-slate-600 mb-3.5 leading-relaxed bg-slate-50/80 p-2 rounded-xl border border-slate-100">
-                    <strong className="text-slate-700 font-medium">Focus:</strong> {cert.focus}
-                  </p>
-                )}
-
-                {/* Key Technical Skills Verified */}
-                {cert.skillsVerified && cert.skillsVerified.length > 0 && (
-                  <div className="mb-4">
-                    <span className="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-                      Key Technical Skills Verified
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {cert.skillsVerified.map((skill, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2.5 py-0.5 rounded-lg text-[11px] font-mono bg-white/90 border border-slate-200/80 text-slate-700 shadow-2xs"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Card Footer: Metadata & Verify Credential Action */}
-              <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
-                <div className="flex items-center justify-between text-xs font-mono text-slate-500">
-                  {/* Date Earned */}
-                  <div className="flex items-center gap-1 text-slate-600">
-                    <Calendar className="w-3.5 h-3.5 text-blue-600" />
-                    <span>{cert.date}</span>
-                  </div>
-
-                  {/* Credential ID with Copy Button */}
-                  {cert.credentialId ? (
-                    <button
-                      type="button"
-                      onClick={(e) => handleCopyId(e, cert.credentialId!)}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-mono transition-colors cursor-pointer"
-                      title="Click to copy Credential ID"
+                  {/* Coursera-style Direct Action Links (Add to LinkedIn | View Certificate) */}
+                  <div className="flex items-center justify-between px-1 py-0.5 text-xs border-b border-slate-100 pb-2.5">
+                    <a
+                      href={linkedInUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 font-semibold text-xs transition-colors hover:underline"
+                      title="Add certificate to your LinkedIn profile"
                     >
-                      <span>ID: {cert.credentialId}</span>
-                      {copiedId === cert.credentialId ? (
-                        <Check className="w-3 h-3 text-emerald-600" />
-                      ) : (
-                        <Copy className="w-3 h-3 text-slate-400" />
-                      )}
-                    </button>
-                  ) : (
-                    <span className="text-[11px] text-slate-400 font-mono">ID: Record Verified</span>
-                  )}
-                </div>
+                      <Linkedin className="w-3.5 h-3.5 text-blue-700 shrink-0" />
+                      <span>Add to LinkedIn</span>
+                    </a>
 
-                {/* Primary Action: Verify Credential Button (Excluded for Matric Certificate) */}
-                {isMatricCertificate(cert) ? (
-                  <div className="flex items-center justify-between w-full py-2 px-3 rounded-xl bg-slate-50/90 border border-slate-200/80 text-slate-700 text-xs font-medium">
-                    <span className="flex items-center gap-1.5 text-slate-800">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span className="font-semibold">National Senior Certificate (Endorsed)</span>
-                    </span>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
-                      DBE / Umalusi
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => setVerifyingCert(cert)}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold tracking-wide transition-all shadow-xs cursor-pointer group/btn"
+                      className="inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 font-semibold text-xs transition-colors hover:underline cursor-pointer"
                     >
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover/btn:text-white transition-colors" />
-                      <span>Verify Credential</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>View certificate</span>
                     </button>
+                  </div>
 
-                    {cert.credentialUrl && (
-                      <a
-                        href={cert.credentialUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition-colors shrink-0"
-                        title="Open external registry link"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                  {/* Header: Logo, Issuer Name, Verified badge */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      {renderIssuerLogo(
+                        cert.provider,
+                        cert.badgeType,
+                        cert.logoUrl,
+                        cert.partnerLogoUrl
+                      )}
+                      <div>
+                        <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-blue-700 block">
+                          {cert.provider}
+                        </span>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                            <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
+                            <span>Verified</span>
+                          </span>
+                          {isSpecialization && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                              SPECIALIZATION
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Actions (Owner Mode Only) */}
+                    {isEditMode && (
+                      <div className="flex items-center gap-1 opacity-80 group-hover/card:opacity-100 transition-opacity">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEdit(cert)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer"
+                          title="Edit Certification Details"
+                          aria-label={`Edit ${cert.name}`}
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(cert.id, cert.name)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                          title="Delete Certification"
+                          aria-label={`Delete ${cert.name}`}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     )}
                   </div>
-                )}
+
+                  {/* Certificate Title */}
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-snug group-hover/card:text-blue-600 transition-colors">
+                    {cert.name}
+                  </h3>
+
+                  {/* Curriculum Focus */}
+                  {cert.focus && (
+                    <p className="text-xs text-slate-600 leading-relaxed bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+                      <strong className="text-slate-700 font-medium">Focus:</strong> {cert.focus}
+                    </p>
+                  )}
+
+                  {/* Key Technical Skills Verified */}
+                  {cert.skillsVerified && cert.skillsVerified.length > 0 && (
+                    <div>
+                      <span className="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                        Key Technical Skills Verified
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {cert.skillsVerified.map((skill, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-mono bg-white/95 border border-slate-200/80 text-slate-700 shadow-2xs"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Footer: Metadata & Verify Credential Action */}
+                <div className="pt-4 border-t border-slate-100 flex flex-col gap-3 mt-4">
+                  <div className="flex items-center justify-between text-xs font-mono text-slate-500">
+                    {/* Date Earned */}
+                    <div className="flex items-center gap-1 text-slate-600 font-medium">
+                      <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                      <span>{cert.date}</span>
+                    </div>
+
+                    {/* Credential ID with Copy Button */}
+                    {cert.credentialId ? (
+                      <button
+                        type="button"
+                        onClick={(e) => handleCopyId(e, cert.credentialId!)}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-mono transition-colors cursor-pointer"
+                        title="Click to copy Credential ID"
+                      >
+                        <span>ID: {cert.credentialId.length > 20 ? cert.credentialId.slice(0, 18) + '…' : cert.credentialId}</span>
+                        {copiedId === cert.credentialId ? (
+                          <Check className="w-3 h-3 text-emerald-600" />
+                        ) : (
+                          <Copy className="w-3 h-3 text-slate-400" />
+                        )}
+                      </button>
+                    ) : (
+                      <span className="text-[11px] text-slate-400 font-mono">ID: Verified</span>
+                    )}
+                  </div>
+
+                  {/* Primary Action Button */}
+                  {isMatricCertificate(cert) ? (
+                    <div className="flex items-center justify-between w-full py-2 px-3 rounded-xl bg-slate-50/90 border border-slate-200/80 text-slate-700 text-xs font-medium">
+                      <span className="flex items-center gap-1.5 text-slate-800">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span className="font-semibold">National Senior Certificate (Endorsed)</span>
+                      </span>
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+                        DBE / Umalusi
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setVerifyingCert(cert)}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold tracking-wide transition-all shadow-xs cursor-pointer group/btn"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover/btn:text-white transition-colors" />
+                        <span>Verify Credential</span>
+                      </button>
+
+                      {cert.credentialUrl && (
+                        <a
+                          href={cert.credentialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition-colors shrink-0"
+                          title="Open external registry link"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* Quick Add / Replace Certificate Slot (Owner Mode Only) */}
           {isEditMode && (
@@ -442,17 +761,17 @@ export const Certifications: React.FC = () => {
                   </span>
                 </div>
                 <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight mb-2">
-                  Add / Replace Certificate
+                  Add New Certificate
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Add additional certifications such as <strong>Cisco CCNA</strong>, <strong>CompTIA A+ / Security+</strong>, <strong>Microsoft Azure</strong>, or custom institutional badges to keep your portfolio credentials up to date.
+                  Add additional certifications from <strong>Coursera</strong>, <strong>Cisco CCNA</strong>, <strong>CompTIA</strong>, or institutional qualifications to keep your portfolio up to date.
                 </p>
               </div>
 
               <div className="pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs font-mono text-slate-500">
                 <span className="flex items-center gap-1.5 text-blue-600 font-semibold group-hover:underline">
                   <Plus className="w-3.5 h-3.5" />
-                  <span>Add Certificate 3 or 4</span>
+                  <span>Add Credential</span>
                 </span>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold">
                   Interactive
