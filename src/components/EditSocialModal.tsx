@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Linkedin, Github, Globe, MapPin, Check, Sparkles } from 'lucide-react';
+import { X, Linkedin, Github, Globe, MapPin, Check, Sparkles, Phone, MessageCircle } from 'lucide-react';
 import { PersonalInfo } from '../types';
 
 interface EditSocialModalProps {
@@ -18,6 +18,8 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
   const [websiteUrl, setWebsiteUrl] = useState('');
+  const [phone, setPhone] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
   const [location, setLocation] = useState('');
   const [status, setStatus] = useState('');
 
@@ -25,6 +27,8 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
     setLinkedinUrl(personalInfo.linkedinUrl || '');
     setGithubUrl(personalInfo.githubUrl || 'https://github.com/EmihleTom');
     setWebsiteUrl(personalInfo.websiteUrl || '');
+    setPhone(personalInfo.phone || '');
+    setWhatsappNumber(personalInfo.whatsappNumber || '');
     setLocation(personalInfo.location || 'Western Cape, Cape Town');
     setStatus(personalInfo.status || 'Available for Opportunities');
   }, [personalInfo, isOpen]);
@@ -37,6 +41,8 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
       linkedinUrl: linkedinUrl.trim(),
       githubUrl: githubUrl.trim() || 'https://github.com/EmihleTom',
       websiteUrl: websiteUrl.trim() || undefined,
+      phone: phone.trim() || undefined,
+      whatsappNumber: whatsappNumber.trim() || undefined,
       location: location.trim(),
       status: status.trim(),
     });
@@ -115,6 +121,36 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
               placeholder="https://yourwebsite.com or Twitter / X profile"
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all font-mono text-xs"
             />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5 flex items-center gap-1.5">
+                <Phone className="w-3.5 h-3.5 text-blue-600" />
+                <span>Phone Number</span>
+              </label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="e.g. +27 78 123 4567"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all font-mono text-xs"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5 flex items-center gap-1.5">
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                <span>WhatsApp Number</span>
+              </label>
+              <input
+                type="tel"
+                value={whatsappNumber}
+                onChange={(e) => setWhatsappNumber(e.target.value)}
+                placeholder="e.g. +27 78 123 4567"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all font-mono text-xs"
+              />
+            </div>
           </div>
 
           <div>

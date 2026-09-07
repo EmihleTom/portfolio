@@ -5,6 +5,8 @@ export interface PersonalInfo {
   bio: string;
   summary?: string;
   email: string;
+  phone?: string;
+  whatsappNumber?: string;
   githubUrl: string;
   linkedinPlaceholder?: string;
   linkedinUrl?: string;
@@ -95,5 +97,6 @@ export interface CertificationItem {
 export interface ContactFormData {
   name: string;
   email: string;
+  subject?: string;
   message: string;
 }
