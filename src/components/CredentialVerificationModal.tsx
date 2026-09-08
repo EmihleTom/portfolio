@@ -17,6 +17,7 @@ import {
   CheckCheck,
 } from 'lucide-react';
 import { CertificationItem } from '../types';
+import { getCertificateConfig } from '../utils/certificateTheme';
 
 interface CredentialVerificationModalProps {
   isOpen: boolean;
@@ -36,43 +37,18 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 
   if (!isOpen || !certification) return null;
 
+  const certConfig = getCertificateConfig(certification);
+  const theme = certConfig.theme;
+
   const getLogosForProvider = (cert: CertificationItem) => {
-    const p = cert.provider.toLowerCase();
-    const b = (cert.badgeType || '').toLowerCase();
-
-    let primaryLogo = cert.logoUrl;
-    let partnerLogo = cert.partnerLogoUrl;
-
-    if (p.includes('deeplearning') || b === 'deeplearning') {
-      primaryLogo = '/logos/deeplearning-trimmed.png';
-      if (p.includes('stanford') || cert.partner?.toLowerCase().includes('stanford')) {
-        partnerLogo = '/logos/stanford-logo.svg';
-      }
-    } else if (p.includes('stanford') || b === 'stanford') {
-      primaryLogo = '/logos/stanford-logo.svg';
-    } else if (p.includes('ibm') || b === 'ibm') {
-      primaryLogo = '/logos/ibm-logo.svg';
-    } else if (p.includes('google cloud') || b === 'google-cloud') {
-      primaryLogo = '/logos/google_cloud-logo.svg';
-    } else if (p.includes('cisco') || b === 'cisco') {
-      primaryLogo = '/logos/cisco-logo.svg';
-    } else if (p.includes('capaciti') || b === 'capaciti') {
-      primaryLogo = '/logos/capaciti-symbol.webp';
-    } else if (p.includes('college of cape town') || p.includes('cct') || b === 'cct') {
-      primaryLogo = '/logos/cct-logo.svg';
-    } else if (p.includes('google') || b === 'google') {
-      primaryLogo = '/logos/google-logo.svg';
-    } else if (p.includes('coursera') || b === 'coursera') {
-      primaryLogo = '/logos/coursera-logo.webp';
-    } else if (p.includes('matric') || p.includes('basic education') || p.includes('umalusi') || b === 'matric') {
-      primaryLogo = '/logos/dbe-symbol.png';
-      partnerLogo = '/logos/umalusi-logo.webp';
-    }
-
-    return { primaryLogo, partnerLogo };
+    return {
+      primaryLogo: certConfig.primaryLogo,
+      partnerLogo: certConfig.partnerLogo,
+    };
   };
 
   const { primaryLogo, partnerLogo } = getLogosForProvider(certification);
+
 
   const handleCopyId = () => {
     if (certification.credentialId) {
@@ -189,19 +165,32 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
         {/* Modal Body */}
         <div className="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-800 text-sm space-y-5 bg-slate-50/50">
           {activeTab === 'certificate' ? (
-            /* Authentic Coursera / Institutional Digital Certificate Graphic */
-            <div className="bg-white rounded-2xl border-2 border-slate-300/80 p-6 sm:p-8 shadow-md relative overflow-hidden text-center select-text">
-              {/* Outer double border certificate styling */}
-              <div className="absolute inset-2 border border-slate-200 pointer-events-none rounded-xl" />
-              
-              {/* Top certificate header logos */}
+            /* Institutional Digital Certificate Graphic - Crisp, High-End White Paper Canvas */
+            <div className="rounded-2xl border-2 border-slate-200/90 bg-white p-6 sm:p-8 shadow-sm relative overflow-hidden text-center select-text transition-all">
+              {/* Top Branded Institutional Accent Line */}
+              {theme === 'google' ? (
+                <div className="absolute top-0 left-0 right-0 grid grid-cols-4 h-1.5">
+                  <div className="bg-[#4285F4]" />
+                  <div className="bg-[#EA4335]" />
+                  <div className="bg-[#FBBC05]" />
+                  <div className="bg-[#34A853]" />
+                </div>
+              ) : (
+                <div className={`absolute top-0 left-0 right-0 h-1.5 ${certConfig.cardAccent}`} />
+              )}
+
+              {/* Double Inset Fine Security Borders */}
+              <div className="absolute inset-2 border border-slate-200/70 rounded-xl pointer-events-none" />
+              <div className="absolute inset-3 border border-slate-100 rounded-lg pointer-events-none" />
+
+              {/* Top certificate header logos & Badge */}
               <div className="flex items-center justify-between gap-4 mb-6 relative z-10">
                 <div className="flex items-center gap-3">
                   {primaryLogo && (
                     <img
                       src={primaryLogo}
                       alt={certification.provider}
-                      className="h-9 max-w-[140px] object-contain"
+                      className="h-8 sm:h-9 max-w-[140px] object-contain"
                       referrerPolicy="no-referrer"
                     />
                   )}
@@ -211,78 +200,90 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
                       <img
                         src={partnerLogo}
                         alt="Partner organization"
-                        className="h-9 max-w-[140px] object-contain"
+                        className="h-8 sm:h-9 max-w-[140px] object-contain"
                         referrerPolicy="no-referrer"
                       />
                     </>
                   )}
                 </div>
 
-                {isCoursera && (
-                  <div className="flex items-center gap-1.5 opacity-90">
-                    <img
-                      src="/logos/coursera-logo.webp"
-                      alt="Coursera"
-                      className="h-6 object-contain"
-                    />
-                  </div>
-                )}
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono font-semibold tracking-wider uppercase ${certConfig.badgeStyle}`}
+                  >
+                    {certConfig.badgeLabel}
+                  </span>
+                </div>
               </div>
 
               {/* Certificate Type Label */}
-              <div className="relative z-10 mb-4">
-                <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest text-slate-400 uppercase">
-                  {certification.category ? `${certification.category.toUpperCase()} CERTIFICATE` : 'COURSE CERTIFICATE'}
+              <div className="relative z-10 mb-3">
+                <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase text-slate-400">
+                  {certConfig.certSubtitle}
                 </span>
               </div>
 
               {/* Recipient Announcement */}
-              <div className="relative z-10 mb-2">
-                <p className="text-xs sm:text-sm text-slate-500 font-serif italic">This is to certify that</p>
-                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 tracking-tight mt-1 mb-2">
+              <div className="relative z-10 mb-3">
+                <p className="text-xs sm:text-sm font-serif italic text-slate-500">
+                  {theme === 'matric-academic'
+                    ? 'This is to certify that candidate'
+                    : 'This is to certify that'}
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 mt-1 mb-1">
                   {displayName}
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 font-serif italic">
-                  has successfully completed
+                <p className="text-xs sm:text-sm font-serif italic text-slate-500">
+                  {theme === 'matric-academic'
+                    ? 'has satisfied all statutory criteria for'
+                    : 'has successfully completed'}
                 </p>
               </div>
 
               {/* Certificate Course / Qualification Title */}
               <div className="relative z-10 mb-6 max-w-xl mx-auto">
-                <h3 className="text-lg sm:text-2xl font-bold text-slate-900 leading-snug tracking-tight font-sans">
+                <h3 className="text-lg sm:text-2xl font-bold leading-snug tracking-tight text-slate-900">
                   {certification.name}
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  an online authorized course or specialization offered through {certification.provider}
+                <p className="text-xs text-slate-600 mt-2 leading-relaxed max-w-lg mx-auto">
+                  {certification.focus ||
+                    `An authorized qualification certified by ${certification.provider}`}
                 </p>
               </div>
 
-              {/* Certificate Bottom Signatures & Seal */}
+              {/* Certificate Bottom Signatures & Medallion Seal */}
               <div className="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 text-left">
                 {/* Signatures & Organization */}
                 <div className="space-y-1 text-center sm:text-left">
                   <div className="h-6 flex items-end">
-                    <span className="font-serif italic text-sm text-slate-700 tracking-wide">
-                      {certification.provider} Faculty & Program Board
+                    <span className="font-serif italic text-sm tracking-wide text-slate-700 font-medium">
+                      {certConfig.signatureTitle}
                     </span>
                   </div>
-                  <div className="w-48 h-px bg-slate-300 my-1 mx-auto sm:mx-0" />
-                  <p className="text-[10px] font-mono text-slate-500 uppercase">Authorized Signature & Verification</p>
+                  <div className="w-48 h-px my-1 mx-auto sm:mx-0 bg-slate-300" />
+                  <p className="text-[10px] font-mono uppercase text-slate-400">
+                    Authorized Signature & Verification
+                  </p>
                 </div>
 
                 {/* Medallion Seal */}
                 <div className="flex items-center gap-3 shrink-0">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 p-0.5 shadow-md flex items-center justify-center">
-                    <div className="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-white p-1">
-                      <ShieldCheck className="w-4 h-4 text-amber-400" />
-                      <span className="text-[8px] font-mono font-bold tracking-wider text-amber-300 uppercase">
-                        VERIFIED
+                  <div className="w-13 h-13 rounded-full p-1 shadow-sm flex items-center justify-center border border-slate-200 bg-slate-50">
+                    <div
+                      className={`w-full h-full rounded-full flex flex-col items-center justify-center shadow-xs p-1 ${certConfig.sealColor}`}
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span className="text-[7px] font-mono font-bold tracking-wider uppercase mt-0.5">
+                        {certConfig.sealText}
                       </span>
                     </div>
                   </div>
+
                   <div className="text-[10px] font-mono text-slate-500">
-                    <p className="font-semibold text-slate-700">{certification.date}</p>
-                    <p className="truncate max-w-[130px]">ID: {certification.credentialId || 'VERIFIED-RECORD'}</p>
+                    <p className="font-semibold text-slate-800">{certification.date}</p>
+                    <p className="truncate max-w-[130px] text-slate-400">
+                      ID: {certification.credentialId || 'VERIFIED-RECORD'}
+                    </p>
                   </div>
                 </div>
               </div>

@@ -514,9 +514,9 @@ export const certificationsList: CertificationItem[] = [
   },
   {
     id: 'cert-matric-certificate',
-    name: 'Matric Certificate (National Senior Certificate)',
+    name: 'National Senior Certificate (Matric)',
     provider: 'Department of Basic Education / Umalusi',
-    category: 'Academic Diploma',
+    category: 'National Qualification',
     recipientName: 'Emihle Liyema Tom',
     focus: 'National Senior Certificate (Grade 12 Matric Qualification - Completed 2024)',
     date: '2024',
@@ -524,11 +524,14 @@ export const certificationsList: CertificationItem[] = [
     badgeType: 'matric',
     issuerLogoPlaceholder: 'DBE / Umalusi',
     logoUrl: '/logos/dbe-symbol.png',
+    partnerLogoUrl: '/logos/umalusi-logo.webp',
     skillsVerified: [
-      'Mathematical Foundations',
-      'Analytical Thinking',
+      'Mathematical Literacy',
+      'Analytical Problem Solving',
       'English Communication',
       'Computer Applications & Literacy',
     ],
   },
 ];
+
+

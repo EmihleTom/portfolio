@@ -70,7 +70,12 @@ export interface CertificationItem {
   name: string;
   provider: string;
   date: string;
-  category?: 'Specialization' | 'Course' | 'Professional Certificate' | 'Academic Diploma';
+  category?:
+    | 'Specialization'
+    | 'Course'
+    | 'Professional Certificate'
+    | 'Academic Diploma'
+    | 'National Qualification';
   partner?: string;
   partnerLogoUrl?: string;
   recipientName?: string;

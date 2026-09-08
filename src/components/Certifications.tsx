@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
 import { CertificationItem } from '../types';
+import { getCertificateConfig, CertificateThemeConfig } from '../utils/certificateTheme';
 import { AddCertificationModal } from './AddCertificationModal';
 import { CredentialVerificationModal } from './CredentialVerificationModal';
 import { SectionReveal } from './SectionReveal';
@@ -33,128 +34,105 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
   recipientName,
   onClick,
 }) => {
-  const isSpecialization = cert.category === 'Specialization';
-  const isCoursera =
-    cert.credentialUrl?.includes('coursera') ||
-    cert.category === 'Specialization' ||
-    cert.category === 'Course';
-
-  let issuerLogo = cert.logoUrl;
-  let partnerLogo = cert.partnerLogoUrl;
-  const p = cert.provider.toLowerCase();
-  const b = (cert.badgeType || '').toLowerCase();
-
-  if (p.includes('deeplearning') || b === 'deeplearning') {
-    issuerLogo = '/logos/deeplearning-trimmed.png';
-    if (p.includes('stanford') || cert.partner?.toLowerCase().includes('stanford')) {
-      partnerLogo = '/logos/stanford-logo.svg';
-    }
-  } else if (p.includes('stanford') || b === 'stanford') {
-    issuerLogo = '/logos/stanford-logo.svg';
-  } else if (p.includes('ibm') || b === 'ibm') {
-    issuerLogo = '/logos/ibm-logo.svg';
-  } else if (p.includes('google cloud') || b === 'google-cloud') {
-    issuerLogo = '/logos/google_cloud-logo.svg';
-  } else if (p.includes('cisco') || b === 'cisco') {
-    issuerLogo = '/logos/cisco-logo.svg';
-  } else if (p.includes('capaciti') || b === 'capaciti') {
-    issuerLogo = '/logos/capaciti-symbol.webp';
-  } else if (p.includes('college of cape town') || p.includes('cct') || b === 'cct') {
-    issuerLogo = '/logos/cct-logo.svg';
-  } else if (p.includes('google') || b === 'google') {
-    issuerLogo = '/logos/google-logo.svg';
-  } else if (p.includes('coursera') || b === 'coursera') {
-    issuerLogo = '/logos/coursera-logo.webp';
-  } else if (p.includes('matric') || p.includes('basic education') || p.includes('umalusi') || b === 'matric') {
-    issuerLogo = '/logos/dbe-symbol.png';
-    partnerLogo = '/logos/umalusi-logo.webp';
-  }
-
+  const config = getCertificateConfig(cert);
   const displayName = cert.recipientName || recipientName || 'Emihle Liyema Tom';
+  const theme = config.theme;
 
   return (
     <div
       onClick={onClick}
-      className={`w-full aspect-[16/10] rounded-2xl border shadow-2xs hover:shadow-md transition-all p-3 sm:p-4 flex flex-col justify-between relative overflow-hidden group/thumb cursor-pointer select-none ${
-        isSpecialization
-          ? 'bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/40 border-blue-200/90 hover:border-blue-400'
-          : 'bg-gradient-to-b from-white via-slate-50/30 to-slate-100/40 border-slate-200/90 hover:border-blue-300'
-      }`}
+      className="w-full aspect-[16/10] rounded-2xl border border-slate-200/90 bg-white shadow-xs hover:shadow-md transition-all p-3 sm:p-3.5 flex flex-col justify-between relative overflow-hidden group/thumb cursor-pointer select-none hover:border-slate-300"
       title="Click to view full credential certificate"
     >
-      {/* Decorative double border */}
-      <div className="absolute inset-1.5 border border-slate-200/70 rounded-xl pointer-events-none" />
+      {/* Top institutional accent strip */}
+      {theme === 'google' ? (
+        <div className="absolute top-0 left-0 right-0 grid grid-cols-4 h-1">
+          <div className="bg-[#4285F4]" />
+          <div className="bg-[#EA4335]" />
+          <div className="bg-[#FBBC05]" />
+          <div className="bg-[#34A853]" />
+        </div>
+      ) : (
+        <div className={`absolute top-0 left-0 right-0 h-1 ${config.cardAccent}`} />
+      )}
 
-      {/* Top row: Logos & Certificate Category */}
+      {/* Delicate inner security frame */}
+      <div className="absolute inset-1.5 border border-slate-100 rounded-xl pointer-events-none" />
+
+      {/* Top row: Official Issuer Logos & Category Badge */}
       <div className="flex items-center justify-between relative z-10">
         <div className="flex items-center gap-2">
-          {issuerLogo && (
+          {config.primaryLogo && (
             <img
-              src={issuerLogo}
+              src={config.primaryLogo}
               alt=""
-              className="h-4 sm:h-5 max-w-[80px] object-contain"
+              className="h-4 sm:h-5 max-w-[85px] object-contain"
               referrerPolicy="no-referrer"
             />
           )}
-          {partnerLogo && (
+          {config.partnerLogo && (
             <>
               <span className="text-slate-300 text-xs">•</span>
               <img
-                src={partnerLogo}
+                src={config.partnerLogo}
                 alt=""
-                className="h-4 sm:h-5 max-w-[70px] object-contain"
+                className="h-4 sm:h-5 max-w-[75px] object-contain"
                 referrerPolicy="no-referrer"
               />
             </>
           )}
         </div>
 
+        {/* Customized Institutional Pill Tag */}
         <span
-          className={`text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider ${
-            isSpecialization
-              ? 'text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded-full'
-              : 'text-slate-400'
-          }`}
+          className={`text-[8px] sm:text-[9px] font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${config.badgeStyle}`}
         >
-          {isSpecialization ? 'Specialization' : 'Course'}
+          {config.badgeLabel}
         </span>
       </div>
 
-      {/* Center content: Recipient and Title */}
+      {/* Center content: Clear, dignified typography */}
       <div className="text-center my-auto py-1 relative z-10">
-        <p className="text-[9px] sm:text-[10px] text-slate-400 font-serif italic">This is to certify that</p>
-        <p className="text-xs sm:text-sm font-serif font-bold text-slate-900 tracking-tight leading-tight">
+        <p className="text-[8px] sm:text-[9px] text-slate-400 font-mono uppercase tracking-wider font-semibold">
+          {config.certSubtitle}
+        </p>
+        <p className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-0.5">
           {displayName}
         </p>
-        <p className="text-[8px] sm:text-[9px] text-slate-400 font-serif italic mt-0.5">has successfully completed</p>
-        <p className="text-[11px] sm:text-xs font-bold text-blue-950 line-clamp-2 leading-snug mt-0.5 max-w-[90%] mx-auto">
+        <p className="text-[8px] text-slate-400 font-serif italic mt-0.5">
+          {theme === 'matric-academic'
+            ? 'has fulfilled statutory requirements for'
+            : 'has successfully completed'}
+        </p>
+        <p className="text-[11px] sm:text-xs font-bold text-slate-900 line-clamp-2 leading-snug mt-0.5 max-w-[92%] mx-auto">
           {cert.name}
+        </p>
+        <p className="text-[8px] text-slate-400 mt-0.5 truncate max-w-[90%] mx-auto">
+          {config.headerTitle}
         </p>
       </div>
 
-      {/* Bottom row: Signature & Verification seal */}
-      <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 relative z-10 text-[9px] text-slate-400">
-        <div className="flex items-center gap-1 font-serif italic text-slate-600">
-          <span className="truncate max-w-[130px]">{cert.provider}</span>
+      {/* Bottom row: Credential ID & Institutional Seal */}
+      <div className="flex items-center justify-between pt-1.5 border-t border-slate-100 relative z-10 text-[9px]">
+        <div className="flex items-center gap-1.5 font-mono text-slate-400 text-[8px] sm:text-[9px] truncate max-w-[170px]">
+          <span>{cert.date}</span>
+          <span>•</span>
+          <span className="truncate">{cert.credentialId || 'VERIFIED'}</span>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          {isCoursera && (
-            <span className="text-[8px] font-mono font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200/60">
-              Coursera
-            </span>
-          )}
-          <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 p-0.5 flex items-center justify-center shadow-xs">
-            <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
-              <ShieldCheck className="w-2.5 h-2.5 text-amber-300" />
-            </div>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <div
+            className={`px-1.5 py-0.5 rounded-md flex items-center gap-1 text-[8px] font-mono font-bold uppercase shadow-2xs ${config.sealColor}`}
+          >
+            <ShieldCheck className="w-2.5 h-2.5" />
+            <span>{config.sealText}</span>
           </div>
         </div>
       </div>
 
       {/* Hover overlay hint */}
-      <div className="absolute inset-0 bg-blue-950/0 group-hover/thumb:bg-blue-950/10 transition-colors flex items-center justify-center">
-        <span className="opacity-0 group-hover/thumb:opacity-100 transition-opacity px-2.5 py-1 rounded-lg bg-slate-900/90 text-white text-[10px] font-medium shadow-sm flex items-center gap-1">
+      <div className="absolute inset-0 bg-slate-900/0 group-hover/thumb:bg-slate-900/10 transition-colors flex items-center justify-center">
+        <span className="opacity-0 group-hover/thumb:opacity-100 transition-opacity px-2.5 py-1 rounded-lg bg-slate-900/90 text-white text-[10px] font-medium shadow-sm flex items-center gap-1 backdrop-blur-xs">
           <Eye className="w-3 h-3" />
           <span>View Certificate</span>
         </span>
@@ -162,6 +140,8 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
     </div>
   );
 };
+
+
 
 export const Certifications: React.FC = () => {
   const {
@@ -368,7 +348,8 @@ export const Certifications: React.FC = () => {
         text.includes('matric') ||
         text.includes('nsc') ||
         text.includes('senior certificate') ||
-        cert.category === 'Academic Diploma'
+        cert.category === 'Academic Diploma' ||
+        cert.category === 'National Qualification'
       );
     }
     return true;
@@ -404,7 +385,8 @@ export const Certifications: React.FC = () => {
       t.includes('diploma') ||
       t.includes('matric') ||
       t.includes('nsc') ||
-      c.category === 'Academic Diploma'
+      c.category === 'Academic Diploma' ||
+      c.category === 'National Qualification'
     );
   }).length;
 
@@ -525,7 +507,7 @@ export const Certifications: React.FC = () => {
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
-              Formal Diplomas ({qualificationsCount})
+              Diplomas & NSC ({qualificationsCount})
             </button>
           </div>
 
@@ -539,6 +521,7 @@ export const Certifications: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredList.map((cert, index) => {
             const isSpecialization = cert.category === 'Specialization';
+            const certConfig = getCertificateConfig(cert);
             const linkedInUrl = getLinkedInUrl(cert);
 
             return (
@@ -551,13 +534,9 @@ export const Certifications: React.FC = () => {
                     : 'border-white/90 hover:border-blue-200'
                 }`}
               >
-                {/* Subtle top accent bar */}
+                {/* Subtle top accent bar customized to institution */}
                 <div
-                  className={`absolute top-0 left-0 right-0 h-1.5 ${
-                    isSpecialization
-                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-amber-400'
-                      : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400'
-                  } opacity-90`}
+                  className={`absolute top-0 left-0 right-0 h-1.5 ${certConfig.cardAccent} opacity-90`}
                 />
 
                 <div className="space-y-4">

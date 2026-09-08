@@ -25,8 +25,10 @@ export interface PortfolioState {
   certificationsList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v11';
+const STORAGE_KEY = 'emihle_portfolio_state_v13';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v12',
+  'emihle_portfolio_state_v11',
   'emihle_portfolio_state_v10',
   'emihle_portfolio_state_v9',
   'emihle_portfolio_state_v8',
@@ -38,6 +40,8 @@ const LEGACY_STORAGE_KEYS = [
   'emihle_portfolio_state_v2',
   'emihle_portfolio_state_v1',
 ];
+
+
 const EVENT_NAME = 'emihle_portfolio_updated';
 export const OWNER_MODE_KEY = 'emihle_portfolio_owner_mode';
 export const OWNER_MODE_EVENT = 'emihle_portfolio_owner_mode_changed';
@@ -362,7 +366,7 @@ function getInitialState(): PortfolioState {
       }
 
       // Update certifications list:
-      // Ensure all credentials from defaultCertificationsList are merged in without removing existing ones
+      // Ensure all credentials from defaultCertificationsList are merged in
       let loadedCertifications = parsed.certificationsList;
       if (loadedCertifications && Array.isArray(loadedCertifications)) {
         // Map existing with latest info and ensure all default fields are up-to-date
@@ -399,6 +403,7 @@ function getInitialState(): PortfolioState {
       } else {
         loadedCertifications = defaultCertificationsList;
       }
+
 
       // Ensure it-support skills and ai-technology skills are up to date
       let loadedSkillCategories = parsed.skillCategories;
