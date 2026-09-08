@@ -26,8 +26,9 @@ export interface PortfolioState {
   certificationsList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v14';
+const STORAGE_KEY = 'emihle_portfolio_state_v15';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v14',
   'emihle_portfolio_state_v13',
   'emihle_portfolio_state_v12',
   'emihle_portfolio_state_v11',

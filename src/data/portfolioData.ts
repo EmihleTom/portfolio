@@ -20,12 +20,10 @@ export const personalInfo: PersonalInfo = {
   displayName: 'Emihle Tom',
   tagline: 'Cisco IT Specialist | Hardware & Systems | Web Development',
   summary:
-    'Cisco IT Specialist, CAPACITI IT Support Technician candidate, and College of Cape Town graduate based in Western Cape, Cape Town. Specializing in hardware diagnostics, network troubleshooting, helpdesk support, and modern web development.',
-  bio: `I am a Cisco IT Specialist, CAPACITI IT Support Technician candidate, and College of Cape Town graduate based in Western Cape, Cape Town, South Africa. My technical foundation was built through rigorous education at the College of Cape Town, intensive professional IT support development with CAPACITI, and ongoing systems engineering projects.
+    'Cisco-certified IT Specialist, CAPACITI IT Support Technician candidate, and College of Cape Town graduate based in Cape Town, South Africa. Combining systems administration, hardware diagnostics, and network troubleshooting with modern full-stack software development.',
+  bio: `Cisco-certified IT Specialist, CAPACITI IT Support Technician candidate, and College of Cape Town graduate based in Cape Town, South Africa. I combine hands-on systems administration, hardware diagnostics, and network troubleshooting with modern full-stack software development.
 
-My expertise covers end-user desktop support, Active Directory user management, hardware diagnostics, network infrastructure fundamentals, and systematic troubleshooting. Alongside infrastructure and support, I actively build software and modern web applications using JavaScript, Python, React, and database systems.
-
-I bring a proactive problem-solving mindset, disciplined technical communication, and a strong work ethic. I am dedicated to maintaining high system uptime, delivering reliable IT operations, and continuously expanding my developer and systems engineering capabilities.`,
+Driven by a proactive problem-solving mindset and disciplined technical communication, I focus on maintaining high system uptime while continuously expanding my software engineering and systems capabilities.`,
   email: 'emihletom07@gmail.com',
   githubUrl: 'https://github.com/EmihleTom',
   linkedinUrl: 'https://www.linkedin.com/in/emihle-tom-9a4a003a1',
