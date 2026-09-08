@@ -1,5 +1,23 @@
 import React, { useState } from 'react';
-import { User, BookOpen, Wrench, ShieldCheck, ArrowRight, Pencil, Check, X, RotateCcw, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  User,
+  BookOpen,
+  Wrench,
+  ShieldCheck,
+  ArrowRight,
+  Pencil,
+  Check,
+  X,
+  RotateCcw,
+  Sparkles,
+  Layers,
+  FileText,
+  Network,
+  Cpu,
+  Terminal,
+  MapPin,
+} from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
 import { personalInfo as defaultPersonalInfo } from '../data/portfolioData';
 import { SectionReveal } from './SectionReveal';
@@ -9,6 +27,8 @@ export const About: React.FC = () => {
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [bioText, setBioText] = useState(personalInfo.bio);
   const [summaryText, setSummaryText] = useState(personalInfo.summary || '');
+  const [activeTab, setActiveTab] = useState<'story' | 'highlights'>('story');
+  const [selectedPillar, setSelectedPillar] = useState<number | null>(null);
 
   const handleStartEdit = () => {
     setBioText(personalInfo.bio);
@@ -52,6 +72,56 @@ export const About: React.FC = () => {
     ? personalInfo.bio.split('\n\n').filter((p) => p.trim().length > 0)
     : [];
 
+  const quickHighlights = [
+    {
+      icon: ShieldCheck,
+      label: 'Accreditations & Training',
+      value: 'Cisco Networking Academy (CCNA), CAPACITI IT Support Trainee, College of Cape Town Graduate',
+    },
+    {
+      icon: Network,
+      label: 'Network Infrastructure',
+      value: 'VLANs, Subnetting (IPv4/IPv6), Routing protocols, Cisco Packet Tracer, Switch configuration',
+    },
+    {
+      icon: Cpu,
+      label: 'Hardware & Diagnostics',
+      value: 'PC build & teardown, component replacement, cable termination (RJ45), systematic fault finding',
+    },
+    {
+      icon: Terminal,
+      label: 'Systems & Development',
+      value: 'Active Directory, Windows/Linux OS, Command Line, Python, TypeScript, React, Git workflows',
+    },
+  ];
+
+  const focusPillars = [
+    {
+      id: 'about-card-foundation',
+      title: 'Formal IT Foundation & Support (CAPACITI & CCT)',
+      description:
+        'CAPACITI IT Support Technician candidate and College of Cape Town graduate, Cisco certified, specializing in technical support, system maintenance, troubleshooting, and enterprise networking.',
+      icon: ShieldCheck,
+      tags: ['Cisco CCNA', 'CAPACITI', 'College of Cape Town'],
+    },
+    {
+      id: 'about-card-learning',
+      title: 'Continuous Learning & Software Development',
+      description:
+        'Proactively expanding into programming (Python, JavaScript), modern frontend frameworks (React, Tailwind CSS), and database design.',
+      icon: BookOpen,
+      tags: ['Python', 'TypeScript', 'React', 'Databases'],
+    },
+    {
+      id: 'about-card-problem-solving',
+      title: 'Practical Problem-Solving & Field Triage',
+      description:
+        'Committed to systematic troubleshooting, clear technical documentation, hardware diagnostics, and delivering dependable outcomes.',
+      icon: Wrench,
+      tags: ['Root-Cause Analysis', 'Hardware Repair', 'Helpdesk'],
+    },
+  ];
+
   return (
     <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-white/60 scroll-mt-20">
       <SectionReveal className="max-w-5xl mx-auto">
@@ -73,11 +143,47 @@ export const About: React.FC = () => {
           {/* Main Narrative - 7 Columns (Frosted Bento Item) */}
           <div className="lg:col-span-7 frosted-glass-card bento-item p-8 sm:p-10 border border-white/75 shadow-xs flex flex-col justify-between space-y-6 text-slate-700 leading-relaxed text-base">
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-semibold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-blue-600" />
-                  <span>Profile Narrative</span>
-                </span>
+              {/* Header with Interactive Mode Toggle (Story vs At a Glance) */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                {/* View Switcher Pill */}
+                <div className="inline-flex items-center p-1 rounded-full bg-slate-100/90 border border-slate-200/60 shadow-inner">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('story')}
+                    className={`relative px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
+                      activeTab === 'story' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {activeTab === 'story' && (
+                      <motion.div
+                        layoutId="about-tab-indicator"
+                        className="absolute inset-0 rounded-full bg-white shadow-2xs border border-slate-200/60 -z-10"
+                        transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                      />
+                    )}
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>Narrative</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('highlights')}
+                    className={`relative px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
+                      activeTab === 'highlights' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {activeTab === 'highlights' && (
+                      <motion.div
+                        layoutId="about-tab-indicator"
+                        className="absolute inset-0 rounded-full bg-white shadow-2xs border border-slate-200/60 -z-10"
+                        transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                      />
+                    )}
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Quick Highlights</span>
+                  </button>
+                </div>
+
                 {isEditMode && (
                   !isEditingBio ? (
                     <button
@@ -111,6 +217,7 @@ export const About: React.FC = () => {
                 )}
               </div>
 
+              {/* Editing Bio Form */}
               {isEditingBio ? (
                 <div className="pt-2 space-y-4">
                   <div>
@@ -172,13 +279,57 @@ export const About: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4 text-slate-700 leading-relaxed text-base">
-                  {bioParagraphs.length > 0 ? (
-                    bioParagraphs.map((paragraph, idx) => renderParagraph(paragraph, idx))
+                <AnimatePresence mode="wait">
+                  {activeTab === 'story' ? (
+                    <motion.div
+                      key="tab-story"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.25 }}
+                      className="space-y-4 text-slate-700 leading-relaxed text-base"
+                    >
+                      {bioParagraphs.length > 0 ? (
+                        bioParagraphs.map((paragraph, idx) => renderParagraph(paragraph, idx))
+                      ) : (
+                        <p className="text-slate-500 italic">No biography provided yet.</p>
+                      )}
+                    </motion.div>
                   ) : (
-                    <p className="text-slate-500 italic">No biography provided yet.</p>
+                    <motion.div
+                      key="tab-highlights"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.25 }}
+                      className="space-y-3 pt-1"
+                    >
+                      <p className="text-xs text-slate-500 font-mono mb-2">
+                        Summary of foundational domains, credentials, and competencies:
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {quickHighlights.map((item, idx) => {
+                          const ItemIcon = item.icon;
+                          return (
+                            <motion.div
+                              key={idx}
+                              whileHover={{ y: -2 }}
+                              className="p-3.5 rounded-2xl bg-white/70 border border-slate-200/70 shadow-2xs flex flex-col justify-between space-y-1.5"
+                            >
+                              <div className="flex items-center gap-2 text-blue-600">
+                                <div className="w-6 h-6 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                                  <ItemIcon className="w-3.5 h-3.5" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-900">{item.label}</span>
+                              </div>
+                              <p className="text-xs text-slate-600 leading-normal">{item.value}</p>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
               )}
             </div>
 
@@ -198,69 +349,62 @@ export const About: React.FC = () => {
 
           {/* Core Focus Pillars - 5 Columns */}
           <div className="lg:col-span-5 space-y-4 flex flex-col justify-between">
-            <div
-              id="about-card-foundation"
-              className="p-5 rounded-2xl frosted bento-item border border-white/80 shadow-2xs hover:border-blue-200 transition-all"
-            >
-              <div className="flex items-start gap-3.5">
-                <div className="p-2.5 rounded-2xl bg-blue-50/90 border border-blue-100 text-blue-600 shadow-2xs shrink-0">
-                  <ShieldCheck className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 mb-1">
-                    Formal IT Foundation & Support (CAPACITI & CCT)
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-normal">
-                    CAPACITI IT Support Technician candidate and College of Cape Town graduate, Cisco certified, specializing in technical support, system maintenance, troubleshooting, and enterprise networking.
-                  </p>
-                </div>
-              </div>
-            </div>
+            {focusPillars.map((pillar, idx) => {
+              const PillarIcon = pillar.icon;
+              const isSelected = selectedPillar === idx;
+              return (
+                <motion.div
+                  key={pillar.id}
+                  id={pillar.id}
+                  whileHover={{ y: -3, transition: { duration: 0.2 } }}
+                  onClick={() => setSelectedPillar(isSelected ? null : idx)}
+                  className={`group p-5 rounded-2xl frosted bento-item border transition-all cursor-pointer ${
+                    isSelected
+                      ? 'border-blue-300 bg-blue-50/40 shadow-xs'
+                      : 'border-white/80 shadow-2xs hover:border-blue-200'
+                  }`}
+                >
+                  <div className="flex items-start gap-3.5">
+                    <div className="p-2.5 rounded-2xl bg-blue-50/90 border border-blue-100 text-blue-600 shadow-2xs shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <PillarIcon className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-bold text-slate-900 leading-snug">
+                        {pillar.title}
+                      </h3>
+                      <p className="text-xs text-slate-600 leading-normal">
+                        {pillar.description}
+                      </p>
+                      {/* Interactive Pillar Tags */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {pillar.tags.map((tag, tIdx) => (
+                          <span
+                            key={tIdx}
+                            className="px-2 py-0.5 rounded-md bg-white/80 border border-slate-200/60 text-[10px] font-mono text-slate-700"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
 
-            <div
-              id="about-card-learning"
-              className="p-5 rounded-2xl frosted bento-item border border-white/80 shadow-2xs hover:border-blue-200 transition-all"
-            >
-              <div className="flex items-start gap-3.5">
-                <div className="p-2.5 rounded-2xl bg-blue-50/90 border border-blue-100 text-blue-600 shadow-2xs shrink-0">
-                  <BookOpen className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 mb-1">
-                    Continuous Learning
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-normal">
-                    Proactively expanding into programming (Python, JavaScript), modern frontend frameworks (React), and database design.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              id="about-card-problem-solving"
-              className="p-5 rounded-2xl frosted bento-item border border-white/80 shadow-2xs hover:border-blue-200 transition-all"
-            >
-              <div className="flex items-start gap-3.5">
-                <div className="p-2.5 rounded-2xl bg-blue-50/90 border border-blue-100 text-blue-600 shadow-2xs shrink-0">
-                  <Wrench className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 mb-1">
-                    Practical Problem-Solving
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-normal">
-                    Committed to systematic troubleshooting, clear technical documentation, and delivering dependable outcomes.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Availability Status Badge */}
+            {/* Availability Status Badge with Gentle Live Pulse */}
             <div className="px-4 py-3 rounded-2xl frosted-pill border border-white/80 text-xs text-slate-600 font-mono flex items-center justify-between shadow-2xs">
               <span className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
                 <span>Available for Opportunities</span>
               </span>
-              <span className="text-blue-600 text-[11px] font-semibold font-mono">Cape Town</span>
+              <span className="text-blue-600 text-[11px] font-semibold font-mono flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-blue-500" />
+                <span>Cape Town</span>
+              </span>
             </div>
           </div>
         </div>
@@ -268,3 +412,4 @@ export const About: React.FC = () => {
     </section>
   );
 };
+
