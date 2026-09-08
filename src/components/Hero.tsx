@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowDown, Mail, Github, Check, Copy, Sparkles, Code2, Network, ShieldCheck, Download, FileText, Loader2 } from 'lucide-react';
+import {
+  ArrowDown,
+  Mail,
+  Github,
+  Check,
+  Copy,
+  Sparkles,
+  Code2,
+  Network,
+  ShieldCheck,
+  Download,
+  FileText,
+  Loader2,
+} from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
 import { useProfilePhoto } from '../utils/photoStorage';
 import { downloadResumePDF } from '../utils/generateResume';
@@ -75,6 +88,56 @@ export const Hero: React.FC = () => {
       <div className="absolute inset-0 pointer-events-none -z-10">
         {/* Subtle tech micro-grid pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:28px_28px] opacity-15" />
+
+        {/* Animated Network Constellation Lines */}
+        <svg
+          className="absolute inset-0 w-full h-full opacity-25 pointer-events-none"
+          viewBox="0 0 1000 600"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <motion.circle
+            cx="180"
+            cy="140"
+            r="3"
+            fill="#3b82f6"
+            animate={{ opacity: [0.3, 0.9, 0.3], r: [2.5, 4, 2.5] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.circle
+            cx="420"
+            cy="110"
+            r="3"
+            fill="#2563eb"
+            animate={{ opacity: [0.4, 1, 0.4], r: [2.5, 4.5, 2.5] }}
+            transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+          />
+          <motion.circle
+            cx="750"
+            cy="210"
+            r="3"
+            fill="#6366f1"
+            animate={{ opacity: [0.3, 0.85, 0.3], r: [3, 4.5, 3] }}
+            transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          />
+          <motion.circle
+            cx="860"
+            cy="410"
+            r="3"
+            fill="#3b82f6"
+            animate={{ opacity: [0.4, 0.9, 0.4], r: [2.5, 4, 2.5] }}
+            transition={{ duration: 3.9, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}
+          />
+          <motion.path
+            d="M 180 140 L 420 110 L 750 210 L 860 410"
+            stroke="#93c5fd"
+            strokeWidth="1"
+            strokeDasharray="4 4"
+            fill="none"
+            animate={{ strokeDashoffset: [0, -32] }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          />
+        </svg>
 
         {/* Gentle floating ambient glow 1 (Top Left) */}
         <motion.div
@@ -207,16 +270,24 @@ export const Hero: React.FC = () => {
 
             {/* Primary Action Buttons */}
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-3.5 w-full sm:w-auto mb-6">
+              {/* Primary Download CV Button with periodic light sheen */}
               <motion.button
-                whileHover={{ y: -2 }}
+                whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 id="hero-btn-download-cv"
                 type="button"
                 onClick={handleDownloadCV}
                 disabled={isDownloadingCV}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all shadow-xs active:scale-95 cursor-pointer disabled:opacity-75"
+                className="group relative overflow-hidden w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all shadow-xs active:scale-95 cursor-pointer disabled:opacity-75"
                 title="Download Emihle's Complete Professional Curriculum Vitae (PDF)"
               >
+                {/* Subtle light sweep animation */}
+                <motion.span
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ repeat: Infinity, duration: 3.5, repeatDelay: 2.5, ease: 'easeInOut' }}
+                  className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12 pointer-events-none"
+                />
+
                 {isDownloadingCV ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -224,7 +295,7 @@ export const Hero: React.FC = () => {
                   </>
                 ) : downloadSuccess ? (
                   <>
-                    <Check className="w-4 h-4 text-white" />
+                    <Check className="w-4 h-4 text-emerald-300" />
                     <span>Downloaded CV!</span>
                   </>
                 ) : (
@@ -237,7 +308,7 @@ export const Hero: React.FC = () => {
               </motion.button>
 
               <motion.a
-                whileHover={{ y: -2 }}
+                whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 id="hero-btn-view-work"
                 href="#projects"
@@ -248,7 +319,7 @@ export const Hero: React.FC = () => {
               </motion.a>
 
               <motion.a
-                whileHover={{ y: -2 }}
+                whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 id="hero-btn-contact-me"
                 href="#contact"
@@ -259,7 +330,7 @@ export const Hero: React.FC = () => {
               </motion.a>
 
               <motion.a
-                whileHover={{ y: -2, rotate: 4 }}
+                whileHover={{ y: -2, rotate: 6, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 id="hero-btn-github"
                 href={personalInfo.githubUrl}
@@ -304,24 +375,18 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.12, ease: 'easeOut' }}
-            whileHover={{ y: -4, transition: { duration: 0.25 } }}
-            className="lg:col-span-4 frosted-glass-card bento-item p-6 sm:p-8 flex flex-col items-center justify-center text-center border border-white/70 shadow-sm relative group"
+            className="lg:col-span-4 frosted-glass-card bento-item p-6 sm:p-8 flex flex-col items-center justify-center text-center border border-white/70 shadow-sm relative"
           >
-            {/* Subtle card backdrop aura */}
-            <div className="absolute -inset-1 bg-gradient-to-b from-blue-100/30 to-indigo-100/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none -z-10" />
-
             {/* Locked-in Official Portrait Container */}
-            <motion.div
+            <div
               id="hero-locked-profile-card"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
               className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-white shadow-md flex items-center justify-center overflow-hidden"
             >
               <img
                 id="hero-profile-image"
                 src={photo}
                 alt={personalInfo.name}
-                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover object-top"
                 referrerPolicy="no-referrer"
               />
               {/* Official Verified Badge */}
@@ -329,7 +394,7 @@ export const Hero: React.FC = () => {
                 <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                 <span className="text-[10px] font-semibold tracking-wide uppercase">Verified</span>
               </div>
-            </motion.div>
+            </div>
 
             {/* Locked Profile Status Pill */}
             <div className="flex items-center gap-2 mb-3">
@@ -354,19 +419,13 @@ export const Hero: React.FC = () => {
 
             {/* Quick Status Badges */}
             <div className="w-full pt-4 border-t border-slate-200/60 text-xs text-slate-500 flex flex-col gap-2">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="flex items-center justify-center gap-2 bg-white/70 py-1.5 px-3 rounded-full border border-white/80 shadow-2xs"
-              >
+              <div className="flex items-center justify-center gap-2 bg-white/70 py-1.5 px-3 rounded-full border border-white/80 shadow-2xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 <span>Available for Opportunities</span>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="flex items-center justify-center gap-2 bg-white/70 py-1.5 px-3 rounded-full border border-white/80 shadow-2xs"
-              >
+              </div>
+              <div className="flex items-center justify-center gap-2 bg-white/70 py-1.5 px-3 rounded-full border border-white/80 shadow-2xs">
                 <span>{personalInfo.location}</span>
-              </motion.div>
+              </div>
             </div>
 
             {/* Tag */}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { Menu, X, Github, Mail, Terminal, ArrowUpRight } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
 import { useProfilePhoto } from '../utils/photoStorage';
@@ -76,12 +77,19 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 key={item.name}
                 id={`nav-link-${item.name.toLowerCase()}`}
                 href={item.href}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest transition-all ${
+                className={`relative px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest transition-colors ${
                   isActive
-                    ? 'text-blue-600 bg-blue-50/90 font-bold shadow-2xs'
-                    : 'text-slate-500 hover:text-blue-600 hover:bg-white/60'
+                    ? 'text-blue-600 font-bold'
+                    : 'text-slate-500 hover:text-blue-600'
                 }`}
               >
+                {isActive && (
+                  <motion.div
+                    layoutId="desktop-active-nav-pill"
+                    className="absolute inset-0 rounded-full bg-blue-50/90 border border-blue-200/60 shadow-2xs -z-10"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
                 {item.name}
               </a>
             );

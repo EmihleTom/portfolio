@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import {
   Code,
   Globe,
@@ -77,15 +78,16 @@ export const Skills: React.FC = () => {
         {/* Categories Grid - 6 Categories */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skillCategories.map((category) => (
-            <div
+            <motion.div
               key={category.id}
               id={`skill-card-${category.id}`}
-              className="group frosted-glass-card bento-item p-6 rounded-3xl border border-white/80 shadow-2xs hover:border-blue-200 transition-all flex flex-col justify-between"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              className="group frosted-glass-card bento-item p-6 rounded-3xl border border-white/80 shadow-2xs hover:border-blue-200 hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
                 {/* Category Header */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-2xl bg-blue-50/90 border border-blue-100 flex items-center justify-center group-hover:bg-blue-100/70 transition-colors shadow-2xs">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-50/90 border border-blue-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-2xs">
                     {getCategoryIcon(category.id)}
                   </div>
                   <span className="font-mono text-[11px] text-slate-500 bg-white/70 px-2.5 py-0.5 rounded-full border border-white/80">
@@ -105,9 +107,11 @@ export const Skills: React.FC = () => {
               <div className="mt-2 pt-4 border-t border-slate-100/80">
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {category.skills.map((skill, sIdx) => (
-                    <span
+                    <motion.span
                       key={sIdx}
-                      className="group/pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full frosted-pill text-slate-800 font-mono text-xs font-medium border border-white/90 shadow-2xs hover:bg-white transition-all"
+                      whileHover={{ scale: 1.04, y: -1 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="group/pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full frosted-pill text-slate-800 font-mono text-xs font-medium border border-white/90 shadow-2xs hover:bg-white hover:border-blue-200 transition-all cursor-default"
                     >
                       <span>{skill}</span>
                       {isEditMode && (
@@ -120,7 +124,7 @@ export const Skills: React.FC = () => {
                           <X className="w-3 h-3" />
                         </button>
                       )}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
 
@@ -177,7 +181,7 @@ export const Skills: React.FC = () => {
                   )
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

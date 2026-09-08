@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import {
   Briefcase,
   Calendar,
@@ -110,10 +111,11 @@ export const Experience: React.FC = () => {
         {/* Experience Timeline Items */}
         <div className="space-y-6">
           {experienceList.map((item, index) => (
-            <div
+            <motion.div
               key={`${item.id || 'exp'}-${index}`}
               id={`experience-item-${item.id}`}
-              className="group/card frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 sm:p-8 shadow-xs relative overflow-hidden transition-all hover:border-blue-200"
+              whileHover={{ y: -4, transition: { duration: 0.25 } }}
+              className="group/card frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 sm:p-8 shadow-xs hover:shadow-md relative overflow-hidden transition-all hover:border-blue-200"
             >
               {/* Header: Role, Organization & Official Logo */}
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 pb-6 border-b border-slate-100/80">
@@ -208,12 +210,13 @@ export const Experience: React.FC = () => {
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {item.skillsGained.map((skill, sIdx) => (
-                      <span
+                      <motion.span
                         key={sIdx}
-                        className="px-3 py-1 rounded-full frosted-pill text-slate-700 text-xs font-mono border border-white/80 shadow-2xs"
+                        whileHover={{ scale: 1.05, y: -1 }}
+                        className="px-3 py-1 rounded-full frosted-pill text-slate-700 text-xs font-mono border border-white/80 shadow-2xs hover:bg-white transition-all cursor-default"
                       >
                         {skill}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>
@@ -234,7 +237,7 @@ export const Experience: React.FC = () => {
                   </ul>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
 
           {/* Quick Add Slot Card (Owner Mode Only) */}
