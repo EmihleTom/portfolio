@@ -537,13 +537,13 @@ export const Certifications: React.FC = () => {
 
         {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredList.map((cert) => {
+          {filteredList.map((cert, index) => {
             const isSpecialization = cert.category === 'Specialization';
             const linkedInUrl = getLinkedInUrl(cert);
 
             return (
               <div
-                key={cert.id}
+                key={`${cert.id || 'cert'}-${index}`}
                 id={`cert-card-${cert.id}`}
                 className={`group/card bg-white/90 backdrop-blur-md rounded-3xl border p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden ${
                   isSpecialization

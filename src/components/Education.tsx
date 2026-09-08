@@ -110,11 +110,11 @@ export const Education: React.FC = () => {
 
         {/* Education Timeline */}
         <div className="space-y-6">
-          {educationList.map((item) => {
+          {educationList.map((item, index) => {
             const eduLogos = getEducationLogos(item);
             return (
               <div
-                key={item.id}
+                key={`${item.id || 'edu'}-${index}`}
                 id={`education-card-${item.id}`}
                 className="frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 sm:p-8 shadow-xs relative overflow-hidden transition-all hover:border-blue-200 group"
               >

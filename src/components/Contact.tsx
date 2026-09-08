@@ -451,7 +451,9 @@ export const Contact: React.FC = () => {
                     <div>
                       <p className="font-semibold text-slate-800">LinkedIn</p>
                       <p className="text-[11px] text-slate-500 font-mono">
-                        linkedin.com/in/emihle-tom
+                        {(personalInfo.linkedinUrl || 'https://www.linkedin.com/in/emihle-tom-9a4a003a1')
+                          .replace(/^https?:\/\//i, '')
+                          .replace(/^www\./i, '')}
                       </p>
                     </div>
                   </div>
@@ -459,9 +461,12 @@ export const Contact: React.FC = () => {
                     <button
                       type="button"
                       onClick={() =>
-                        copyToClipboard(personalInfo.linkedinUrl || 'https://linkedin.com/in/emihle-tom', 'linkedin')
+                        copyToClipboard(
+                          personalInfo.linkedinUrl || 'https://www.linkedin.com/in/emihle-tom-9a4a003a1',
+                          'linkedin'
+                        )
                       }
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-white transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-white transition-colors cursor-pointer"
                       title="Copy LinkedIn URL"
                     >
                       {copiedState['linkedin'] ? (
@@ -471,7 +476,7 @@ export const Contact: React.FC = () => {
                       )}
                     </button>
                     <a
-                      href={personalInfo.linkedinUrl || 'https://linkedin.com/in/emihle-tom'}
+                      href={personalInfo.linkedinUrl || 'https://www.linkedin.com/in/emihle-tom-9a4a003a1'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-1.5 rounded-full bg-blue-600 text-[11px] font-mono text-white font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1 shadow-2xs"

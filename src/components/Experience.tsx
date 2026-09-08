@@ -98,9 +98,9 @@ export const Experience: React.FC = () => {
 
         {/* Experience Timeline Items */}
         <div className="space-y-6">
-          {experienceList.map((item) => (
+          {experienceList.map((item, index) => (
             <div
-              key={item.id}
+              key={`${item.id || 'exp'}-${index}`}
               id={`experience-item-${item.id}`}
               className="group/card frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 sm:p-8 shadow-xs relative overflow-hidden transition-all hover:border-blue-200"
             >

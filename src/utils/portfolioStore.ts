@@ -197,19 +197,52 @@ function getInitialState(): PortfolioState {
           .replace(/Eerste River/gi, 'Western Cape, Cape Town');
       }
 
-      // Filter out Cisco IT specialist from experienceList per user request
+      // Migrate LinkedIn URL to user's official profile if absent or legacy
+      if (
+        !loadedPersonalInfo.linkedinUrl ||
+        loadedPersonalInfo.linkedinUrl === 'https://linkedin.com/in/emihle-tom' ||
+        loadedPersonalInfo.linkedinUrl === 'https://www.linkedin.com/in/emihle-tom' ||
+        !loadedPersonalInfo.linkedinUrl.includes('9a4a003a1')
+      ) {
+        loadedPersonalInfo.linkedinUrl = 'https://www.linkedin.com/in/emihle-tom-9a4a003a1';
+      }
+
+      // Filter out Cisco IT specialist from experienceList per user request and update CAPACITI current activities
       let loadedExperience = parsed.experienceList;
       if (loadedExperience && Array.isArray(loadedExperience)) {
-        loadedExperience = loadedExperience.filter(
-          (e: ExperienceItem) =>
-            !e.role.toLowerCase().includes('cisco') &&
-            !e.id.includes('cct-it-specialist')
-        ).map((e: ExperienceItem) => {
-          if (e.location && e.location.toLowerCase().includes('eerste')) {
-            return { ...e, location: 'Western Cape, Cape Town' };
-          }
-          return e;
-        });
+        loadedExperience = loadedExperience
+          .filter(
+            (e: ExperienceItem) =>
+              !e.role.toLowerCase().includes('cisco') &&
+              !e.id.includes('cct-it-specialist')
+          )
+          .map((e: ExperienceItem) => {
+            if (e.location && e.location.toLowerCase().includes('eerste')) {
+              return { ...e, location: 'Western Cape, Cape Town' };
+            }
+            // Update CAPACITI current responsibilities and achievements
+            if (
+              e.organization.toLowerCase().includes('capaciti') ||
+              e.id.includes('capaciti')
+            ) {
+              const defaultCapaciti = defaultExperienceList.find((d) =>
+                d.organization.toLowerCase().includes('capaciti')
+              );
+              if (defaultCapaciti) {
+                return {
+                  ...e,
+                  role: 'Information Technology Support Technician',
+                  organization: 'CAPACITI',
+                  dates: '2025 – Present',
+                  location: 'Western Cape, Cape Town',
+                  responsibilities: defaultCapaciti.responsibilities,
+                  skillsGained: defaultCapaciti.skillsGained,
+                  achievements: defaultCapaciti.achievements,
+                };
+              }
+            }
+            return e;
+          });
       }
       if (!loadedExperience || loadedExperience.length === 0 || !loadedExperience.some((e: ExperienceItem) => e.organization.toLowerCase().includes('capaciti'))) {
         loadedExperience = defaultExperienceList;
@@ -218,7 +251,7 @@ function getInitialState(): PortfolioState {
       // Update education records:
       // - Remove "IT Support Technician Certification" as requested by user
       // - "Cisco IT Specialist (CCNA)" -> uses official CCT logo /logos/cct-logo.svg
-      // - Ensure Matric in 2024 is in the education section
+      // - Ensure Matric in 2024 is in the education section with strictly unique keys
       let loadedEducation = parsed.educationList;
       if (loadedEducation && Array.isArray(loadedEducation)) {
         loadedEducation = loadedEducation
@@ -248,6 +281,7 @@ function getInitialState(): PortfolioState {
             ) {
               return {
                 ...edu,
+                id: 'cct-cisco-it-specialist-2025',
                 qualification: 'Cisco IT Specialist (CCNA)',
                 institution: 'College of Cape Town',
                 startDate: '2025',
@@ -269,6 +303,7 @@ function getInitialState(): PortfolioState {
             if (edu.qualification.toLowerCase().includes('matric')) {
               return {
                 ...edu,
+                id: 'matric-nsc-2024',
                 startDate: '2024',
                 endDate: '2024',
                 status: 'Completed',
@@ -293,6 +328,33 @@ function getInitialState(): PortfolioState {
             loadedEducation.push(defaultMatric);
           }
         }
+
+        // Strictly deduplicate loadedEducation by id and qualification so duplicate keys are impossible
+        const seenEduIds = new Set<string>();
+        const seenEduQuals = new Set<string>();
+        loadedEducation = loadedEducation.filter((edu: EducationItem) => {
+          const qualKey = (edu.qualification || '').toLowerCase();
+          const isMatric = qualKey.includes('matric') || (edu.id && edu.id.includes('matric'));
+          const isCisco = qualKey.includes('cisco') || (edu.id && edu.id.includes('cisco'));
+
+          if (isMatric) {
+            if (seenEduQuals.has('matric') || (edu.id && seenEduIds.has(edu.id))) return false;
+            seenEduQuals.add('matric');
+            if (edu.id) seenEduIds.add(edu.id);
+            return true;
+          }
+          if (isCisco) {
+            if (seenEduQuals.has('cisco') || (edu.id && seenEduIds.has(edu.id))) return false;
+            seenEduQuals.add('cisco');
+            if (edu.id) seenEduIds.add(edu.id);
+            return true;
+          }
+          if (edu.id && seenEduIds.has(edu.id)) {
+            return false;
+          }
+          if (edu.id) seenEduIds.add(edu.id);
+          return true;
+        });
       }
       if (!loadedEducation || loadedEducation.length === 0) {
         loadedEducation = defaultEducationList;

@@ -90,7 +90,7 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
               type="url"
               value={linkedinUrl}
               onChange={(e) => setLinkedinUrl(e.target.value)}
-              placeholder="https://linkedin.com/in/emihle-tom"
+              placeholder="https://www.linkedin.com/in/emihle-tom-9a4a003a1"
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all font-mono text-xs"
             />
           </div>

@@ -56,7 +56,10 @@ export function downloadResumePDF(data: ResumeData): void {
 
   doc.setFontSize(8.5);
   doc.setTextColor(226, 232, 240);
-  const contactLine = `${personalInfo.email}  |  ${personalInfo.location}  |  github.com/EmihleTom  |  linkedin.com/in/emihle-tom`;
+  const linkedinHandle = (personalInfo.linkedinUrl || 'https://www.linkedin.com/in/emihle-tom-9a4a003a1')
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '');
+  const contactLine = `${personalInfo.email}  |  ${personalInfo.location}  |  github.com/EmihleTom  |  ${linkedinHandle}`;
   doc.text(contactLine, margin + 6, y + 22);
 
   y += 32;
