@@ -213,6 +213,11 @@ function getInitialState(): PortfolioState {
         loadedPersonalInfo.linkedinUrl = 'https://www.linkedin.com/in/emihle-tom-9a4a003a1';
       }
 
+      // Ensure timezone offset is calibrated (defaulting to -10 minutes to correct clock lead)
+      if (typeof loadedPersonalInfo.timezoneOffsetMinutes !== 'number') {
+        loadedPersonalInfo.timezoneOffsetMinutes = -10;
+      }
+
       // Filter out Cisco IT specialist from experienceList per user request and update CAPACITI current activities
       let loadedExperience = parsed.experienceList;
       if (loadedExperience && Array.isArray(loadedExperience)) {

@@ -15,6 +15,7 @@ export interface PersonalInfo {
   location: string;
   status: string;
   profileImageUrl?: string;
+  timezoneOffsetMinutes?: number;
 }
 
 export interface EducationItem {

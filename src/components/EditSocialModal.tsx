@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Linkedin, Github, Globe, MapPin, Check, Sparkles, Phone, MessageCircle } from 'lucide-react';
+import { X, Linkedin, Github, Globe, MapPin, Check, Sparkles, Phone, MessageCircle, Clock } from 'lucide-react';
 import { PersonalInfo } from '../types';
 
 interface EditSocialModalProps {
@@ -22,6 +22,7 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
   const [whatsappNumber, setWhatsappNumber] = useState('');
   const [location, setLocation] = useState('');
   const [status, setStatus] = useState('');
+  const [timezoneOffsetMinutes, setTimezoneOffsetMinutes] = useState<number>(-10);
 
   useEffect(() => {
     setLinkedinUrl(personalInfo.linkedinUrl || '');
@@ -31,6 +32,11 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
     setWhatsappNumber(personalInfo.whatsappNumber || '');
     setLocation(personalInfo.location || 'Western Cape, Cape Town');
     setStatus(personalInfo.status || 'Available for Opportunities');
+    setTimezoneOffsetMinutes(
+      typeof personalInfo.timezoneOffsetMinutes === 'number'
+        ? personalInfo.timezoneOffsetMinutes
+        : -10
+    );
   }, [personalInfo, isOpen]);
 
   if (!isOpen) return null;
@@ -45,6 +51,7 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
       whatsappNumber: whatsappNumber.trim() || undefined,
       location: location.trim(),
       status: status.trim(),
+      timezoneOffsetMinutes: timezoneOffsetMinutes,
     });
     onClose();
   };
@@ -165,6 +172,38 @@ export const EditSocialModal: React.FC<EditSocialModalProps> = ({
               placeholder="e.g. Cape Town, South Africa"
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
             />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-600" />
+                <span>Clock Calibration Offset (Minutes)</span>
+              </span>
+              <span className="text-[11px] font-mono text-slate-500 lowercase">
+                {timezoneOffsetMinutes < 0 ? `${timezoneOffsetMinutes} min` : `+${timezoneOffsetMinutes} min`}
+              </span>
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={timezoneOffsetMinutes}
+                onChange={(e) => setTimezoneOffsetMinutes(parseInt(e.target.value, 10) || 0)}
+                placeholder="-10"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setTimezoneOffsetMinutes(-10)}
+                className="px-3 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 text-xs font-mono shrink-0 transition-colors cursor-pointer"
+                title="Reset to recommended -10m offset"
+              >
+                -10m (Default)
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-500 mt-1">
+              Adjusts the live Cape Town (SAST, UTC+2) clock. Set to -10 to correct for the 10-minute lead.
+            </p>
           </div>
 
           <div>

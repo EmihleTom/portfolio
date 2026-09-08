@@ -66,25 +66,30 @@ export const Contact: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
 
   // Live South Africa / Cape Town Time (SAST, UTC+2)
+  // Calibrated with -10 minute offset so the clock accurately reflects local South African Standard Time
   useEffect(() => {
     const updateTime = () => {
       try {
-        const now = new Date();
+        const offsetMinutes =
+          typeof personalInfo.timezoneOffsetMinutes === 'number'
+            ? personalInfo.timezoneOffsetMinutes
+            : -10;
+        const now = new Date(Date.now() + offsetMinutes * 60 * 1000);
         const timeString = new Intl.DateTimeFormat('en-ZA', {
           timeZone: 'Africa/Johannesburg',
           hour: '2-digit',
           minute: '2-digit',
           hour12: true,
         }).format(now);
-        setCurrentTime(timeString);
+        setCurrentTime(timeString.toUpperCase());
       } catch {
         setCurrentTime('SAST (UTC+2)');
       }
     };
     updateTime();
-    const timer = setInterval(updateTime, 30000);
+    const timer = setInterval(updateTime, 10000);
     return () => clearInterval(timer);
-  }, []);
+  }, [personalInfo.timezoneOffsetMinutes]);
 
   const copyToClipboard = async (text: string, id: string) => {
     let success = false;
@@ -637,9 +642,21 @@ export const Contact: React.FC = () => {
                 <p className="text-base font-bold text-slate-900">
                   {personalInfo.location || 'Western Cape, Cape Town'}
                 </p>
-                <div className="flex items-center gap-2 mt-1 text-xs text-slate-600 font-mono">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Cape Town Time: {currentTime} (SAST, UTC+2)</span>
+                <div className="flex flex-wrap items-center justify-between gap-2 mt-1">
+                  <div className="flex items-center gap-2 text-xs text-slate-600 font-mono">
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Cape Town Time: {currentTime} (SAST, UTC+2)</span>
+                  </div>
+                  {isEditMode && (
+                    <button
+                      type="button"
+                      onClick={() => setIsSocialModalOpen(true)}
+                      className="text-[11px] font-mono font-medium text-blue-600 hover:text-blue-700 hover:underline inline-flex items-center gap-1 cursor-pointer"
+                      title="Adjust location and clock calibration"
+                    >
+                      <span>Adjust Time / Location</span>
+                    </button>
+                  )}
                 </div>
               </div>
 

@@ -32,6 +32,7 @@ I bring a proactive problem-solving mindset, disciplined technical communication
   location: 'Western Cape, Cape Town',
   status: 'Available for Opportunities',
   profileImageUrl: '/profile.jpg',
+  timezoneOffsetMinutes: -10,
 };
 
 export const educationList: EducationItem[] = [
