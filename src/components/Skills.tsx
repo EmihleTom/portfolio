@@ -87,7 +87,7 @@ export const Skills: React.FC = () => {
               <div>
                 {/* Category Header */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-2xl bg-blue-50/90 border border-blue-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-2xs">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-50/90 border border-blue-100/80 flex items-center justify-center shadow-2xs">
                     {getCategoryIcon(category.id)}
                   </div>
                   <span className="font-mono text-[11px] text-slate-500 bg-white/70 px-2.5 py-0.5 rounded-full border border-white/80">
