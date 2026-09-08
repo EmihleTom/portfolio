@@ -155,6 +155,7 @@ export const experienceList: ExperienceItem[] = [
     role: 'Information Technology Support Technician',
     dates: '2025 – Present',
     location: 'Western Cape, Cape Town',
+    logoUrl: '/logos/capaciti-symbol.webp',
     responsibilities: [
       'Provide hands-on hardware triage, diagnostics, component repairs, and upgrades (RAM, SSDs, power units) across desktop workstations and laptops',
       'Deploy and configure Windows 10/11 operating systems, standard software packages, peripheral drivers, and security updates',

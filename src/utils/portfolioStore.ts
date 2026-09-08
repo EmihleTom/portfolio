@@ -235,6 +235,7 @@ function getInitialState(): PortfolioState {
                   organization: 'CAPACITI',
                   dates: '2025 – Present',
                   location: 'Western Cape, Cape Town',
+                  logoUrl: '/logos/capaciti-symbol.webp',
                   responsibilities: defaultCapaciti.responsibilities,
                   skillsGained: defaultCapaciti.skillsGained,
                   achievements: defaultCapaciti.achievements,

@@ -61,6 +61,7 @@ export interface ExperienceItem {
   skillsGained: string[];
   achievements: string[];
   location?: string;
+  logoUrl?: string;
   isPlaceholder?: boolean;
 }
 
