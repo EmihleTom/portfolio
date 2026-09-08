@@ -232,3 +232,76 @@ export const getCertificateConfig = (cert: CertificationItem): CertificateThemeC
   }
 };
 
+/**
+ * Calculates a numerical chronological score from a date string (e.g., 'Completed August 2026' -> 202608)
+ */
+export const parseCertDateScore = (dateStr: string): number => {
+  if (!dateStr) return 0;
+  const lower = dateStr.toLowerCase().trim();
+
+  // Find 4-digit year (e.g., 2026, 2025, 2024)
+  const yearMatch = lower.match(/\b(20\d{2})\b/);
+  const year = yearMatch ? parseInt(yearMatch[1], 10) : 2020;
+
+  // Month mapping
+  const months: Record<string, number> = {
+    january: 1, jan: 1,
+    february: 2, feb: 2,
+    march: 3, mar: 3,
+    april: 4, apr: 4,
+    may: 5,
+    june: 6, jun: 6,
+    july: 7, jul: 7,
+    august: 8, aug: 8,
+    september: 9, sep: 9,
+    october: 10, oct: 10,
+    november: 11, nov: 11,
+    december: 12, dec: 12,
+  };
+
+  let month = 0;
+  for (const [name, num] of Object.entries(months)) {
+    if (lower.includes(name)) {
+      month = num;
+      break;
+    }
+  }
+
+  // If ongoing or "present", place at latest point of that year (month 9)
+  if (lower.includes('present') || lower.includes('current')) {
+    if (month === 0) month = 9;
+  }
+
+  // If no month found, default to mid year (month 6)
+  if (month === 0) {
+    month = 6;
+  }
+
+  return year * 100 + month;
+};
+
+/**
+ * Sorts certification items by completion date
+ */
+export const sortCertificatesByDate = (
+  items: CertificationItem[],
+  direction: 'desc' | 'asc' = 'desc'
+): CertificationItem[] => {
+  return [...items].sort((a, b) => {
+    const scoreA = parseCertDateScore(a.date);
+    const scoreB = parseCertDateScore(b.date);
+    if (scoreA !== scoreB) {
+      return direction === 'desc' ? scoreB - scoreA : scoreA - scoreB;
+    }
+    // Tie breaker: Specialization credentials first in same month
+    if (a.category === 'Specialization' && b.category !== 'Specialization') {
+      return direction === 'desc' ? -1 : 1;
+    }
+    if (b.category === 'Specialization' && a.category !== 'Specialization') {
+      return direction === 'desc' ? 1 : -1;
+    }
+    return a.name.localeCompare(b.name);
+  });
+};
+
+

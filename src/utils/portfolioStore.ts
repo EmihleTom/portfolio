@@ -15,6 +15,7 @@ import {
   ExperienceItem,
   CertificationItem,
 } from '../types';
+import { sortCertificatesByDate } from './certificateTheme';
 
 export interface PortfolioState {
   personalInfo: PersonalInfo;
@@ -25,8 +26,9 @@ export interface PortfolioState {
   certificationsList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v13';
+const STORAGE_KEY = 'emihle_portfolio_state_v14';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v13',
   'emihle_portfolio_state_v12',
   'emihle_portfolio_state_v11',
   'emihle_portfolio_state_v10',
@@ -404,6 +406,9 @@ function getInitialState(): PortfolioState {
         loadedCertifications = defaultCertificationsList;
       }
 
+      // Ensure certifications are in order according to dates completed (reverse chronological)
+      loadedCertifications = sortCertificatesByDate(loadedCertifications, 'desc');
+
 
       // Ensure it-support skills and ai-technology skills are up to date
       let loadedSkillCategories = parsed.skillCategories;
@@ -656,9 +661,10 @@ export function usePortfolioData() {
       ...cert,
       id: cert.id || `cert-${Date.now()}`,
     };
+    const updated = sortCertificatesByDate([newCert, ...state.certificationsList], 'desc');
     saveState({
       ...state,
-      certificationsList: [newCert, ...state.certificationsList],
+      certificationsList: updated,
     });
   };
 
@@ -666,7 +672,8 @@ export function usePortfolioData() {
     const updatedCerts = state.certificationsList.map((item) =>
       item.id === id ? { ...item, ...updates } : item
     );
-    saveState({ ...state, certificationsList: updatedCerts });
+    const sorted = sortCertificatesByDate(updatedCerts, 'desc');
+    saveState({ ...state, certificationsList: sorted });
   };
 
   const deleteCertification = (id: string) => {

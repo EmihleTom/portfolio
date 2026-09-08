@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Award,
   ExternalLink,
@@ -15,10 +15,11 @@ import {
   Linkedin,
   Sparkles,
   BookOpen,
+  ArrowDownUp,
 } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
 import { CertificationItem } from '../types';
-import { getCertificateConfig, CertificateThemeConfig } from '../utils/certificateTheme';
+import { getCertificateConfig, CertificateThemeConfig, sortCertificatesByDate } from '../utils/certificateTheme';
 import { AddCertificationModal } from './AddCertificationModal';
 import { CredentialVerificationModal } from './CredentialVerificationModal';
 import { SectionReveal } from './SectionReveal';
@@ -160,6 +161,7 @@ export const Certifications: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<
     'all' | 'ai-ml' | 'it-support' | 'networking' | 'qualifications'
   >('all');
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
 
   const handleOpenAdd = () => {
     setEditingCert(null);
@@ -355,6 +357,11 @@ export const Certifications: React.FC = () => {
     return true;
   });
 
+  // Rearrange / sort certifications strictly in order according to dates completed
+  const sortedAndFilteredList = useMemo(() => {
+    return sortCertificatesByDate(filteredList, sortOrder);
+  }, [filteredList, sortOrder]);
+
   // Calculate counts for filters
   const aiCount = certificationsList.filter((c) => {
     const t = (c.name + ' ' + c.provider + ' ' + (c.focus || '')).toLowerCase();
@@ -511,15 +518,38 @@ export const Certifications: React.FC = () => {
             </button>
           </div>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-slate-500 pr-2">
-            <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Registry Status: Active & Fully Verified</span>
+          <div className="flex items-center gap-3">
+            {/* Interactive Order by Date Completed Toggle */}
+            <button
+              type="button"
+              onClick={() => setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'))}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-medium border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 shadow-2xs hover:border-blue-300 transition-all cursor-pointer select-none"
+              title={
+                sortOrder === 'desc'
+                  ? 'Currently sorted by date completed: Most Recent First. Click for Oldest First'
+                  : 'Currently sorted by date completed: Oldest First. Click for Most Recent First'
+              }
+              aria-label="Toggle certificate completion date ordering"
+            >
+              <ArrowDownUp className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span>
+                Date Order:{' '}
+                <strong className="text-slate-900 font-semibold">
+                  {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
+                </strong>
+              </span>
+            </button>
+
+            <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-slate-500 pr-2">
+              <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Registry Status: Active & Fully Verified</span>
+            </div>
           </div>
         </div>
 
         {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredList.map((cert, index) => {
+          {sortedAndFilteredList.map((cert, index) => {
             const isSpecialization = cert.category === 'Specialization';
             const certConfig = getCertificateConfig(cert);
             const linkedInUrl = getLinkedInUrl(cert);

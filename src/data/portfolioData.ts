@@ -184,31 +184,7 @@ export const experienceList: ExperienceItem[] = [
 ];
 
 export const certificationsList: CertificationItem[] = [
-  // Specialization from Coursera
-  {
-    id: 'cert-google-ai-essentials-spec',
-    name: 'Google AI Essentials Specialization',
-    provider: 'Google',
-    category: 'Specialization',
-    recipientName: 'Emihle Liyema Tom',
-    focus: 'Foundational AI concepts, Generative AI tools, Prompt Engineering, Workplace Productivity, and Responsible AI ethics',
-    date: 'Completed June 2026',
-    credentialId: 'COURSERA-SPEC-GOOG-AI-2026',
-    credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/COURSERA-SPEC-GOOG-AI-2026',
-    badgeType: 'google',
-    issuerLogoPlaceholder: 'Google',
-    logoUrl: '/logos/google-logo.svg',
-    skillsVerified: [
-      'Generative AI',
-      'Prompt Engineering',
-      'Large Language Models (LLMs)',
-      'AI Productivity Tools',
-      'Ethical & Responsible AI',
-      'AI Workflow Automation',
-    ],
-  },
-
-  // Machine Learning & AI Courses from Coursera
+  // 2026 - August
   {
     id: 'cert-dl-supervised-ml',
     name: 'Supervised Machine Learning: Regression and Classification',
@@ -320,6 +296,54 @@ export const certificationsList: CertificationItem[] = [
       'Hallucination Mitigation',
     ],
   },
+
+  // 2026 - Present (Technical Talent Program)
+  {
+    id: 'cert-capaciti-it-support',
+    name: 'IT Support Technician Certification',
+    provider: 'CAPACITI',
+    category: 'Professional Certificate',
+    recipientName: 'Emihle Liyema Tom',
+    focus: 'Technical Support, System Maintenance, Troubleshooting & Helpdesk Operations',
+    date: '2026 – Present',
+    credentialId: 'CAP-IT-2026-884',
+    credentialUrl: 'https://capaciti.org.za/verify/CAP-IT-2026-884',
+    badgeType: 'capaciti',
+    issuerLogoPlaceholder: 'CAPACITI',
+    logoUrl: '/logos/capaciti-symbol.webp',
+    skillsVerified: [
+      'Technical Support',
+      'System Maintenance',
+      'Troubleshooting',
+      'Active Directory',
+      'Hardware Repair',
+      'Helpdesk Support',
+    ],
+  },
+
+  // 2026 - June (Google AI Essentials Specialization & Modules)
+  {
+    id: 'cert-google-ai-essentials-spec',
+    name: 'Google AI Essentials Specialization',
+    provider: 'Google',
+    category: 'Specialization',
+    recipientName: 'Emihle Liyema Tom',
+    focus: 'Foundational AI concepts, Generative AI tools, Prompt Engineering, Workplace Productivity, and Responsible AI ethics',
+    date: 'Completed June 2026',
+    credentialId: 'COURSERA-SPEC-GOOG-AI-2026',
+    credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/COURSERA-SPEC-GOOG-AI-2026',
+    badgeType: 'google',
+    issuerLogoPlaceholder: 'Google',
+    logoUrl: '/logos/google-logo.svg',
+    skillsVerified: [
+      'Generative AI',
+      'Prompt Engineering',
+      'Large Language Models (LLMs)',
+      'AI Productivity Tools',
+      'Ethical & Responsible AI',
+      'AI Workflow Automation',
+    ],
+  },
   {
     id: 'cert-goog-stay-ahead-ai',
     name: 'Stay Ahead of the AI Curve',
@@ -425,29 +449,7 @@ export const certificationsList: CertificationItem[] = [
     ],
   },
 
-  // Existing IT, Systems & Networking Certifications
-  {
-    id: 'cert-capaciti-it-support',
-    name: 'IT Support Technician Certification',
-    provider: 'CAPACITI',
-    category: 'Professional Certificate',
-    recipientName: 'Emihle Liyema Tom',
-    focus: 'Technical Support, System Maintenance, Troubleshooting & Helpdesk Operations',
-    date: '2026 – Present',
-    credentialId: 'CAP-IT-2026-884',
-    credentialUrl: 'https://capaciti.org.za/verify/CAP-IT-2026-884',
-    badgeType: 'capaciti',
-    issuerLogoPlaceholder: 'CAPACITI',
-    logoUrl: '/logos/capaciti-symbol.webp',
-    skillsVerified: [
-      'Technical Support',
-      'System Maintenance',
-      'Troubleshooting',
-      'Active Directory',
-      'Hardware Repair',
-      'Helpdesk Support',
-    ],
-  },
+  // 2025 - Systems, Hardware & Networking
   {
     id: 'cert-cct-cisco-specialist',
     name: 'Cisco IT Specialist (CCNA)',
@@ -455,7 +457,7 @@ export const certificationsList: CertificationItem[] = [
     category: 'Professional Certificate',
     recipientName: 'Emihle Liyema Tom',
     focus: 'Cisco Certified Network Associate (CCNA) — Routing, Switching, Subnetting & Network Security',
-    date: '2025 – 2025',
+    date: '2025',
     credentialId: 'CCT-CISCO-CCNA-2025',
     credentialUrl: 'https://www.cct.edu.za/verify/CCT-CISCO-CCNA-2025',
     badgeType: 'cisco',
@@ -512,6 +514,8 @@ export const certificationsList: CertificationItem[] = [
       'Customer Service',
     ],
   },
+
+  // 2024 - Secondary Education Qualification
   {
     id: 'cert-matric-certificate',
     name: 'National Senior Certificate (Matric)',
