@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion } from 'motion/react';
 import {
   Award,
   ExternalLink,
@@ -555,9 +556,13 @@ export const Certifications: React.FC = () => {
             const linkedInUrl = getLinkedInUrl(cert);
 
             return (
-              <div
+              <motion.div
                 key={`${cert.id || 'cert'}-${index}`}
                 id={`cert-card-${cert.id}`}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.08, margin: '0px 0px -30px 0px' }}
+                transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 className={`group/card bg-white/90 backdrop-blur-md rounded-3xl border p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden ${
                   isSpecialization
                     ? 'border-blue-300 ring-1 ring-blue-100 hover:border-blue-400'
@@ -749,7 +754,7 @@ export const Certifications: React.FC = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
 

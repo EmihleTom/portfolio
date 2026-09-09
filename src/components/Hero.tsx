@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, Variants } from 'motion/react';
 import {
   ArrowDown,
   Mail,
@@ -59,7 +59,7 @@ export const Hero: React.FC = () => {
   };
 
   // Staggered motion variants for clean, fluid entry without visual noise
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -70,12 +70,12 @@ export const Hero: React.FC = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 14 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.45, ease: 'easeOut' },
+      transition: { duration: 0.45 },
     },
   };
 

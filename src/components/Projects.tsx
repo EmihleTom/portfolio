@@ -344,9 +344,10 @@ export const Projects: React.FC = () => {
           /* Projects Grid: When User Has Added Projects */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {projectsList.map((project, index) => (
-              <div
+              <SectionReveal
                 key={`${project.id || 'proj'}-${index}`}
                 id={`project-card-${project.id}`}
+                delay={index * 0.08}
                 className="lg:col-span-8 frosted-glass-card bento-item rounded-3xl border border-white/80 overflow-hidden shadow-xs hover:border-blue-200 transition-all flex flex-col justify-between"
               >
                 {/* Project Preview Canvas */}
@@ -550,11 +551,14 @@ export const Projects: React.FC = () => {
                     )}
                   </div>
                 </div>
-              </div>
+              </SectionReveal>
             ))}
 
             {/* Right Column: Project Slot & Add Action */}
-            <div className="lg:col-span-4 flex flex-col justify-between gap-6">
+            <SectionReveal
+              delay={0.12}
+              className="lg:col-span-4 flex flex-col justify-between gap-6"
+            >
               <div
                 id="projects-future-card"
                 className="frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 flex flex-col justify-between h-full shadow-2xs"
@@ -644,7 +648,7 @@ export const Projects: React.FC = () => {
                   </>
                 )}
               </div>
-            </div>
+            </SectionReveal>
           </div>
         )}
       </SectionReveal>

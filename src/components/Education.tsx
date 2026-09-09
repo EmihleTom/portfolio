@@ -113,9 +113,10 @@ export const Education: React.FC = () => {
           {educationList.map((item, index) => {
             const eduLogos = getEducationLogos(item);
             return (
-              <div
+              <SectionReveal
                 key={`${item.id || 'edu'}-${index}`}
                 id={`education-card-${item.id}`}
+                delay={index * 0.08}
                 className="frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 sm:p-8 shadow-xs relative overflow-hidden transition-all hover:border-blue-200 group"
               >
                 {/* Card Header */}
@@ -242,7 +243,7 @@ export const Education: React.FC = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </SectionReveal>
           );
         })}
 

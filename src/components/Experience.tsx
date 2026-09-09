@@ -114,6 +114,10 @@ export const Experience: React.FC = () => {
             <motion.div
               key={`${item.id || 'exp'}-${index}`}
               id={`experience-item-${item.id}`}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1, margin: '0px 0px -35px 0px' }}
+              transition={{ duration: 0.55, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -4, transition: { duration: 0.25 } }}
               className="group/card frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 sm:p-8 shadow-xs hover:shadow-md relative overflow-hidden transition-all hover:border-blue-200"
             >

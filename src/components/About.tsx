@@ -356,6 +356,10 @@ export const About: React.FC = () => {
                 <motion.div
                   key={pillar.id}
                   id={pillar.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1, margin: '0px 0px -30px 0px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
                   whileHover={{ y: -3, transition: { duration: 0.2 } }}
                   onClick={() => setSelectedPillar(isSelected ? null : idx)}
                   className={`group p-5 rounded-2xl frosted bento-item border transition-all cursor-pointer ${

@@ -77,10 +77,14 @@ export const Skills: React.FC = () => {
 
         {/* Categories Grid - 6 Categories */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category) => (
+          {skillCategories.map((category, idx) => (
             <motion.div
               key={category.id}
               id={`skill-card-${category.id}`}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1, margin: '0px 0px -30px 0px' }}
+              transition={{ duration: 0.5, delay: (idx % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
               className="group frosted-glass-card bento-item p-6 rounded-3xl border border-white/80 shadow-2xs hover:border-blue-200 hover:shadow-md transition-all flex flex-col justify-between"
             >

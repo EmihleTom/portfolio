@@ -1,6 +1,7 @@
 import React from 'react';
 import { Github, Linkedin, Mail, ArrowUp, Terminal, Globe } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
+import { SectionReveal } from './SectionReveal';
 
 export const Footer: React.FC = () => {
   const { personalInfo } = usePortfolioData();
@@ -13,7 +14,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer id="main-footer" className="frosted border-t border-white/60 py-12 px-4 sm:px-6 lg:px-8 mt-12">
-      <div className="max-w-5xl mx-auto">
+      <SectionReveal className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-200/60">
           {/* Brand & Tagline */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
@@ -112,7 +113,7 @@ export const Footer: React.FC = () => {
             College of Cape Town Cisco IT Specialist • South Africa
           </p>
         </div>
-      </div>
+      </SectionReveal>
     </footer>
   );
 };
