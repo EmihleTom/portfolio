@@ -374,7 +374,7 @@ export const Hero: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.12, ease: 'easeOut' }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:col-span-4 frosted-glass-card bento-item p-6 sm:p-8 flex flex-col items-center justify-center text-center border border-white/70 shadow-sm relative"
           >
             {/* Locked-in Official Portrait Container */}
@@ -398,9 +398,9 @@ export const Hero: React.FC = () => {
 
             {/* Locked Profile Status Pill */}
             <div className="flex items-center gap-2 mb-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-xs font-semibold shadow-2xs">
-                <Sparkles className="w-3 h-3 text-blue-600 animate-pulse" />
-                <span>Official Portrait</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200/60 shadow-2xs">
+                <Sparkles className="w-3 h-3 text-blue-600" />
+                Official Portrait
               </span>
             </div>
 
