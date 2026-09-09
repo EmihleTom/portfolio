@@ -26,8 +26,11 @@ export interface PortfolioState {
   certificationsList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v15';
+const STORAGE_KEY = 'emihle_portfolio_state_v18';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v17',
+  'emihle_portfolio_state_v16',
+  'emihle_portfolio_state_v15',
   'emihle_portfolio_state_v14',
   'emihle_portfolio_state_v13',
   'emihle_portfolio_state_v12',
@@ -451,7 +454,17 @@ function getInitialState(): PortfolioState {
       // Remove dummy project (portfolio-v1) if present and ensure authentic GitHub project is included
       let loadedProjects = parsed.projectsList;
       if (loadedProjects && Array.isArray(loadedProjects) && loadedProjects.length > 0) {
-        loadedProjects = loadedProjects.filter((p: ProjectItem) => p.id !== 'portfolio-v1');
+        loadedProjects = loadedProjects
+          .filter((p: ProjectItem) => p.id !== 'portfolio-v1')
+          .map((p: ProjectItem) => {
+            const defaultMatch = defaultProjectsList.find(
+              (d) => d.id === p.id || d.name.toLowerCase() === p.name.toLowerCase()
+            );
+            if (defaultMatch?.screenshotUrl && (!p.screenshotUrl || p.screenshotUrl === '')) {
+              return { ...p, screenshotUrl: defaultMatch.screenshotUrl };
+            }
+            return p;
+          });
         const hasGithubProject = loadedProjects.some(
           (p: ProjectItem) =>
             p.id === 'ai-productivity-assistant' ||

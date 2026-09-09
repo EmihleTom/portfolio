@@ -3,6 +3,8 @@ import { CertificationItem } from '../types';
 export type CertificateTheme =
   | 'cisco'
   | 'stanford-dl'
+  | 'aws-dl'
+  | 'coursera-badge'
   | 'google-spec'
   | 'google'
   | 'google-cloud'
@@ -40,6 +42,24 @@ export const getCertificateTheme = (cert: CertificationItem): CertificateTheme =
     name.includes('ccst')
   ) {
     return 'cisco';
+  }
+
+  // Artificial Intelligence Bootcamp Badge
+  if (
+    b === 'coursera' ||
+    name.includes('bootcamp') ||
+    cat.includes('badge') ||
+    cert.id.includes('badge')
+  ) {
+    return 'coursera-badge';
+  }
+
+  // AWS & DeepLearning.AI
+  if (
+    (p.includes('aws') || cert.partner?.toLowerCase().includes('aws') || name.includes('large language models')) &&
+    (p.includes('deeplearning') || b === 'deeplearning')
+  ) {
+    return 'aws-dl';
   }
 
   // Stanford Online & DeepLearning.AI
@@ -126,6 +146,36 @@ export const getCertificateConfig = (cert: CertificationItem): CertificateThemeC
         signatureTitle: 'Andrew Ng, Stanford University & DeepLearning.AI',
         sealColor: 'bg-[#8C1515] text-amber-300',
         sealText: 'STANFORD',
+      };
+
+    case 'aws-dl':
+      return {
+        theme: 'aws-dl',
+        cardAccent: 'bg-gradient-to-r from-[#FF9900] via-[#232F3E] to-[#FF9900]',
+        badgeLabel: 'DeepLearning.AI & AWS',
+        badgeStyle: 'bg-amber-50 text-[#232F3E] border border-amber-300 font-semibold',
+        headerTitle: 'DeepLearning.AI • Amazon Web Services',
+        certSubtitle: 'Statement of Accomplishment',
+        primaryLogo: '/logos/deeplearning-trimmed.png',
+        partnerLogo: '/logos/aws-logo.svg',
+        signatureTitle: 'Andrew Ng (DeepLearning.AI) & AWS Training Directorate',
+        sealColor: 'bg-[#232F3E] text-[#FF9900]',
+        sealText: 'AWS • DL',
+      };
+
+    case 'coursera-badge':
+      return {
+        theme: 'coursera-badge',
+        cardAccent: 'bg-gradient-to-r from-blue-600 via-indigo-600 to-amber-500',
+        badgeLabel: 'Coursera Verified Badge',
+        badgeStyle: 'bg-blue-50 text-blue-900 border border-blue-200 font-semibold',
+        headerTitle: 'Artificial Intelligence Bootcamp',
+        certSubtitle: 'Verified Digital Credential & Badge',
+        primaryLogo: '/logos/ai-bootcamp-badge.png',
+        partnerLogo: '/logos/coursera-logo.webp',
+        signatureTitle: 'Coursera AI Credential Board & DeepLearning.AI',
+        sealColor: 'bg-amber-600 text-white',
+        sealText: 'AI BADGE',
       };
 
     case 'google-spec':

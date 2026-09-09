@@ -160,7 +160,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({
                         'A modern, responsive web application designed to help professionals automate repetitive workplace tasks using Artificial Intelligence. Provides AI-powered tools for intelligent multi-tone email drafting, meeting notes summarization with action-item extraction, Eisenhower Matrix task scheduling, and an interactive assistant.',
                       tech: 'React, TypeScript, Tailwind CSS, OpenAI API, Vite, TanStack Router, Radix UI',
                       features:
-                        'Smart Email Generator supporting multiple professional tones\nMeeting Notes Summarizer with action items and decision tracking\nAI Task Planner with Eisenhower Matrix categorization\nAI Research Assistant transforming reports into actionable insights\nInteractive AI Chatbot with context-aware productivity templates',
+                        'Smart Email Generator supporting multiple professional tones\nMeeting Notes Summarizer with action items and decision tracking\nAI Task Planner with Eisenhower Matrix categorization\nAI Research Assistant transforming reports into actionable insights\nContext-Aware AI Automation Engine with custom productivity templates',
                       githubUrl: 'https://github.com/EmihleTom/AI-Productivity-Assistant',
                     })
                   }

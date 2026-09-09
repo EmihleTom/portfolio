@@ -75,6 +75,7 @@ export interface CertificationItem {
     | 'Specialization'
     | 'Course'
     | 'Professional Certificate'
+    | 'Digital Badge'
     | 'Academic Diploma'
     | 'National Qualification';
   partner?: string;
@@ -95,6 +96,7 @@ export interface CertificationItem {
     | 'ibm'
     | 'comptia'
     | 'matric'
+    | 'coursera'
     | 'general';
   issuerLogoPlaceholder?: string;
   logoUrl?: string;

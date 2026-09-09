@@ -353,11 +353,24 @@ export const Projects: React.FC = () => {
                 {/* Project Preview Canvas */}
                 <div className="relative aspect-video min-h-[220px] sm:min-h-[260px] w-full bg-slate-950 overflow-hidden group">
                   {project.screenshotUrl ? (
-                    <img
-                      src={project.screenshotUrl}
-                      alt={project.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <div className="relative w-full h-full overflow-hidden">
+                      <img
+                        src={project.screenshotUrl}
+                        alt={project.name}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                      {/* Subtle gradient vignette for depth */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/20 pointer-events-none" />
+
+                      {/* Top live badge overlay */}
+                      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-medium bg-slate-900/80 backdrop-blur-md text-emerald-300 border border-emerald-500/30 shadow-xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>Interactive Application</span>
+                        </span>
+                      </div>
+                    </div>
                   ) : (
                     <div className="absolute inset-0 bg-slate-950 p-4 sm:p-6 flex flex-col justify-between font-mono text-[11px] sm:text-xs overflow-x-auto">
                       {/* Fake window top */}

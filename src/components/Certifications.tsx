@@ -206,7 +206,9 @@ export const Certifications: React.FC = () => {
     const p = provider.toLowerCase();
     const b = (badgeType || '').toLowerCase();
 
-    if (p.includes('cisco') || b === 'cisco') {
+    if (logoUrl && (logoUrl.includes('ai-bootcamp-badge') || logoUrl.includes('badge') || logoUrl.includes('aws'))) {
+      finalLogo = logoUrl;
+    } else if (p.includes('cisco') || b === 'cisco') {
       finalLogo = '/logos/cisco-logo.svg';
     } else if (p.includes('deeplearning') || b === 'deeplearning') {
       finalLogo = '/logos/deeplearning-trimmed.png';
@@ -223,7 +225,7 @@ export const Certifications: React.FC = () => {
     } else if (p.includes('google') || b === 'google') {
       finalLogo = '/logos/google-logo.svg';
     } else if (p.includes('coursera') || b === 'coursera') {
-      finalLogo = '/logos/coursera-logo.webp';
+      finalLogo = logoUrl || '/logos/coursera-logo.webp';
     } else if (
       p.includes('matric') ||
       p.includes('basic education') ||
@@ -463,6 +465,55 @@ export const Certifications: React.FC = () => {
           )}
         </div>
 
+        {/* Featured Verified Digital Badge Showcase */}
+        {certificationsList.some((c) => c.id === 'cert-coursera-ai-bootcamp-badge' || c.name.toLowerCase().includes('bootcamp')) && (
+          <div className="mb-8 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white shadow-lg border border-blue-800/40 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 relative z-10">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/10 backdrop-blur-md p-2 flex items-center justify-center border border-white/20 shadow-md shrink-0">
+                <img
+                  src="/logos/ai-bootcamp-badge.png"
+                  alt="Artificial Intelligence Bootcamp Badge"
+                  className="w-full h-full object-contain drop-shadow-md"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1.5">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-400 text-slate-950">
+                    Official Digital Badge
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium text-emerald-300 bg-emerald-950/60 border border-emerald-500/30">
+                    Verified on Coursera
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+                  Artificial Intelligence Bootcamp (AI)
+                </h3>
+                <p className="mt-1 text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                  Issued by <strong>Coursera & DeepLearning.AI</strong> • Completed September 2026. Certified mastery across Generative AI with LLMs, Supervised Machine Learning, Unsupervised Learning & Recommenders, Prompt Engineering, and Python.
+                </p>
+                <div className="mt-2.5 flex items-center justify-center sm:justify-start gap-4 text-xs font-mono text-slate-400">
+                  <span>Credential ID: <span className="text-slate-200">fyLhUpLWR_mi4VKS1kf5Zw</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0 relative z-10 w-full sm:w-auto justify-center">
+              <a
+                href="https://coursera.org/share/32e2851f5fd7751366e7955d59210330"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-blue-500 hover:bg-blue-400 text-white font-semibold text-xs tracking-wide shadow-md transition-all cursor-pointer group"
+                title="Verify official Artificial Intelligence Bootcamp badge directly on Coursera"
+              >
+                <ShieldCheck className="w-4 h-4 text-emerald-300 group-hover:text-white transition-colors" />
+                <span>Verify Badge on Coursera</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        )}
+
         {/* Filter Navigation Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8 p-2 rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-2xs">
           <div className="flex flex-wrap items-center gap-1">
@@ -595,14 +646,27 @@ export const Certifications: React.FC = () => {
                       <span>Add to LinkedIn</span>
                     </a>
 
-                    <button
-                      type="button"
-                      onClick={() => setVerifyingCert(cert)}
-                      className="inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 font-semibold text-xs transition-colors hover:underline cursor-pointer"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>View certificate</span>
-                    </button>
+                    {cert.credentialUrl ? (
+                      <a
+                        href={cert.credentialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 font-semibold text-xs transition-colors hover:underline cursor-pointer"
+                        title="Open external verified certificate link"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                        <span>{cert.credentialUrl.includes('coursera') ? 'Verify on Coursera' : 'View certificate'}</span>
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setVerifyingCert(cert)}
+                        className="inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 font-semibold text-xs transition-colors hover:underline cursor-pointer"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span>View certificate</span>
+                      </button>
+                    )}
                   </div>
 
                   {/* Header: Logo, Issuer Name, Verified badge */}
@@ -731,26 +795,38 @@ export const Certifications: React.FC = () => {
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setVerifyingCert(cert)}
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold tracking-wide transition-all shadow-xs cursor-pointer group/btn"
-                      >
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover/btn:text-white transition-colors" />
-                        <span>Verify Credential</span>
-                      </button>
-
-                      {cert.credentialUrl && (
+                      {cert.credentialUrl ? (
                         <a
                           href={cert.credentialUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition-colors shrink-0"
-                          title="Open external registry link"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold tracking-wide transition-all shadow-xs cursor-pointer group/btn"
+                          title={`Verify officially on ${cert.credentialUrl.includes('coursera') ? 'Coursera' : cert.provider}`}
                         >
-                          <ExternalLink className="w-3.5 h-3.5" />
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-300 group-hover/btn:text-white transition-colors shrink-0" />
+                          <span>Verify on {cert.credentialUrl.includes('coursera') ? 'Coursera' : 'Official Registry'}</span>
+                          <ExternalLink className="w-3 h-3 text-white/80 group-hover/btn:text-white transition-colors shrink-0 ml-0.5" />
                         </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setVerifyingCert(cert)}
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold tracking-wide transition-all shadow-xs cursor-pointer group/btn"
+                        >
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover/btn:text-white transition-colors shrink-0" />
+                          <span>Verify Credential</span>
+                        </button>
                       )}
+
+                      <button
+                        type="button"
+                        onClick={() => setVerifyingCert(cert)}
+                        className="p-2.5 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition-colors shrink-0 cursor-pointer"
+                        title="Quick View Certificate Details"
+                        aria-label={`View certificate details for ${cert.name}`}
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   )}
                 </div>

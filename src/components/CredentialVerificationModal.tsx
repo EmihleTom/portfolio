@@ -287,6 +287,23 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
                   </div>
                 </div>
               </div>
+
+              {certification.credentialUrl && (
+                <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-slate-500 text-[11px] font-mono">
+                    Official Verification URL: {certification.credentialUrl.replace('https://', '')}
+                  </span>
+                  <a
+                    href={certification.credentialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs transition-colors"
+                  >
+                    <span>Open on {certification.credentialUrl.includes('coursera') ? 'Coursera' : 'Registry'}</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              )}
             </div>
           ) : (
             /* Tab: Details & Skills */
@@ -426,7 +443,7 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-xs transition-colors"
               >
-                <span>Visit Official Registry</span>
+                <span>{certification.credentialUrl.includes('coursera') ? 'Verify on Coursera' : 'Visit Official Registry'}</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
             ) : (

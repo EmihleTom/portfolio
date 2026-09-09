@@ -15,7 +15,6 @@ import { Certifications } from './components/Certifications';
 import { GitHubSection } from './components/GitHubSection';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
-import { DataGuideModal } from './components/DataGuideModal';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('home');
@@ -85,9 +84,6 @@ export default function App() {
       <div className="relative z-10">
         <Footer />
       </div>
-
-      {/* Subtle Portfolio Growth & Update Guide Modal */}
-      <DataGuideModal />
     </div>
   );
 }
