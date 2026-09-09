@@ -184,7 +184,9 @@ function getInitialState(): PortfolioState {
       if (
         !loadedPersonalInfo.bio ||
         LEGACY_DEFAULT_BIOS.includes(loadedPersonalInfo.bio.trim()) ||
-        loadedPersonalInfo.bio.includes('Information Technology Support Technician at CAPACITI')
+        loadedPersonalInfo.bio.includes('Information Technology Support Technician at CAPACITI') ||
+        loadedPersonalInfo.bio.includes('My technical foundation was built through rigorous education') ||
+        loadedPersonalInfo.bio.includes('I am a Cisco IT Specialist, CAPACITI')
       ) {
         loadedPersonalInfo.bio = defaultPersonalInfo.bio;
       } else if (loadedPersonalInfo.bio.toLowerCase().includes('eerste')) {

@@ -135,7 +135,7 @@ export const About: React.FC = () => {
             About Me
           </h2>
           <p className="mt-2 text-slate-600 text-base sm:text-lg max-w-2xl">
-            Cisco IT Specialist, <strong>CAPACITI</strong> IT Support Technician candidate, and graduate of the <strong>College of Cape Town</strong>, combining hands-on systems support, hardware diagnostics, and network troubleshooting with modern software development.
+            Cisco-certified IT Specialist, <strong>CAPACITI</strong> IT Support Technician candidate, and graduate of the <strong>College of Cape Town</strong> based in Cape Town, South Africa.
           </p>
         </div>
 
