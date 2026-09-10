@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   ShieldCheck,
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { CertificationItem } from '../types';
 import { getCertificateConfig } from '../utils/certificateTheme';
+import { useMediaViewer } from '../utils/mediaViewerContext';
 
 interface CredentialVerificationModalProps {
   isOpen: boolean;
@@ -34,6 +35,18 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 }) => {
   const [copiedId, setCopiedId] = useState(false);
   const [activeTab, setActiveTab] = useState<'certificate' | 'details'>('certificate');
+  const { setIsViewingCertificate } = useMediaViewer();
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsViewingCertificate(true);
+    } else {
+      setIsViewingCertificate(false);
+    }
+    return () => {
+      setIsViewingCertificate(false);
+    };
+  }, [isOpen, setIsViewingCertificate]);
 
   if (!isOpen || !certification) return null;
 
@@ -88,6 +101,16 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
   )}&certId=${encodeURIComponent(certification.credentialId || '')}`;
 
   const displayName = certification.recipientName || candidateName || 'Emihle Liyema Tom';
+
+  const isCisco =
+    certification.provider?.toLowerCase().includes('cisco') ||
+    certification.badgeType === 'cisco' ||
+    certification.name?.toLowerCase().includes('cisco');
+
+  const isCapaciti =
+    certification.provider?.toLowerCase().includes('capaciti') ||
+    certification.badgeType === 'capaciti' ||
+    certification.name?.toLowerCase().includes('capaciti');
   const isCoursera = certification.credentialUrl?.includes('coursera') || certification.category === 'Specialization' || certification.category === 'Course';
 
   return (
@@ -95,9 +118,9 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
       role="dialog"
       aria-modal="true"
       aria-labelledby="verification-dialog-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
     >
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Verification Top Header */}
         <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 p-5 sm:p-6 text-white relative border-b border-white/10">
           <button
@@ -110,7 +133,7 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 
           <div className="flex items-start gap-4 pr-10">
             {primaryLogo && (
-              <div className="w-12 h-12 rounded-2xl bg-white p-2 shrink-0 flex items-center justify-center shadow-md border border-white/20">
+              <div className="w-12 h-12 rounded-2xl bg-white logo-plate p-2 shrink-0 flex items-center justify-center shadow-md border border-white/20">
                 <img
                   src={primaryLogo}
                   alt={`${certification.provider} logo`}
@@ -163,10 +186,10 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
         </div>
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-800 text-sm space-y-5 bg-slate-50/50">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-800 dark:text-slate-200 text-sm space-y-5 bg-slate-50/50 dark:bg-slate-950/40">
           {activeTab === 'certificate' ? (
-            /* Institutional Digital Certificate Graphic - Crisp, High-End White Paper Canvas */
-            <div className="rounded-2xl border-2 border-slate-200/90 bg-white p-6 sm:p-8 shadow-sm relative overflow-hidden text-center select-text transition-all">
+            /* Institutional Digital Certificate Graphic - Crisp, High-End Canvas */
+            <div className="rounded-2xl border-2 border-slate-200/90 dark:border-white/10 bg-white dark:bg-slate-900/90 p-6 sm:p-8 shadow-sm relative overflow-hidden text-center select-text transition-all">
               {/* Top Branded Institutional Accent Line */}
               {theme === 'google' ? (
                 <div className="absolute top-0 left-0 right-0 grid grid-cols-4 h-1.5">
@@ -180,29 +203,33 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
               )}
 
               {/* Double Inset Fine Security Borders */}
-              <div className="absolute inset-2 border border-slate-200/70 rounded-xl pointer-events-none" />
-              <div className="absolute inset-3 border border-slate-100 rounded-lg pointer-events-none" />
+              <div className="absolute inset-2 border border-slate-200/70 dark:border-white/5 rounded-xl pointer-events-none" />
+              <div className="absolute inset-3 border border-slate-100 dark:border-white/5 rounded-lg pointer-events-none" />
 
               {/* Top certificate header logos & Badge */}
               <div className="flex items-center justify-between gap-4 mb-6 relative z-10">
                 <div className="flex items-center gap-3">
                   {primaryLogo && (
-                    <img
-                      src={primaryLogo}
-                      alt={certification.provider}
-                      className="h-8 sm:h-9 max-w-[140px] object-contain"
-                      referrerPolicy="no-referrer"
-                    />
-                  )}
-                  {partnerLogo && (
-                    <>
-                      <span className="text-slate-300 text-lg font-light">•</span>
+                    <div className="bg-white logo-plate px-2 py-1 rounded-lg border border-slate-200/80 shadow-2xs">
                       <img
-                        src={partnerLogo}
-                        alt="Partner organization"
+                        src={primaryLogo}
+                        alt={certification.provider}
                         className="h-8 sm:h-9 max-w-[140px] object-contain"
                         referrerPolicy="no-referrer"
                       />
+                    </div>
+                  )}
+                  {partnerLogo && (
+                    <>
+                      <span className="text-slate-300 dark:text-slate-600 text-lg font-light">•</span>
+                      <div className="bg-white logo-plate px-2 py-1 rounded-lg border border-slate-200/80 shadow-2xs">
+                        <img
+                          src={partnerLogo}
+                          alt="Partner organization"
+                          className="h-8 sm:h-9 max-w-[140px] object-contain"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
                     </>
                   )}
                 </div>
@@ -225,15 +252,15 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 
               {/* Recipient Announcement */}
               <div className="relative z-10 mb-3">
-                <p className="text-xs sm:text-sm font-serif italic text-slate-500">
+                <p className="text-xs sm:text-sm font-serif italic text-slate-500 dark:text-slate-400">
                   {theme === 'matric-academic'
                     ? 'This is to certify that candidate'
                     : 'This is to certify that'}
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 mt-1 mb-1">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 dark:text-white mt-1 mb-1">
                   {displayName}
                 </h2>
-                <p className="text-xs sm:text-sm font-serif italic text-slate-500">
+                <p className="text-xs sm:text-sm font-serif italic text-slate-500 dark:text-slate-400">
                   {theme === 'matric-academic'
                     ? 'has satisfied all statutory criteria for'
                     : 'has successfully completed'}
@@ -242,25 +269,25 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 
               {/* Certificate Course / Qualification Title */}
               <div className="relative z-10 mb-6 max-w-xl mx-auto">
-                <h3 className="text-lg sm:text-2xl font-bold leading-snug tracking-tight text-slate-900">
+                <h3 className="text-lg sm:text-2xl font-bold leading-snug tracking-tight text-slate-900 dark:text-white">
                   {certification.name}
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed max-w-lg mx-auto">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed max-w-lg mx-auto">
                   {certification.focus ||
                     `An authorized qualification certified by ${certification.provider}`}
                 </p>
               </div>
 
               {/* Certificate Bottom Signatures & Medallion Seal */}
-              <div className="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 text-left">
+              <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 text-left">
                 {/* Signatures & Organization */}
                 <div className="space-y-1 text-center sm:text-left">
                   <div className="h-6 flex items-end">
-                    <span className="font-serif italic text-sm tracking-wide text-slate-700 font-medium">
+                    <span className="font-serif italic text-sm tracking-wide text-slate-700 dark:text-slate-200 font-medium">
                       {certConfig.signatureTitle}
                     </span>
                   </div>
-                  <div className="w-48 h-px my-1 mx-auto sm:mx-0 bg-slate-300" />
+                  <div className="w-48 h-px my-1 mx-auto sm:mx-0 bg-slate-300 dark:bg-slate-700" />
                   <p className="text-[10px] font-mono uppercase text-slate-400">
                     Authorized Signature & Verification
                   </p>
@@ -268,7 +295,7 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 
                 {/* Medallion Seal */}
                 <div className="flex items-center gap-3 shrink-0">
-                  <div className="w-13 h-13 rounded-full p-1 shadow-sm flex items-center justify-center border border-slate-200 bg-slate-50">
+                  <div className="w-13 h-13 rounded-full p-1 shadow-sm flex items-center justify-center border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-800">
                     <div
                       className={`w-full h-full rounded-full flex flex-col items-center justify-center shadow-xs p-1 ${certConfig.sealColor}`}
                     >
@@ -279,8 +306,8 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
                     </div>
                   </div>
 
-                  <div className="text-[10px] font-mono text-slate-500">
-                    <p className="font-semibold text-slate-800">{certification.date}</p>
+                  <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
+                    <p className="font-semibold text-slate-800 dark:text-slate-200">{certification.date}</p>
                     <p className="truncate max-w-[130px] text-slate-400">
                       ID: {certification.credentialId || 'VERIFIED-RECORD'}
                     </p>
@@ -288,16 +315,16 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
                 </div>
               </div>
 
-              {certification.credentialUrl && (
-                <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 text-[11px] font-mono">
+              {certification.credentialUrl && !isCisco && !isCapaciti && (
+                <div className="mt-5 pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-xs">
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px] font-mono">
                     Official Verification URL: {certification.credentialUrl.replace('https://', '')}
                   </span>
                   <a
                     href={certification.credentialUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-semibold text-xs transition-colors"
                   >
                     <span>Open on {certification.credentialUrl.includes('coursera') ? 'Coursera' : 'Registry'}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -309,53 +336,53 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
             /* Tab: Details & Skills */
             <div className="space-y-4">
               {/* Verification Status Banner */}
-              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-emerald-950 uppercase tracking-wide">
+                    <p className="text-xs font-bold text-emerald-950 dark:text-emerald-300 uppercase tracking-wide">
                       Accreditation Status
                     </p>
-                    <p className="text-xs text-emerald-800 font-medium">
+                    <p className="text-xs text-emerald-800 dark:text-emerald-400 font-medium">
                       Formally Verified & Authentic Record
                     </p>
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full text-[11px] font-mono font-bold bg-white text-emerald-700 border border-emerald-200 shadow-2xs">
+                <span className="px-2.5 py-1 rounded-full text-[11px] font-mono font-bold bg-white dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700 shadow-2xs">
                   ACTIVE
                 </span>
               </div>
 
               {/* Facts Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-mono mb-1">
-                    <Award className="w-3.5 h-3.5 text-blue-600" />
+                <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-white/10 shadow-2xs">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono mb-1">
+                    <Award className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Recipient</span>
                   </div>
-                  <p className="text-sm font-bold text-slate-900">{displayName}</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{displayName}</p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-mono mb-1">
-                    <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-white/10 shadow-2xs">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono mb-1">
+                    <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Completion Date</span>
                   </div>
-                  <p className="text-sm font-bold text-slate-900">{certification.date}</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{certification.date}</p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs sm:col-span-2">
-                  <div className="flex items-center justify-between text-xs text-slate-500 font-mono mb-1">
+                <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-white/10 shadow-2xs sm:col-span-2">
+                  <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono mb-1">
                     <div className="flex items-center gap-1.5">
-                      <Hash className="w-3.5 h-3.5 text-blue-600" />
+                      <Hash className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                       <span>Credential ID</span>
                     </div>
                     {certification.credentialId && (
                       <button
                         onClick={handleCopyId}
-                        className="flex items-center gap-1 text-[11px] text-blue-600 hover:text-blue-700 font-mono font-semibold"
+                        className="flex items-center gap-1 text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-mono font-semibold"
                       >
                         {copiedId ? (
                           <>
@@ -371,7 +398,7 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
                       </button>
                     )}
                   </div>
-                  <p className="font-mono text-xs font-semibold text-slate-900 break-all bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200">
+                  <p className="font-mono text-xs font-semibold text-slate-900 dark:text-slate-200 break-all bg-slate-50 dark:bg-slate-900 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-white/10">
                     {certification.credentialId || 'CREDENTIAL-RECORD-VERIFIED'}
                   </p>
                 </div>
@@ -379,12 +406,12 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 
               {/* Curriculum Focus */}
               {certification.focus && (
-                <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100">
-                  <div className="flex items-center gap-1.5 text-xs text-blue-700 font-mono font-semibold mb-1">
-                    <Building2 className="w-3.5 h-3.5 text-blue-600" />
+                <div className="p-3.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/40">
+                  <div className="flex items-center gap-1.5 text-xs text-blue-700 dark:text-blue-400 font-mono font-semibold mb-1">
+                    <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Curriculum & Competency Focus</span>
                   </div>
-                  <p className="text-xs text-slate-700 leading-relaxed">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                     {certification.focus}
                   </p>
                 </div>
@@ -392,16 +419,16 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
 
               {/* Verified Technical Skills */}
               {certification.skillsVerified && certification.skillsVerified.length > 0 && (
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-                  <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 mb-2.5 flex items-center gap-1.5">
-                    <FileCheck className="w-3.5 h-3.5 text-blue-600" />
+                <div className="bg-white dark:bg-slate-800/80 p-4 rounded-xl border border-slate-200 dark:border-white/10 shadow-2xs">
+                  <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5 flex items-center gap-1.5">
+                    <FileCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Verified Technical Skills</span>
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {certification.skillsVerified.map((sk, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 text-slate-800 border border-slate-200/80"
+                        className="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-white/10"
                       >
                         {sk}
                       </span>
@@ -414,12 +441,12 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 bg-white border-t border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
+        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-2.5">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
               Close
             </button>
@@ -427,16 +454,16 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
               href={linkedInAddUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-blue-700 dark:text-blue-300 text-xs font-semibold transition-colors"
               title="Add this verified credential directly to your LinkedIn profile"
             >
-              <Linkedin className="w-3.5 h-3.5 text-blue-700" />
+              <Linkedin className="w-3.5 h-3.5 text-blue-700 dark:text-blue-300" />
               <span>Add to LinkedIn</span>
             </a>
           </div>
 
           <div className="flex items-center gap-2">
-            {certification.credentialUrl ? (
+            {certification.credentialUrl && !isCisco && !isCapaciti ? (
               <a
                 href={certification.credentialUrl}
                 target="_blank"

@@ -43,7 +43,7 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
   return (
     <div
       onClick={onClick}
-      className="w-full aspect-[16/10] rounded-2xl border border-slate-200/90 bg-white shadow-xs hover:shadow-md transition-all p-3 sm:p-3.5 flex flex-col justify-between relative overflow-hidden group/thumb cursor-pointer select-none hover:border-slate-300"
+      className="w-full aspect-[16/10] rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-slate-900 shadow-xs hover:shadow-md transition-all p-3 sm:p-3.5 flex flex-col justify-between relative overflow-hidden group/thumb cursor-pointer select-none hover:border-slate-300 dark:hover:border-white/20"
       title="Click to view full credential certificate"
     >
       {/* Top institutional accent strip */}
@@ -59,28 +59,32 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
       )}
 
       {/* Delicate inner security frame */}
-      <div className="absolute inset-1.5 border border-slate-100 rounded-xl pointer-events-none" />
+      <div className="absolute inset-1.5 border border-slate-100 dark:border-white/5 rounded-xl pointer-events-none" />
 
       {/* Top row: Official Issuer Logos & Category Badge */}
       <div className="flex items-center justify-between relative z-10">
         <div className="flex items-center gap-2">
           {config.primaryLogo && (
-            <img
-              src={config.primaryLogo}
-              alt=""
-              className="h-4 sm:h-5 max-w-[85px] object-contain"
-              referrerPolicy="no-referrer"
-            />
+            <div className="bg-white logo-plate px-1.5 py-0.5 rounded border border-slate-200/80 shadow-2xs">
+              <img
+                src={config.primaryLogo}
+                alt=""
+                className="h-3.5 sm:h-4 max-w-[85px] object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
           )}
           {config.partnerLogo && (
             <>
-              <span className="text-slate-300 text-xs">•</span>
-              <img
-                src={config.partnerLogo}
-                alt=""
-                className="h-4 sm:h-5 max-w-[75px] object-contain"
-                referrerPolicy="no-referrer"
-              />
+              <span className="text-slate-300 dark:text-slate-600 text-xs">•</span>
+              <div className="bg-white logo-plate px-1.5 py-0.5 rounded border border-slate-200/80 shadow-2xs">
+                <img
+                  src={config.partnerLogo}
+                  alt=""
+                  className="h-3.5 sm:h-4 max-w-[75px] object-contain"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </>
           )}
         </div>
@@ -98,7 +102,7 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
         <p className="text-[8px] sm:text-[9px] text-slate-400 font-mono uppercase tracking-wider font-semibold">
           {config.certSubtitle}
         </p>
-        <p className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-0.5">
+        <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white tracking-tight mt-0.5">
           {displayName}
         </p>
         <p className="text-[8px] text-slate-400 font-serif italic mt-0.5">
@@ -106,7 +110,7 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
             ? 'has fulfilled statutory requirements for'
             : 'has successfully completed'}
         </p>
-        <p className="text-[11px] sm:text-xs font-bold text-slate-900 line-clamp-2 leading-snug mt-0.5 max-w-[92%] mx-auto">
+        <p className="text-[11px] sm:text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug mt-0.5 max-w-[92%] mx-auto">
           {cert.name}
         </p>
         <p className="text-[8px] text-slate-400 mt-0.5 truncate max-w-[90%] mx-auto">
@@ -115,7 +119,7 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
       </div>
 
       {/* Bottom row: Credential ID & Institutional Seal */}
-      <div className="flex items-center justify-between pt-1.5 border-t border-slate-100 relative z-10 text-[9px]">
+      <div className="flex items-center justify-between pt-1.5 border-t border-slate-100 dark:border-white/10 relative z-10 text-[9px]">
         <div className="flex items-center gap-1.5 font-mono text-slate-400 text-[8px] sm:text-[9px] truncate max-w-[170px]">
           <span>{cert.date}</span>
           <span>•</span>
@@ -148,6 +152,7 @@ const CertificateThumbnail: React.FC<CertificateThumbnailProps> = ({
 export const Certifications: React.FC = () => {
   const {
     certificationsList,
+    digitalBadgesList,
     personalInfo,
     addCertification,
     editCertification,
@@ -238,14 +243,14 @@ export const Certifications: React.FC = () => {
     if (partnerLogoUrl) {
       return (
         <div className="flex items-center -space-x-2 shrink-0">
-          <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center p-1.5 overflow-hidden z-10">
+          <div className="w-11 h-11 rounded-2xl bg-white logo-plate border border-slate-200/90 dark:border-white/10 shadow-2xs flex items-center justify-center p-1.5 overflow-hidden z-10">
             <img
               src={finalLogo || '/logos/deeplearning-trimmed.png'}
               alt="Provider"
               className="max-w-full max-h-full object-contain"
             />
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center p-1.5 overflow-hidden z-0">
+          <div className="w-11 h-11 rounded-2xl bg-white logo-plate border border-slate-200/90 dark:border-white/10 shadow-2xs flex items-center justify-center p-1.5 overflow-hidden z-0">
             <img src={partnerLogoUrl} alt="Partner" className="max-w-full max-h-full object-contain" />
           </div>
         </div>
@@ -254,7 +259,7 @@ export const Certifications: React.FC = () => {
 
     if (finalLogo) {
       return (
-        <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center p-2 shrink-0 overflow-hidden group-hover/card:border-blue-300 transition-colors">
+        <div className="w-12 h-12 rounded-2xl bg-white logo-plate border border-slate-200/90 dark:border-white/10 shadow-2xs flex items-center justify-center p-2 shrink-0 overflow-hidden group-hover/card:border-blue-300 transition-colors">
           <img
             src={finalLogo}
             alt={`${provider} logo`}
@@ -293,6 +298,32 @@ export const Certifications: React.FC = () => {
       provider.includes('umalusi') ||
       badge === 'matric' ||
       focus.includes('grade 12')
+    );
+  };
+
+  const isCiscoCertificate = (cert: CertificationItem): boolean => {
+    const id = (cert.id || '').toLowerCase();
+    const name = (cert.name || '').toLowerCase();
+    const provider = (cert.provider || '').toLowerCase();
+    const badge = (cert.badgeType || '').toLowerCase();
+    return (
+      id.includes('cisco') ||
+      name.includes('cisco') ||
+      provider.includes('cisco') ||
+      badge === 'cisco'
+    );
+  };
+
+  const isCapacitiCertificate = (cert: CertificationItem): boolean => {
+    const id = (cert.id || '').toLowerCase();
+    const name = (cert.name || '').toLowerCase();
+    const provider = (cert.provider || '').toLowerCase();
+    const badge = (cert.badgeType || '').toLowerCase();
+    return (
+      id.includes('capaciti') ||
+      name.includes('capaciti') ||
+      provider.includes('capaciti') ||
+      badge === 'capaciti'
     );
   };
 
@@ -465,64 +496,122 @@ export const Certifications: React.FC = () => {
           )}
         </div>
 
-        {/* Featured Verified Digital Badge Showcase */}
-        {certificationsList.some((c) => c.id === 'cert-coursera-ai-bootcamp-badge' || c.name.toLowerCase().includes('bootcamp')) && (
-          <div className="mb-8 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white shadow-lg border border-blue-800/40 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 relative z-10">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/10 backdrop-blur-md p-2 flex items-center justify-center border border-white/20 shadow-md shrink-0">
-                <img
-                  src="/logos/ai-bootcamp-badge.png"
-                  alt="Artificial Intelligence Bootcamp Badge"
-                  className="w-full h-full object-contain drop-shadow-md"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div>
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1.5">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-400 text-slate-950">
-                    Official Digital Badge
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium text-emerald-300 bg-emerald-950/60 border border-emerald-500/30">
-                    Verified on Coursera
-                  </span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-                  Artificial Intelligence Bootcamp (AI)
+        {/* Verified Digital Badges Showcase */}
+        {digitalBadgesList && digitalBadgesList.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-3 px-1">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-100 text-amber-800">
+                  <Award className="w-3.5 h-3.5 text-amber-600" />
+                </span>
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">
+                  Verified Digital Badges
                 </h3>
-                <p className="mt-1 text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-                  Issued by <strong>Coursera & DeepLearning.AI</strong> • Completed September 2026. Certified mastery across Generative AI with LLMs, Supervised Machine Learning, Unsupervised Learning & Recommenders, Prompt Engineering, and Python.
-                </p>
-                <div className="mt-2.5 flex items-center justify-center sm:justify-start gap-4 text-xs font-mono text-slate-400">
-                  <span>Credential ID: <span className="text-slate-200">fyLhUpLWR_mi4VKS1kf5Zw</span></span>
-                </div>
               </div>
+              <span className="text-[11px] font-mono text-slate-500">
+                Official Digital Credentials
+              </span>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0 relative z-10 w-full sm:w-auto justify-center">
-              <a
-                href="https://coursera.org/share/32e2851f5fd7751366e7955d59210330"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-blue-500 hover:bg-blue-400 text-white font-semibold text-xs tracking-wide shadow-md transition-all cursor-pointer group"
-                title="Verify official Artificial Intelligence Bootcamp badge directly on Coursera"
+            {digitalBadgesList.map((badge) => (
+              <div
+                key={badge.id}
+                className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white shadow-xl border border-blue-800/40 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6"
               >
-                <ShieldCheck className="w-4 h-4 text-emerald-300 group-hover:text-white transition-colors" />
-                <span>Verify Badge on Coursera</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
+                <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 relative z-10">
+                  <div className="relative group shrink-0">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/10 backdrop-blur-md p-2 flex items-center justify-center border border-white/20 shadow-md">
+                      <img
+                        src={badge.logoUrl || '/logos/ai-bootcamp-badge.png'}
+                        alt={badge.name}
+                        className="w-full h-full object-contain drop-shadow-md"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <span className="absolute -bottom-2 -right-1 px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[9px] font-mono font-bold shadow-xs">
+                      BADGE
+                    </span>
+                  </div>
+
+                  <div>
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1.5">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-400 text-slate-950">
+                        Official Digital Badge
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium text-emerald-300 bg-emerald-950/60 border border-emerald-500/30 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                        <span>Verified on Coursera</span>
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+                      {badge.name}
+                    </h3>
+
+                    <p className="mt-1 text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                      Issued by <strong>{badge.provider}</strong> • {badge.date}. {badge.focus}
+                    </p>
+
+                    {badge.skillsVerified && badge.skillsVerified.length > 0 && (
+                      <div className="mt-2.5 flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+                        {badge.skillsVerified.map((skill, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-white/10 text-slate-200 border border-white/10"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="mt-2.5 flex items-center justify-center sm:justify-start gap-3 text-xs font-mono text-slate-400">
+                      <span>
+                        Credential ID:{' '}
+                        <span className="text-slate-200 font-semibold">{badge.credentialId}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2.5 shrink-0 relative z-10 w-full sm:w-auto lg:w-48 justify-center">
+                  {badge.credentialUrl && (
+                    <a
+                      href={badge.credentialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-semibold text-xs tracking-wide shadow-md transition-all cursor-pointer group"
+                      title="Verify official Artificial Intelligence Bootcamp badge directly on Coursera"
+                    >
+                      <ShieldCheck className="w-4 h-4 text-emerald-300 group-hover:text-white transition-colors shrink-0" />
+                      <span>Verify on Coursera</span>
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                    </a>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setVerifyingCert(badge)}
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition-all cursor-pointer"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-slate-300" />
+                    <span>View Badge</span>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
         {/* Filter Navigation Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-8 p-2 rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-2xs">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-8 p-2 rounded-2xl frosted-glass-subtle border border-white/80 dark:border-white/10 shadow-2xs">
           <div className="flex flex-wrap items-center gap-1">
             <button
               onClick={() => setSelectedFilter('all')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 selectedFilter === 'all'
                   ? 'bg-blue-600 text-white shadow-2xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/10'
               }`}
             >
               All Credentials ({certificationsList.length})
@@ -532,7 +621,7 @@ export const Certifications: React.FC = () => {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
                 selectedFilter === 'ai-ml'
                   ? 'bg-blue-600 text-white shadow-2xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/10'
               }`}
             >
               <Sparkles className="w-3 h-3" />
@@ -543,7 +632,7 @@ export const Certifications: React.FC = () => {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 selectedFilter === 'it-support'
                   ? 'bg-blue-600 text-white shadow-2xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/10'
               }`}
             >
               IT Support & Systems ({itSupportCount})
@@ -553,7 +642,7 @@ export const Certifications: React.FC = () => {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 selectedFilter === 'networking'
                   ? 'bg-blue-600 text-white shadow-2xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/10'
               }`}
             >
               Networking & Infrastructure ({networkingCount})
@@ -563,7 +652,7 @@ export const Certifications: React.FC = () => {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 selectedFilter === 'qualifications'
                   ? 'bg-blue-600 text-white shadow-2xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/10'
               }`}
             >
               Diplomas & NSC ({qualificationsCount})
@@ -575,7 +664,7 @@ export const Certifications: React.FC = () => {
             <button
               type="button"
               onClick={() => setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'))}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-medium border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 shadow-2xs hover:border-blue-300 transition-all cursor-pointer select-none"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-medium border border-slate-200/90 dark:border-white/10 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-2xs hover:border-blue-300 transition-all cursor-pointer select-none"
               title={
                 sortOrder === 'desc'
                   ? 'Currently sorted by date completed: Most Recent First. Click for Oldest First'
@@ -583,17 +672,17 @@ export const Certifications: React.FC = () => {
               }
               aria-label="Toggle certificate completion date ordering"
             >
-              <ArrowDownUp className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <ArrowDownUp className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
               <span>
                 Date Order:{' '}
-                <strong className="text-slate-900 font-semibold">
+                <strong className="text-slate-900 dark:text-white font-semibold">
                   {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
                 </strong>
               </span>
             </button>
 
-            <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-slate-500 pr-2">
-              <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 pr-2">
+              <CheckCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Registry Status: Active & Fully Verified</span>
             </div>
           </div>
@@ -614,10 +703,10 @@ export const Certifications: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.08, margin: '0px 0px -30px 0px' }}
                 transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className={`group/card bg-white/90 backdrop-blur-md rounded-3xl border p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden ${
+                className={`group/card bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-3xl border p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden ${
                   isSpecialization
-                    ? 'border-blue-300 ring-1 ring-blue-100 hover:border-blue-400'
-                    : 'border-white/90 hover:border-blue-200'
+                    ? 'border-blue-300 dark:border-blue-500/30 ring-1 ring-blue-100 dark:ring-blue-900/30 hover:border-blue-400'
+                    : 'border-white/90 dark:border-white/10 hover:border-blue-200 dark:hover:border-blue-500/30'
                 }`}
               >
                 {/* Subtle top accent bar customized to institution */}
@@ -634,36 +723,36 @@ export const Certifications: React.FC = () => {
                   />
 
                   {/* Coursera-style Direct Action Links (Add to LinkedIn | View Certificate) */}
-                  <div className="flex items-center justify-between px-1 py-0.5 text-xs border-b border-slate-100 pb-2.5">
+                  <div className="flex items-center justify-between px-1 py-0.5 text-xs border-b border-slate-100 dark:border-white/10 pb-2.5">
                     <a
                       href={linkedInUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 font-semibold text-xs transition-colors hover:underline"
+                      className="inline-flex items-center gap-1.5 text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-semibold text-xs transition-colors hover:underline"
                       title="Add certificate to your LinkedIn profile"
                     >
-                      <Linkedin className="w-3.5 h-3.5 text-blue-700 shrink-0" />
+                      <Linkedin className="w-3.5 h-3.5 text-blue-700 dark:text-blue-400 shrink-0" />
                       <span>Add to LinkedIn</span>
                     </a>
 
-                    {cert.credentialUrl ? (
+                    {cert.credentialUrl && !isCiscoCertificate(cert) && !isCapacitiCertificate(cert) ? (
                       <a
                         href={cert.credentialUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 font-semibold text-xs transition-colors hover:underline cursor-pointer"
+                        className="inline-flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold text-xs transition-colors hover:underline cursor-pointer"
                         title="Open external verified certificate link"
                       >
-                        <ExternalLink className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                        <ExternalLink className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                         <span>{cert.credentialUrl.includes('coursera') ? 'Verify on Coursera' : 'View certificate'}</span>
                       </a>
                     ) : (
                       <button
                         type="button"
                         onClick={() => setVerifyingCert(cert)}
-                        className="inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 font-semibold text-xs transition-colors hover:underline cursor-pointer"
+                        className="inline-flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold text-xs transition-colors hover:underline cursor-pointer"
                       >
-                        <ExternalLink className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <Eye className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                         <span>View certificate</span>
                       </button>
                     )}
@@ -679,16 +768,16 @@ export const Certifications: React.FC = () => {
                         cert.partnerLogoUrl
                       )}
                       <div>
-                        <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-blue-700 block">
+                        <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-400 block">
                           {cert.provider}
                         </span>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                            <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-700/40">
+                            <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
                             <span>Verified</span>
                           </span>
                           {isSpecialization && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-700/40">
                               SPECIALIZATION
                             </span>
                           )}
@@ -722,28 +811,28 @@ export const Certifications: React.FC = () => {
                   </div>
 
                   {/* Certificate Title */}
-                  <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-snug group-hover/card:text-blue-600 transition-colors">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight leading-snug group-hover/card:text-blue-600 dark:group-hover/card:text-blue-400 transition-colors">
                     {cert.name}
                   </h3>
 
                   {/* Curriculum Focus */}
                   {cert.focus && (
-                    <p className="text-xs text-slate-600 leading-relaxed bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
-                      <strong className="text-slate-700 font-medium">Focus:</strong> {cert.focus}
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50/80 dark:bg-slate-800/80 p-2.5 rounded-xl border border-slate-100 dark:border-white/10">
+                      <strong className="text-slate-700 dark:text-slate-200 font-medium">Focus:</strong> {cert.focus}
                     </p>
                   )}
 
                   {/* Key Technical Skills Verified */}
                   {cert.skillsVerified && cert.skillsVerified.length > 0 && (
                     <div>
-                      <span className="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                      <span className="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 mb-1.5">
                         Key Technical Skills Verified
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {cert.skillsVerified.map((skill, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-mono bg-white/95 border border-slate-200/80 text-slate-700 shadow-2xs"
+                            className="px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-mono bg-white/95 dark:bg-slate-800 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-200 shadow-2xs"
                           >
                             {skill}
                           </span>
@@ -754,11 +843,11 @@ export const Certifications: React.FC = () => {
                 </div>
 
                 {/* Card Footer: Metadata & Verify Credential Action */}
-                <div className="pt-4 border-t border-slate-100 flex flex-col gap-3 mt-4">
-                  <div className="flex items-center justify-between text-xs font-mono text-slate-500">
+                <div className="pt-4 border-t border-slate-100 dark:border-white/10 flex flex-col gap-3 mt-4">
+                  <div className="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400">
                     {/* Date Earned */}
-                    <div className="flex items-center gap-1 text-slate-600 font-medium">
-                      <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                    <div className="flex items-center gap-1 text-slate-600 dark:text-slate-300 font-medium">
+                      <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                       <span>{cert.date}</span>
                     </div>
 
@@ -767,12 +856,12 @@ export const Certifications: React.FC = () => {
                       <button
                         type="button"
                         onClick={(e) => handleCopyId(e, cert.credentialId!)}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-mono transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-mono transition-colors cursor-pointer"
                         title="Click to copy Credential ID"
                       >
                         <span>ID: {cert.credentialId.length > 20 ? cert.credentialId.slice(0, 18) + '…' : cert.credentialId}</span>
                         {copiedId === cert.credentialId ? (
-                          <Check className="w-3 h-3 text-emerald-600" />
+                          <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                         ) : (
                           <Copy className="w-3 h-3 text-slate-400" />
                         )}
@@ -784,15 +873,24 @@ export const Certifications: React.FC = () => {
 
                   {/* Primary Action Button */}
                   {isMatricCertificate(cert) ? (
-                    <div className="flex items-center justify-between w-full py-2 px-3 rounded-xl bg-slate-50/90 border border-slate-200/80 text-slate-700 text-xs font-medium">
-                      <span className="flex items-center gap-1.5 text-slate-800">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <div className="flex items-center justify-between w-full py-2 px-3 rounded-xl bg-slate-50/90 dark:bg-slate-800/80 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 text-xs font-medium">
+                      <span className="flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                         <span className="font-semibold">National Senior Certificate (Endorsed)</span>
                       </span>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-white/10">
                         DBE / Umalusi
                       </span>
                     </div>
+                  ) : isCiscoCertificate(cert) || isCapacitiCertificate(cert) ? (
+                    <button
+                      type="button"
+                      onClick={() => setVerifyingCert(cert)}
+                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/40 text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 border border-slate-200/80 dark:border-white/10 text-xs font-semibold tracking-wide transition-all shadow-2xs cursor-pointer group/btn"
+                    >
+                      <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 group-hover/btn:text-blue-600 dark:group-hover/btn:text-blue-400 transition-colors shrink-0" />
+                      <span>View Certificate</span>
+                    </button>
                   ) : (
                     <div className="flex items-center gap-2">
                       {cert.credentialUrl ? (
@@ -811,7 +909,7 @@ export const Certifications: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setVerifyingCert(cert)}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold tracking-wide transition-all shadow-xs cursor-pointer group/btn"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-900 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 text-white text-xs font-semibold tracking-wide transition-all shadow-xs cursor-pointer group/btn"
                         >
                           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover/btn:text-white transition-colors shrink-0" />
                           <span>Verify Credential</span>
@@ -821,11 +919,11 @@ export const Certifications: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setVerifyingCert(cert)}
-                        className="p-2.5 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition-colors shrink-0 cursor-pointer"
+                        className="p-2.5 rounded-xl border border-slate-200 dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/50 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shrink-0 cursor-pointer"
                         title="Quick View Certificate Details"
                         aria-label={`View certificate details for ${cert.name}`}
                       >
-                        <Eye className="w-3.5 h-3.5" />
+                        <Eye className="w-4 h-4" />
                       </button>
                     </div>
                   )}

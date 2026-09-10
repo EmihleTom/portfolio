@@ -53,11 +53,11 @@ export const About: React.FC = () => {
   const renderParagraph = (text: string, key: number) => {
     const parts = text.split(/(\*\*.*?\*\*)/g);
     return (
-      <p key={key} className="leading-relaxed">
+      <p key={key} className="leading-relaxed text-slate-700 dark:text-slate-300">
         {parts.map((part, i) => {
           if (part.startsWith('**') && part.endsWith('**')) {
             return (
-              <strong key={i} className="font-semibold text-slate-900">
+              <strong key={i} className="font-semibold text-slate-900 dark:text-white">
                 {part.slice(2, -2)}
               </strong>
             );
@@ -127,37 +127,37 @@ export const About: React.FC = () => {
       <SectionReveal className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="flex flex-col items-start mb-12">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">
-            <User className="w-3.5 h-3.5 text-blue-600" />
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 mb-2">
+            <User className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>Overview & Background</span>
           </div>
-          <h2 id="about-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950">
+          <h2 id="about-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
             About Me
           </h2>
-          <p className="mt-2 text-slate-600 text-base sm:text-lg max-w-2xl">
-            Cisco-certified IT Specialist, <strong>CAPACITI</strong> IT Support Technician candidate, and graduate of the <strong>College of Cape Town</strong> based in Cape Town, South Africa.
+          <p className="mt-2 text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-2xl">
+            Cisco-certified IT Specialist, <strong className="text-slate-900 dark:text-white">CAPACITI</strong> IT Support Technician candidate, and graduate of the <strong className="text-slate-900 dark:text-white">College of Cape Town</strong> based in Cape Town, South Africa.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Main Narrative - 7 Columns (Frosted Bento Item) */}
-          <div className="lg:col-span-7 frosted-glass-card bento-item p-8 sm:p-10 border border-white/75 shadow-xs flex flex-col justify-between space-y-6 text-slate-700 leading-relaxed text-base">
+          <div className="lg:col-span-7 frosted-glass-card bento-item p-8 sm:p-10 border border-white/75 dark:border-white/10 shadow-xs flex flex-col justify-between space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-base">
             <div className="space-y-4">
               {/* Header with Interactive Mode Toggle (Story vs At a Glance) */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-white/10">
                 {/* View Switcher Pill */}
-                <div className="inline-flex items-center p-1 rounded-full bg-slate-100/90 border border-slate-200/60 shadow-inner">
+                <div className="inline-flex items-center p-1 rounded-full bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/60 dark:border-white/10 shadow-inner">
                   <button
                     type="button"
                     onClick={() => setActiveTab('story')}
                     className={`relative px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
-                      activeTab === 'story' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+                      activeTab === 'story' ? 'text-blue-700 dark:text-blue-400 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
                     {activeTab === 'story' && (
                       <motion.div
                         layoutId="about-tab-indicator"
-                        className="absolute inset-0 rounded-full bg-white shadow-2xs border border-slate-200/60 -z-10"
+                        className="absolute inset-0 rounded-full bg-white dark:bg-slate-700 shadow-2xs border border-slate-200/60 dark:border-white/10 -z-10"
                         transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                       />
                     )}
@@ -169,13 +169,13 @@ export const About: React.FC = () => {
                     type="button"
                     onClick={() => setActiveTab('highlights')}
                     className={`relative px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
-                      activeTab === 'highlights' ? 'text-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
+                      activeTab === 'highlights' ? 'text-blue-700 dark:text-blue-400 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
                     {activeTab === 'highlights' && (
                       <motion.div
                         layoutId="about-tab-indicator"
-                        className="absolute inset-0 rounded-full bg-white shadow-2xs border border-slate-200/60 -z-10"
+                        className="absolute inset-0 rounded-full bg-white dark:bg-slate-700 shadow-2xs border border-slate-200/60 dark:border-white/10 -z-10"
                         transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                       />
                     )}
@@ -189,7 +189,7 @@ export const About: React.FC = () => {
                     <button
                       type="button"
                       onClick={handleStartEdit}
-                      className="text-xs font-mono text-slate-500 hover:text-blue-600 flex items-center gap-1.5 transition-colors cursor-pointer px-2 py-1 rounded-md hover:bg-white/60"
+                      className="text-xs font-mono text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 transition-colors cursor-pointer px-2 py-1 rounded-md hover:bg-white/60 dark:hover:bg-slate-800"
                       title="Edit full biography"
                     >
                       <Pencil className="w-3 h-3" />
@@ -208,7 +208,7 @@ export const About: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setIsEditingBio(false)}
-                        className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs hover:bg-slate-200 cursor-pointer"
+                        className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -314,15 +314,15 @@ export const About: React.FC = () => {
                             <motion.div
                               key={idx}
                               whileHover={{ y: -2 }}
-                              className="p-3.5 rounded-2xl bg-white/70 border border-slate-200/70 shadow-2xs flex flex-col justify-between space-y-1.5"
+                              className="p-3.5 rounded-2xl bg-white/70 dark:bg-slate-800/80 border border-slate-200/70 dark:border-white/10 shadow-2xs flex flex-col justify-between space-y-1.5"
                             >
-                              <div className="flex items-center gap-2 text-blue-600">
-                                <div className="w-6 h-6 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                              <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <div className="w-6 h-6 rounded-lg bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-500/30 flex items-center justify-center shrink-0">
                                   <ItemIcon className="w-3.5 h-3.5" />
                                 </div>
-                                <span className="text-xs font-bold text-slate-900">{item.label}</span>
+                                <span className="text-xs font-bold text-slate-900 dark:text-white">{item.label}</span>
                               </div>
-                              <p className="text-xs text-slate-600 leading-normal">{item.value}</p>
+                              <p className="text-xs text-slate-600 dark:text-slate-300 leading-normal">{item.value}</p>
                             </motion.div>
                           );
                         })}
@@ -334,16 +334,16 @@ export const About: React.FC = () => {
             </div>
 
             {/* Quick Action Link */}
-            <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div className="pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between">
               <a
                 id="about-education-link"
                 href="#education"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors group"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
               >
                 <span>Explore my education details</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
-              <span className="text-xs font-mono text-slate-400">emihle.profile</span>
+              <span className="text-xs font-mono text-slate-400 dark:text-slate-400">emihle.profile</span>
             </div>
           </div>
 
@@ -364,19 +364,19 @@ export const About: React.FC = () => {
                   onClick={() => setSelectedPillar(isSelected ? null : idx)}
                   className={`group p-5 rounded-2xl frosted bento-item border transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-blue-300 bg-blue-50/40 shadow-xs'
-                      : 'border-white/80 shadow-2xs hover:border-blue-200'
+                      ? 'border-blue-300 dark:border-blue-500 bg-blue-50/40 dark:bg-blue-950/40 shadow-xs'
+                      : 'border-white/80 dark:border-white/10 shadow-2xs hover:border-blue-200 dark:hover:border-blue-500/30'
                   }`}
                 >
                   <div className="flex items-start gap-3.5">
-                    <div className="p-2.5 rounded-2xl bg-blue-50/90 border border-blue-100 text-blue-600 shadow-2xs shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <div className="p-2.5 rounded-2xl bg-blue-50/90 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 shadow-2xs shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                       <PillarIcon className="w-5 h-5" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-sm font-bold text-slate-900 leading-snug">
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
                         {pillar.title}
                       </h3>
-                      <p className="text-xs text-slate-600 leading-normal">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-normal">
                         {pillar.description}
                       </p>
                       {/* Interactive Pillar Tags */}
@@ -384,7 +384,7 @@ export const About: React.FC = () => {
                         {pillar.tags.map((tag, tIdx) => (
                           <span
                             key={tIdx}
-                            className="px-2 py-0.5 rounded-md bg-white/80 border border-slate-200/60 text-[10px] font-mono text-slate-700"
+                            className="px-2 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 border border-slate-200/60 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-slate-300"
                           >
                             {tag}
                           </span>
@@ -397,7 +397,7 @@ export const About: React.FC = () => {
             })}
 
             {/* Availability Status Badge with Gentle Live Pulse */}
-            <div className="px-4 py-3 rounded-2xl frosted-pill border border-white/80 text-xs text-slate-600 font-mono flex items-center justify-between shadow-2xs">
+            <div className="px-4 py-3 rounded-2xl frosted-pill border border-white/80 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center justify-between shadow-2xs">
               <span className="flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -405,8 +405,8 @@ export const About: React.FC = () => {
                 </span>
                 <span>Available for Opportunities</span>
               </span>
-              <span className="text-blue-600 text-[11px] font-semibold font-mono flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-blue-500" />
+              <span className="text-blue-600 dark:text-blue-400 text-[11px] font-semibold font-mono flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-blue-500 dark:text-blue-400" />
                 <span>Cape Town</span>
               </span>
             </div>

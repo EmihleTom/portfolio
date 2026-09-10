@@ -123,7 +123,7 @@ export const Education: React.FC = () => {
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 pb-6 border-b border-slate-100/80">
                   <div className="flex items-start gap-4 sm:gap-5">
                     {/* Real Institution Logo Badge */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center p-2 shrink-0 overflow-hidden group-hover:border-blue-300 transition-colors">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white logo-plate border border-slate-200/90 dark:border-white/10 shadow-2xs flex items-center justify-center p-2 shrink-0 overflow-hidden group-hover:border-blue-300 transition-colors">
                       {eduLogos.logo ? (
                         <img
                           src={eduLogos.logo}
@@ -138,43 +138,45 @@ export const Education: React.FC = () => {
 
                     <div className="space-y-1.5">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="px-3 py-0.5 rounded-full text-[11px] font-mono font-medium bg-blue-50 text-blue-700 border border-blue-200/60">
+                        <span className="px-3 py-0.5 rounded-full text-[11px] font-mono font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-500/30">
                           Formal Qualification
                         </span>
                         <span
                           className={`px-3 py-0.5 rounded-full text-[11px] font-mono font-medium flex items-center gap-1 border ${
                             item.status?.toLowerCase().includes('progress') || item.endDate?.toLowerCase() === 'present'
-                              ? 'bg-blue-50 text-blue-700 border-blue-200/60'
-                              : 'bg-emerald-50 text-emerald-700 border-emerald-200/60'
+                              ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200/60 dark:border-blue-500/30'
+                              : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200/60 dark:border-emerald-700/40'
                           }`}
                         >
                           <CheckCircle2 className="w-3 h-3 text-current" />
                           <span>{item.status}</span>
                         </span>
                         {eduLogos.badge && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-100/80 text-slate-600 border border-slate-200 hidden sm:inline-block">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-100/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10 hidden sm:inline-block">
                             {eduLogos.badge}
                           </span>
                         )}
                       </div>
 
-                      <h3 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight">
+                      <h3 className="text-xl sm:text-2xl font-bold text-slate-950 dark:text-white tracking-tight">
                         {item.qualification}
                       </h3>
 
-                      <div className="flex flex-wrap items-center gap-3 text-slate-700">
-                        <div className="flex items-center gap-1.5 font-semibold text-sm sm:text-base text-slate-800">
-                          <Building className="w-4 h-4 text-blue-600 shrink-0" />
+                      <div className="flex flex-wrap items-center gap-3 text-slate-700 dark:text-slate-300">
+                        <div className="flex items-center gap-1.5 font-semibold text-sm sm:text-base text-slate-800 dark:text-slate-200">
+                          <Building className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                           <span>{item.institution}</span>
                         </div>
                         {eduLogos.partnerLogo && (
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-xs font-mono">
-                            <img
-                              src={eduLogos.partnerLogo}
-                              alt={eduLogos.partnerName || 'Partner'}
-                              className="h-3.5 w-auto max-w-[48px] object-contain"
-                              referrerPolicy="no-referrer"
-                            />
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 text-xs font-mono">
+                            <div className="bg-white logo-plate px-1 py-0.5 rounded">
+                              <img
+                                src={eduLogos.partnerLogo}
+                                alt={eduLogos.partnerName || 'Partner'}
+                                className="h-3.5 w-auto max-w-[48px] object-contain"
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
                             <span>{eduLogos.partnerName}</span>
                           </div>
                         )}
@@ -183,8 +185,8 @@ export const Education: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2 self-start md:self-auto">
-                    <div className="flex items-center gap-2 font-mono text-xs text-slate-600 frosted-pill px-3.5 py-1.5 rounded-full border border-white/80 shadow-2xs">
-                      <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                    <div className="flex items-center gap-2 font-mono text-xs text-slate-600 dark:text-slate-300 frosted-pill px-3.5 py-1.5 rounded-full border border-white/80 dark:border-white/10 shadow-2xs">
+                      <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                       <span>
                         {item.qualification.toLowerCase().includes('matric') && (item.endDate === '2024' || item.startDate === '2024')
                           ? 'Completed in 2024'
@@ -220,24 +222,24 @@ export const Education: React.FC = () => {
 
               {/* Description */}
               <div className="pt-6">
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+                <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
                   {item.description}
                 </p>
               </div>
 
               {/* Core Focus Areas */}
               <div className="mt-2">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
-                  <Award className="w-3.5 h-3.5 text-blue-600" />
+                <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 mb-3 flex items-center gap-2">
+                  <Award className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>Key Competency Areas Covered</span>
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {item.focusAreas.map((area, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-full frosted-pill border border-white/90 text-xs sm:text-sm text-slate-700 font-medium shadow-2xs"
+                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-full frosted-pill border border-white/90 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-200 font-medium shadow-2xs"
                     >
-                      <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
+                      <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 shrink-0" />
                       <span>{area}</span>
                     </div>
                   ))}

@@ -67,14 +67,14 @@ export const Projects: React.FC = () => {
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">
-              <FolderGit2 className="w-3.5 h-3.5 text-blue-600" />
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 mb-2">
+              <FolderGit2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>Showcase & Work</span>
             </div>
-            <h2 id="projects-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950">
+            <h2 id="projects-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
               Projects
             </h2>
-            <p className="mt-2 text-slate-600 text-base sm:text-lg max-w-2xl">
+            <p className="mt-2 text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-2xl">
               Practical implementations, technical solutions, and software developments.
             </p>
           </div>
@@ -97,11 +97,11 @@ export const Projects: React.FC = () => {
               href={personalInfo.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2 rounded-full frosted-pill border border-white/90 text-slate-700 hover:text-blue-600 font-semibold text-xs transition-colors shadow-2xs"
+              className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2 rounded-full frosted-pill border border-white/90 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 font-semibold text-xs transition-colors shadow-2xs"
             >
-              <Github className="w-4 h-4 text-slate-700" />
+              <Github className="w-4 h-4 text-slate-700 dark:text-slate-200" />
               <span>GitHub</span>
-              <ExternalLink className="w-3 h-3 text-slate-400" />
+              <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-400" />
             </a>
           </div>
         </div>
@@ -452,29 +452,29 @@ export const Projects: React.FC = () => {
                   <div>
                     {/* Meta line: Role and Category */}
                     <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <span className="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-blue-50 text-blue-700 border border-blue-200/70">
+                      <span className="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/70 dark:border-blue-500/30">
                         Role: {project.role}
                       </span>
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight mb-3">
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-950 dark:text-white tracking-tight mb-3">
                       {project.name}
                     </h3>
 
-                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+                    <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
                       {project.description}
                     </p>
 
                     {/* Key Features List */}
                     <div className="mb-6">
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-1.5">
-                        <Layers className="w-3.5 h-3.5 text-blue-600" />
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                         <span>Key Features & Architecture</span>
                       </h4>
                       <ul className="space-y-2">
                         {project.keyFeatures.map((feat, fIdx) => (
-                          <li key={fIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700">
-                            <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+                          <li key={fIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-200">
+                            <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                             <span>{feat}</span>
                           </li>
                         ))}
@@ -483,14 +483,14 @@ export const Projects: React.FC = () => {
 
                     {/* Technologies Used */}
                     <div className="mb-6">
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2.5">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 mb-2.5">
                         Technologies Used
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech, tIdx) => (
                           <span
                             key={tIdx}
-                            className="px-3 py-1 rounded-full frosted-pill text-slate-800 text-xs font-mono font-medium border border-white/90 shadow-2xs"
+                            className="px-3 py-1 rounded-full frosted-pill text-slate-800 dark:text-slate-200 text-xs font-mono font-medium border border-white/90 dark:border-white/10 shadow-2xs"
                           >
                             {tech}
                           </span>
@@ -500,7 +500,7 @@ export const Projects: React.FC = () => {
                   </div>
 
                   {/* Project Links / Action Buttons */}
-                  <div className="pt-5 border-t border-slate-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="pt-5 border-t border-slate-100/80 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
                       {project.githubUrl ? (
                         <a
@@ -508,18 +508,18 @@ export const Projects: React.FC = () => {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center min-h-[44px] gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white text-xs font-semibold hover:bg-blue-600 transition-all shadow-xs active:scale-95"
+                          className="inline-flex items-center justify-center min-h-[44px] gap-2 px-5 py-2.5 rounded-full bg-slate-900 dark:bg-blue-600 text-white text-xs font-semibold hover:bg-blue-600 dark:hover:bg-blue-500 transition-all shadow-xs active:scale-95"
                         >
                           <Github className="w-4 h-4" />
                           <span>Source Code</span>
-                          <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                          <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-white" />
                         </a>
                       ) : (
                         isEditMode ? (
                           <button
                             type="button"
                             onClick={() => handleOpenEdit(project)}
-                            className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200/80 hover:bg-blue-100 transition-colors cursor-pointer"
+                            className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 text-xs font-semibold border border-blue-200/80 dark:border-blue-500/30 hover:bg-blue-100 transition-colors cursor-pointer"
                           >
                             <Plus className="w-4 h-4" />
                             <span>Add GitHub Link</span>
@@ -533,9 +533,9 @@ export const Projects: React.FC = () => {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-white/80 border border-slate-200 text-slate-800 text-xs font-semibold hover:bg-white transition-colors"
+                          className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-white/80 dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 text-xs font-semibold hover:bg-white dark:hover:bg-slate-700 transition-colors"
                         >
-                          <ExternalLink className="w-4 h-4 text-blue-600" />
+                          <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                           <span>Live Preview</span>
                         </a>
                       ) : (
@@ -543,9 +543,9 @@ export const Projects: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleOpenEdit(project)}
-                            className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-white/60 text-slate-600 text-xs font-mono border border-slate-200/80 hover:bg-white transition-colors cursor-pointer"
+                            className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-white/60 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-xs font-mono border border-slate-200/80 dark:border-white/10 hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer"
                           >
-                            <Eye className="w-4 h-4 text-blue-500" />
+                            <Eye className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                             <span>Add Live Demo Link</span>
                           </button>
                         ) : null
@@ -556,7 +556,7 @@ export const Projects: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleOpenEdit(project)}
-                        className="font-mono text-xs text-blue-600 hover:underline flex items-center justify-center sm:justify-start gap-1 py-1 cursor-pointer"
+                        className="font-mono text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-center sm:justify-start gap-1 py-1 cursor-pointer"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                         <span>Edit details</span>
@@ -579,19 +579,19 @@ export const Projects: React.FC = () => {
                 {isEditMode ? (
                   <>
                     <div>
-                      <div className="w-10 h-10 rounded-2xl bg-blue-50/90 border border-blue-100 flex items-center justify-center text-blue-600 mb-4 shadow-2xs">
-                        <PlusCircle className="w-5 h-5 text-blue-600" />
+                      <div className="w-10 h-10 rounded-2xl bg-blue-50/90 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4 shadow-2xs">
+                        <PlusCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <h3 className="text-lg font-bold text-slate-950 tracking-tight mb-1">
+                      <h3 className="text-lg font-bold text-slate-950 dark:text-white tracking-tight mb-1">
                         Add Your Project
                       </h3>
-                      <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
                         Add another personal, academic, or open-source software application to your portfolio with live links.
                       </p>
 
-                      <div className="p-4 rounded-2xl frosted-glass-subtle border border-white/80 text-xs text-slate-700 space-y-2 mb-4 font-mono">
-                        <p className="font-semibold text-slate-900">// Each project includes:</p>
-                        <ul className="space-y-1.5 text-[11px] text-slate-600 list-disc list-inside">
+                      <div className="p-4 rounded-2xl frosted-glass-subtle border border-white/80 dark:border-white/10 text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-4 font-mono">
+                        <p className="font-semibold text-slate-900 dark:text-white">// Each project includes:</p>
+                        <ul className="space-y-1.5 text-[11px] text-slate-600 dark:text-slate-400 list-disc list-inside">
                           <li>Project name & description</li>
                           <li>Specific role definition</li>
                           <li>Technologies & stack badges</li>
@@ -602,7 +602,7 @@ export const Projects: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100/80 space-y-2">
+                    <div className="pt-4 border-t border-slate-100/80 dark:border-white/10 space-y-2">
                       <button
                         type="button"
                         onClick={() => handleOpenAdd()}
@@ -615,9 +615,9 @@ export const Projects: React.FC = () => {
                         href={personalInfo.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2 rounded-full frosted-pill border border-white/90 text-slate-700 text-xs font-semibold hover:bg-white transition-all shadow-2xs"
+                        className="w-full inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2 rounded-full frosted-pill border border-white/90 dark:border-white/10 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:bg-white dark:hover:bg-slate-800 transition-all shadow-2xs"
                       >
-                        <Github className="w-4 h-4 text-slate-600" />
+                        <Github className="w-4 h-4 text-slate-600 dark:text-slate-300" />
                         <span>View GitHub Repos</span>
                       </a>
                     </div>
@@ -625,19 +625,19 @@ export const Projects: React.FC = () => {
                 ) : (
                   <>
                     <div>
-                      <div className="w-10 h-10 rounded-2xl bg-blue-50/90 border border-blue-100 flex items-center justify-center text-blue-600 mb-4 shadow-2xs">
-                        <Github className="w-5 h-5 text-blue-600" />
+                      <div className="w-10 h-10 rounded-2xl bg-blue-50/90 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4 shadow-2xs">
+                        <Github className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <h3 className="text-lg font-bold text-slate-950 tracking-tight mb-1">
+                      <h3 className="text-lg font-bold text-slate-950 dark:text-white tracking-tight mb-1">
                         Source Repositories
                       </h3>
-                      <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
                         Explore open-source technical repositories, automation scripts, and full-stack software applications on GitHub.
                       </p>
 
-                      <div className="p-4 rounded-2xl frosted-glass-subtle border border-white/80 text-xs text-slate-700 space-y-2 mb-4 font-mono">
-                        <p className="font-semibold text-slate-900">// Technical Competencies:</p>
-                        <ul className="space-y-1.5 text-[11px] text-slate-600 list-disc list-inside">
+                      <div className="p-4 rounded-2xl frosted-glass-subtle border border-white/80 dark:border-white/10 text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-4 font-mono">
+                        <p className="font-semibold text-slate-900 dark:text-white">// Technical Competencies:</p>
+                        <ul className="space-y-1.5 text-[11px] text-slate-600 dark:text-slate-400 list-disc list-inside">
                           <li>Cisco Packet Tracer topologies</li>
                           <li>Full-stack React & TypeScript apps</li>
                           <li>PowerShell system audit tools</li>
@@ -646,16 +646,16 @@ export const Projects: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100/80">
+                    <div className="pt-4 border-t border-slate-100/80 dark:border-white/10">
                       <a
                         href={personalInfo.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-slate-900 text-white text-xs font-semibold hover:bg-blue-600 transition-all shadow-xs"
+                        className="w-full inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-slate-900 dark:bg-blue-600 text-white text-xs font-semibold hover:bg-blue-600 dark:hover:bg-blue-500 transition-all shadow-xs"
                       >
                         <Github className="w-4 h-4" />
                         <span>Explore GitHub Profile</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                        <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-white" />
                       </a>
                     </div>
                   </>

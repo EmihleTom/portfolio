@@ -17,6 +17,7 @@ import {
 import { usePortfolioData } from '../utils/portfolioStore';
 import { useProfilePhoto } from '../utils/photoStorage';
 import { downloadResumePDF } from '../utils/generateResume';
+import { useMediaViewer } from '../utils/mediaViewerContext';
 
 export const Hero: React.FC = () => {
   const {
@@ -31,6 +32,7 @@ export const Hero: React.FC = () => {
   const [isDownloadingCV, setIsDownloadingCV] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const { photo } = useProfilePhoto();
+  const { openPictureViewer } = useMediaViewer();
 
   const copyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -380,13 +382,15 @@ export const Hero: React.FC = () => {
             {/* Locked-in Official Portrait Container */}
             <div
               id="hero-locked-profile-card"
-              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-white shadow-md flex items-center justify-center overflow-hidden"
+              onClick={() => openPictureViewer(photo, `${personalInfo.name} - Official Portrait`, personalInfo.tagline)}
+              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 border-2 border-white dark:border-white/20 shadow-md flex items-center justify-center overflow-hidden cursor-pointer group hover:shadow-xl transition-all"
+              title="Click to view full portrait"
             >
               <img
                 id="hero-profile-image"
                 src={photo}
                 alt={personalInfo.name}
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 referrerPolicy="no-referrer"
               />
               {/* Official Verified Badge */}
@@ -394,36 +398,43 @@ export const Hero: React.FC = () => {
                 <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                 <span className="text-[10px] font-semibold tracking-wide uppercase">Verified</span>
               </div>
+
+              {/* Hover View Hint */}
+              <div className="absolute inset-0 bg-slate-950/0 group-hover:bg-slate-950/20 transition-colors flex items-center justify-center pointer-events-none">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 rounded-full bg-slate-950/80 text-white text-xs font-medium backdrop-blur-sm shadow-md">
+                  View Full Picture
+                </span>
+              </div>
             </div>
 
             {/* Locked Profile Status Pill */}
             <div className="flex items-center gap-2 mb-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200/60 shadow-2xs">
-                <Sparkles className="w-3 h-3 text-blue-600" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 text-xs font-semibold border border-blue-200/60 dark:border-blue-500/30 shadow-2xs">
+                <Sparkles className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                 Official Portrait
               </span>
             </div>
 
-            <h3 className="text-lg font-bold text-slate-950 mb-1">
+            <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-1">
               {personalInfo.name}
             </h3>
-            <p className="text-xs font-mono text-blue-600 font-semibold mb-2">
+            <p className="text-xs font-mono text-blue-600 dark:text-blue-400 font-semibold mb-2">
               Cisco IT Specialist
             </p>
             <a
               href={`mailto:${personalInfo.email}`}
-              className="text-xs text-blue-600 hover:text-blue-700 font-medium mb-4 hover:underline"
+              className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium mb-4 hover:underline"
             >
               {personalInfo.email}
             </a>
 
             {/* Quick Status Badges */}
-            <div className="w-full pt-4 border-t border-slate-200/60 text-xs text-slate-500 flex flex-col gap-2">
-              <div className="flex items-center justify-center gap-2 bg-white/70 py-1.5 px-3 rounded-full border border-white/80 shadow-2xs">
+            <div className="w-full pt-4 border-t border-slate-200/60 dark:border-white/10 text-xs text-slate-500 dark:text-slate-400 flex flex-col gap-2">
+              <div className="flex items-center justify-center gap-2 frosted-pill py-1.5 px-3 rounded-full border border-white/80 dark:border-white/10 shadow-2xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 <span>Available for Opportunities</span>
               </div>
-              <div className="flex items-center justify-center gap-2 bg-white/70 py-1.5 px-3 rounded-full border border-white/80 shadow-2xs">
+              <div className="flex items-center justify-center gap-2 frosted-pill py-1.5 px-3 rounded-full border border-white/80 dark:border-white/10 shadow-2xs">
                 <span>{personalInfo.location}</span>
               </div>
             </div>

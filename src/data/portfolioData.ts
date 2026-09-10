@@ -183,10 +183,9 @@ export const experienceList: ExperienceItem[] = [
   },
 ];
 
-export const certificationsList: CertificationItem[] = [
-  // 2026 - September (AI Bootcamp Digital Badge & Advanced LLMs)
+export const digitalBadgesList: CertificationItem[] = [
   {
-    id: 'cert-coursera-ai-bootcamp-badge',
+    id: 'badge-coursera-ai-bootcamp',
     name: 'Artificial Intelligence Bootcamp (AI)',
     provider: 'Coursera • DeepLearning.AI',
     partner: 'DeepLearning.AI',
@@ -209,6 +208,10 @@ export const certificationsList: CertificationItem[] = [
       'Responsible AI Governance',
     ],
   },
+];
+
+export const certificationsList: CertificationItem[] = [
+  // 2026 - September (Advanced LLMs)
   {
     id: 'cert-dl-genai-llms',
     name: 'Generative AI with Large Language Models',
@@ -357,7 +360,6 @@ export const certificationsList: CertificationItem[] = [
     focus: 'Technical Support, System Maintenance, Troubleshooting & Helpdesk Operations',
     date: '2026 – Present',
     credentialId: 'CAP-IT-2026-884',
-    credentialUrl: 'https://capaciti.org.za/verify/CAP-IT-2026-884',
     badgeType: 'capaciti',
     issuerLogoPlaceholder: 'CAPACITI',
     logoUrl: '/logos/capaciti-symbol.webp',
@@ -509,7 +511,6 @@ export const certificationsList: CertificationItem[] = [
     focus: 'Cisco Certified Network Associate (CCNA) — Routing, Switching, Subnetting & Network Security',
     date: '2025',
     credentialId: 'CCT-CISCO-CCNA-2025',
-    credentialUrl: 'https://www.cct.edu.za/verify/CCT-CISCO-CCNA-2025',
     badgeType: 'cisco',
     issuerLogoPlaceholder: 'Cisco',
     logoUrl: '/logos/cisco-logo.svg',
@@ -531,7 +532,6 @@ export const certificationsList: CertificationItem[] = [
     focus: 'Network Protocols, IP Addressing, Packet Tracer & Troubleshooting',
     date: '2025',
     credentialId: 'CSCO-ID-914285',
-    credentialUrl: 'https://www.credly.com/org/cisco/badge/ccst-networking',
     badgeType: 'cisco',
     issuerLogoPlaceholder: 'Cisco',
     logoUrl: '/logos/cisco-logo.svg',
@@ -552,7 +552,7 @@ export const certificationsList: CertificationItem[] = [
     focus: 'Operating Systems, System Administration, Security & Troubleshooting',
     date: '2025',
     credentialId: 'GOOG-IT-642109',
-    credentialUrl: 'https://www.coursera.org/account/accomplishments/verify/GOOG-IT-642109',
+    credentialUrl: 'https://www.coursera.org/professional-certificates/google-it-support',
     badgeType: 'google',
     issuerLogoPlaceholder: 'Google',
     logoUrl: '/logos/google-logo.svg',

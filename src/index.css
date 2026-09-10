@@ -1,39 +1,171 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-/* Frosted Glass Theme Utilities */
+/* ==========================================================================
+   CSS Variables for Theme System (Light & Dark)
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces & Backgrounds */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.78);
+  --bg-card-hover: rgba(255, 255, 255, 0.92);
+  --bg-card-subtle: rgba(255, 255, 255, 0.55);
+  --bg-card-solid: #ffffff;
+  --bg-pill: rgba(255, 255, 255, 0.85);
+
+  /* Typography */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+
+  /* Borders & Dividers */
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-subtle: rgba(226, 232, 240, 0.8);
+
+  /* Frosted Glass Aesthetics (Light) */
+  --frosted-bg: rgba(255, 255, 255, 0.72);
+  --frosted-border: rgba(255, 255, 255, 0.65);
+  --frosted-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+
+  --frosted-card-bg: rgba(255, 255, 255, 0.76);
+  --frosted-card-border: rgba(255, 255, 255, 0.75);
+  --frosted-card-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+
+  --frosted-subtle-bg: rgba(255, 255, 255, 0.55);
+  --frosted-subtle-border: rgba(255, 255, 255, 0.6);
+
+  --frosted-pill-bg: rgba(255, 255, 255, 0.82);
+  --frosted-pill-border: rgba(255, 255, 255, 0.75);
+
+  /* Navigation */
+  --nav-frosted-bg: rgba(255, 255, 255, 0.75);
+  --nav-unscrolled-bg: rgba(255, 255, 255, 0.65);
+  --nav-border: rgba(255, 255, 255, 0.65);
+
+  /* Ambient Diffusion Orbs */
+  --ambient-orb-1: rgba(191, 219, 254, 0.6);
+  --ambient-orb-2: rgba(224, 231, 255, 0.5);
+  --ambient-orb-3: rgba(186, 230, 253, 0.4);
+  --ambient-orb-opacity: 0.7;
+
+  /* Tech Grid */
+  --grid-dot-color: rgba(148, 163, 184, 0.18);
+
+  /* Scrollbar */
+  --scrollbar-track: #f8fafc;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces & Backgrounds */
+  --bg-primary: #0b0f17;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1e293b;
+  --bg-card: rgba(17, 24, 39, 0.72);
+  --bg-card-hover: rgba(30, 41, 59, 0.82);
+  --bg-card-subtle: rgba(17, 24, 39, 0.5);
+  --bg-card-solid: #111827;
+  --bg-pill: rgba(30, 41, 59, 0.75);
+
+  /* Typography */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+
+  /* Borders & Dividers */
+  --border-primary: rgba(255, 255, 255, 0.12);
+  --border-secondary: rgba(255, 255, 255, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* Frosted Glass Aesthetics (Dark) */
+  --frosted-bg: rgba(15, 23, 42, 0.75);
+  --frosted-border: rgba(255, 255, 255, 0.12);
+  --frosted-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  --frosted-card-bg: rgba(15, 23, 42, 0.72);
+  --frosted-card-border: rgba(255, 255, 255, 0.12);
+  --frosted-card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+
+  --frosted-subtle-bg: rgba(30, 41, 59, 0.5);
+  --frosted-subtle-border: rgba(255, 255, 255, 0.08);
+
+  --frosted-pill-bg: rgba(30, 41, 59, 0.7);
+  --frosted-pill-border: rgba(255, 255, 255, 0.12);
+
+  /* Navigation */
+  --nav-frosted-bg: rgba(15, 23, 42, 0.85);
+  --nav-unscrolled-bg: rgba(15, 23, 42, 0.7);
+  --nav-border: rgba(255, 255, 255, 0.12);
+
+  /* Ambient Diffusion Orbs */
+  --ambient-orb-1: rgba(37, 99, 235, 0.22);
+  --ambient-orb-2: rgba(99, 102, 241, 0.18);
+  --ambient-orb-3: rgba(14, 165, 233, 0.16);
+  --ambient-orb-opacity: 0.85;
+
+  /* Tech Grid */
+  --grid-dot-color: rgba(255, 255, 255, 0.07);
+
+  /* Scrollbar */
+  --scrollbar-track: #0b0f17;
+  --scrollbar-thumb: #334155;
+  --scrollbar-thumb-hover: #475569;
+}
+
+/* ==========================================================================
+   Frosted Glass Theme Utilities (Powered by CSS variables)
+   ========================================================================== */
+
 .frosted {
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--frosted-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+  border: 1px solid var(--frosted-border);
+  box-shadow: var(--frosted-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .frosted-glass-card {
-  background: rgba(255, 255, 255, 0.76);
+  background: var(--frosted-card-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  border: 1px solid var(--frosted-card-border);
+  box-shadow: var(--frosted-card-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .frosted-glass-subtle {
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--frosted-subtle-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--frosted-subtle-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .frosted-pill {
-  background: rgba(255, 255, 255, 0.82);
+  background: var(--frosted-pill-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--frosted-pill-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .bento-item {
@@ -41,27 +173,133 @@
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-/* Subtle tech grid background pattern */
+/* Tech grid background pattern using variable */
 .bg-tech-grid {
-  background-image: radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px);
+  background-image: radial-gradient(var(--grid-dot-color) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .bg-tech-grid-dense {
-  background-image: radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px);
+  background-image: radial-gradient(var(--grid-dot-color) 1px, transparent 1px);
   background-size: 16px 16px;
 }
 
-/* Mobile Touch & Layout Stability */
+/* Base document setup */
 html {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 body {
   overflow-x: hidden;
   width: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode cascading adaptations */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: var(--text-primary);
+}
+
+.dark .text-slate-950,
+.dark .text-slate-900 {
+  color: var(--text-primary);
+}
+
+.dark .text-slate-800 {
+  color: #f1f5f9;
+}
+
+.dark .text-slate-700 {
+  color: var(--text-secondary);
+}
+
+.dark .text-slate-600 {
+  color: #cbd5e1;
+}
+
+.dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+.dark .text-slate-400 {
+  color: #64748b;
+}
+
+.dark .bg-slate-50 {
+  background-color: var(--bg-primary);
+}
+
+.dark .bg-slate-100 {
+  background-color: var(--bg-tertiary);
+}
+
+.dark .bg-white {
+  background-color: var(--bg-secondary);
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200 {
+  border-color: var(--border-primary);
+}
+
+.dark .border-slate-200\/60,
+.dark .border-slate-200\/80 {
+  border-color: var(--border-subtle);
+}
+
+.dark .border-white\/60,
+.dark .border-white\/65,
+.dark .border-white\/70,
+.dark .border-white\/75 {
+  border-color: var(--frosted-border);
+}
+
+.dark .bg-white\/80,
+.dark .bg-white\/70,
+.dark .bg-white\/65 {
+  background-color: var(--frosted-pill-bg);
+}
+
+.dark .shadow-2xs,
+.dark .shadow-xs,
+.dark .shadow-sm {
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4);
+}
+
+.dark button.bg-slate-900,
+.dark a.bg-slate-900 {
+  background-color: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dark button.bg-slate-900:hover,
+.dark a.bg-slate-900:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b;
 }
 
 /* Custom subtle scrollbar */
@@ -69,14 +307,15 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--scrollbar-thumb-hover);
 }
+
 
 

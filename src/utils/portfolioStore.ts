@@ -6,6 +6,7 @@ import {
   projectsList as defaultProjectsList,
   experienceList as defaultExperienceList,
   certificationsList as defaultCertificationsList,
+  digitalBadgesList as defaultDigitalBadgesList,
 } from '../data/portfolioData';
 import {
   PersonalInfo,
@@ -24,10 +25,15 @@ export interface PortfolioState {
   projectsList: ProjectItem[];
   experienceList: ExperienceItem[];
   certificationsList: CertificationItem[];
+  digitalBadgesList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v18';
+const STORAGE_KEY = 'emihle_portfolio_state_v22';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v21',
+  'emihle_portfolio_state_v20',
+  'emihle_portfolio_state_v19',
+  'emihle_portfolio_state_v18',
   'emihle_portfolio_state_v17',
   'emihle_portfolio_state_v16',
   'emihle_portfolio_state_v15',
@@ -132,6 +138,7 @@ function getInitialState(): PortfolioState {
       projectsList: defaultProjectsList,
       experienceList: defaultExperienceList,
       certificationsList: defaultCertificationsList,
+      digitalBadgesList: defaultDigitalBadgesList,
     };
   }
 
@@ -382,26 +389,51 @@ function getInitialState(): PortfolioState {
       // Ensure all credentials from defaultCertificationsList are merged in
       let loadedCertifications = parsed.certificationsList;
       if (loadedCertifications && Array.isArray(loadedCertifications)) {
+        // Exclude removed Artificial Intelligence Bootcamp badge
+        loadedCertifications = loadedCertifications.filter(
+          (cert: CertificationItem) =>
+            cert.id !== 'cert-coursera-ai-bootcamp-badge' &&
+            !cert.name?.toLowerCase().includes('artificial intelligence bootcamp')
+        );
+
         // Map existing with latest info and ensure all default fields are up-to-date
         loadedCertifications = loadedCertifications.map((cert: CertificationItem) => {
           const match = defaultCertificationsList.find(
             (d) => d.id === cert.id || d.name.toLowerCase() === cert.name.toLowerCase()
           );
+          let updatedCert = { ...cert };
           if (match) {
-            return {
+            updatedCert = {
               ...cert,
               ...match,
               recipientName: 'Emihle Liyema Tom',
             };
+            if (!match.credentialUrl) {
+              delete (updatedCert as any).credentialUrl;
+            }
           }
-          let logoUrl = cert.logoUrl;
+          if (
+            updatedCert.id === 'cert-capaciti-it-support' ||
+            updatedCert.name.toLowerCase().includes('capaciti') ||
+            updatedCert.badgeType === 'capaciti' ||
+            updatedCert.provider.toLowerCase().includes('capaciti')
+          ) {
+            delete (updatedCert as any).credentialUrl;
+          }
+          if (
+            updatedCert.id === 'cert-google-it-support' ||
+            updatedCert.name.toLowerCase().includes('google it support')
+          ) {
+            updatedCert.credentialUrl = 'https://www.coursera.org/professional-certificates/google-it-support';
+          }
+          let logoUrl = updatedCert.logoUrl;
           if (!logoUrl) {
             const fallbackMatch = defaultCertificationsList.find(
-              (d) => d.provider.toLowerCase() === cert.provider.toLowerCase() || d.badgeType === cert.badgeType
+              (d) => d.provider.toLowerCase() === updatedCert.provider.toLowerCase() || d.badgeType === updatedCert.badgeType
             );
             logoUrl = fallbackMatch?.logoUrl;
           }
-          return { ...cert, logoUrl };
+          return { ...updatedCert, logoUrl };
         });
 
         // Add any missing certifications from defaultCertificationsList (preserves existing, adds missing)
@@ -477,6 +509,17 @@ function getInitialState(): PortfolioState {
         loadedProjects = defaultProjectsList;
       }
 
+      let loadedDigitalBadges = parsed.digitalBadgesList;
+      if (!loadedDigitalBadges || !Array.isArray(loadedDigitalBadges) || loadedDigitalBadges.length === 0) {
+        loadedDigitalBadges = defaultDigitalBadgesList;
+      } else {
+        for (const defBadge of defaultDigitalBadgesList) {
+          if (!loadedDigitalBadges.some((b: CertificationItem) => b.id === defBadge.id || b.name.toLowerCase() === defBadge.name.toLowerCase())) {
+            loadedDigitalBadges.push(defBadge);
+          }
+        }
+      }
+
       const mergedState: PortfolioState = {
         personalInfo: loadedPersonalInfo,
         educationList: loadedEducation && loadedEducation.length > 0 ? loadedEducation : defaultEducationList,
@@ -484,9 +527,10 @@ function getInitialState(): PortfolioState {
         projectsList: loadedProjects || [],
         experienceList: loadedExperience && loadedExperience.length > 0 ? loadedExperience : defaultExperienceList,
         certificationsList: loadedCertifications && loadedCertifications.length > 0 ? loadedCertifications : defaultCertificationsList,
+        digitalBadgesList: loadedDigitalBadges || defaultDigitalBadgesList,
       };
 
-      // Persist to the v4 key
+      // Persist to the v22 key
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedState));
       } catch {
@@ -506,6 +550,7 @@ function getInitialState(): PortfolioState {
     projectsList: defaultProjectsList,
     experienceList: defaultExperienceList,
     certificationsList: defaultCertificationsList,
+    digitalBadgesList: defaultDigitalBadgesList,
   };
 }
 
@@ -730,6 +775,7 @@ export function usePortfolioData() {
       projectsList: defaultProjectsList,
       experienceList: defaultExperienceList,
       certificationsList: defaultCertificationsList,
+      digitalBadgesList: defaultDigitalBadgesList,
     });
   };
 

@@ -15,8 +15,11 @@ import { Certifications } from './components/Certifications';
 import { GitHubSection } from './components/GitHubSection';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
+import { ThemeProvider } from './utils/themeContext';
+import { MediaViewerProvider } from './utils/mediaViewerContext';
+import { PictureViewerModal } from './components/PictureViewerModal';
 
-export default function App() {
+function PortfolioApp() {
   const [activeSection, setActiveSection] = useState<string>('home');
 
   useEffect(() => {
@@ -54,14 +57,29 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased selection:bg-blue-600 selection:text-white relative overflow-x-hidden">
-      {/* Ambient background light orbs for Frosted Glass diffusion */}
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col antialiased selection:bg-blue-600 selection:text-white relative overflow-x-hidden transition-colors duration-300">
+      {/* Ambient background light orbs for Frosted Glass diffusion (powered by CSS variables) */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-32 -left-20 w-[550px] h-[550px] rounded-full bg-blue-100/60 blur-3xl opacity-70" />
-        <div className="absolute top-[18%] -right-28 w-[500px] h-[500px] rounded-full bg-indigo-100/50 blur-3xl opacity-60" />
-        <div className="absolute top-[42%] left-[10%] w-[450px] h-[450px] rounded-full bg-sky-100/40 blur-3xl opacity-50" />
-        <div className="absolute top-[68%] -right-20 w-[600px] h-[600px] rounded-full bg-blue-100/50 blur-3xl opacity-60" />
-        <div className="absolute bottom-0 left-[20%] w-[500px] h-[500px] rounded-full bg-indigo-100/40 blur-3xl opacity-50" />
+        <div
+          className="absolute -top-32 -left-20 w-[550px] h-[550px] rounded-full blur-3xl transition-all duration-700"
+          style={{ backgroundColor: 'var(--ambient-orb-1)', opacity: 'var(--ambient-orb-opacity)' }}
+        />
+        <div
+          className="absolute top-[18%] -right-28 w-[500px] h-[500px] rounded-full blur-3xl transition-all duration-700"
+          style={{ backgroundColor: 'var(--ambient-orb-2)', opacity: 'var(--ambient-orb-opacity)' }}
+        />
+        <div
+          className="absolute top-[42%] left-[10%] w-[450px] h-[450px] rounded-full blur-3xl transition-all duration-700"
+          style={{ backgroundColor: 'var(--ambient-orb-3)', opacity: 'var(--ambient-orb-opacity)' }}
+        />
+        <div
+          className="absolute top-[68%] -right-20 w-[600px] h-[600px] rounded-full blur-3xl transition-all duration-700"
+          style={{ backgroundColor: 'var(--ambient-orb-1)', opacity: 'var(--ambient-orb-opacity)' }}
+        />
+        <div
+          className="absolute bottom-0 left-[20%] w-[500px] h-[500px] rounded-full blur-3xl transition-all duration-700"
+          style={{ backgroundColor: 'var(--ambient-orb-2)', opacity: 'var(--ambient-orb-opacity)' }}
+        />
       </div>
 
       {/* Sticky Navigation */}
@@ -84,7 +102,21 @@ export default function App() {
       <div className="relative z-10">
         <Footer />
       </div>
+
+      {/* Media Viewer Lightbox */}
+      <PictureViewerModal />
     </div>
   );
 }
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <MediaViewerProvider>
+        <PortfolioApp />
+      </MediaViewerProvider>
+    </ThemeProvider>
+  );
+}
+
 

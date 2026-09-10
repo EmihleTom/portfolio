@@ -54,6 +54,7 @@ export const AddCertificationModal: React.FC<AddCertificationModalProps> = ({
     skills: string;
     idPrefix: string;
     date?: string;
+    credentialUrl?: string;
   }) => {
     setName(preset.name);
     setProvider(preset.provider);
@@ -62,6 +63,9 @@ export const AddCertificationModal: React.FC<AddCertificationModalProps> = ({
     setCredentialId(preset.idPrefix);
     if (preset.date) {
       setDate(preset.date);
+    }
+    if (preset.credentialUrl !== undefined) {
+      setCredentialUrl(preset.credentialUrl);
     }
   };
 
@@ -213,6 +217,7 @@ export const AddCertificationModal: React.FC<AddCertificationModalProps> = ({
                       focus: 'Operating Systems, System Administration, Security & Troubleshooting',
                       skills: 'Helpdesk Support, Active Directory, Linux & Windows CLI, Hardware Diagnostics, Customer Service',
                       idPrefix: 'GOOG-IT-642109',
+                      credentialUrl: 'https://www.coursera.org/professional-certificates/google-it-support',
                     })
                   }
                   className="px-2.5 py-1 text-xs rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/60 font-medium transition-colors"
