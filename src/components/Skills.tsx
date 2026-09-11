@@ -23,19 +23,19 @@ export const Skills: React.FC = () => {
   const getCategoryIcon = (id: string) => {
     switch (id) {
       case 'programming-languages':
-        return <Code className="w-5 h-5 text-blue-600" />;
+        return <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
       case 'web-technologies':
-        return <Globe className="w-5 h-5 text-blue-600" />;
+        return <Globe className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
       case 'databases':
-        return <Database className="w-5 h-5 text-blue-600" />;
+        return <Database className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
       case 'ai-technology':
-        return <Bot className="w-5 h-5 text-blue-600" />;
+        return <Bot className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
       case 'it-support':
-        return <Network className="w-5 h-5 text-blue-600" />;
+        return <Network className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
       case 'software-tools':
-        return <Wrench className="w-5 h-5 text-blue-600" />;
+        return <Wrench className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
       default:
-        return <Sparkles className="w-5 h-5 text-blue-600" />;
+        return <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
     }
   };
 

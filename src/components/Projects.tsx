@@ -320,19 +320,19 @@ export const Projects: React.FC = () => {
             </div>
           </div>
         ) : (
-            <div className="frosted-glass-card bento-item rounded-3xl border border-white/80 p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-xs">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mx-auto mb-4 shadow-2xs">
+            <div className="frosted-glass-card bento-item rounded-3xl border border-white/80 dark:border-white/10 p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-xs">
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mx-auto mb-4 shadow-2xs">
                 <FolderGit2 className="w-7 h-7" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-slate-950 mb-2">Technical Projects & Repositories</h3>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-950 dark:text-white mb-2">Technical Projects & Repositories</h3>
+              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
                 Active software developments, technical labs, and system builds are available directly on GitHub.
               </p>
               <a
                 href={personalInfo.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-900 text-white hover:bg-blue-600 font-semibold text-xs transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-900 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-500 font-semibold text-xs transition-colors shadow-xs"
               >
                 <Github className="w-4 h-4" />
                 <span>Explore GitHub Repositories</span>
@@ -348,7 +348,7 @@ export const Projects: React.FC = () => {
                 key={`${project.id || 'proj'}-${index}`}
                 id={`project-card-${project.id}`}
                 delay={index * 0.08}
-                className="lg:col-span-8 frosted-glass-card bento-item rounded-3xl border border-white/80 overflow-hidden shadow-xs hover:border-blue-200 transition-all flex flex-col justify-between"
+                className="lg:col-span-8 frosted-glass-card bento-item rounded-3xl border border-white/80 dark:border-white/10 overflow-hidden shadow-xs hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col justify-between"
               >
                 {/* Project Preview Canvas */}
                 <div className="relative aspect-video min-h-[220px] sm:min-h-[260px] w-full bg-slate-950 overflow-hidden group">

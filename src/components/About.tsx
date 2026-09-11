@@ -287,7 +287,7 @@ export const About: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -6 }}
                       transition={{ duration: 0.25 }}
-                      className="space-y-4 text-slate-700 leading-relaxed text-base"
+                      className="space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed text-base"
                     >
                       {bioParagraphs.length > 0 ? (
                         bioParagraphs.map((paragraph, idx) => renderParagraph(paragraph, idx))

@@ -179,9 +179,9 @@ export const Hero: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="lg:col-span-8 frosted-glass-card bento-item p-8 sm:p-10 relative overflow-hidden flex flex-col justify-center border border-white/70 shadow-sm"
+            className="lg:col-span-8 frosted-glass-card bento-item p-8 sm:p-10 relative overflow-hidden flex flex-col justify-center border border-white/80 dark:border-white/10 shadow-sm"
           >
-            {/* Ambient soft blue blur light inside card */}
+            {/* Ambient soft light shimmer inside card */}
             <motion.div
               animate={{
                 scale: [1, 1.08, 1],
@@ -192,71 +192,71 @@ export const Hero: React.FC = () => {
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
-              className="absolute -right-12 -top-12 w-64 h-64 bg-blue-100/70 rounded-full blur-3xl pointer-events-none"
+              className="absolute -right-12 -top-12 w-64 h-64 bg-blue-200/40 dark:bg-blue-900/30 rounded-full blur-3xl pointer-events-none"
             />
 
             {/* Status / Availability Badge */}
             <motion.div variants={itemVariants} className="self-start mb-6">
               <div
                 id="hero-status-pill"
-                className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full frosted-pill shadow-2xs text-xs font-semibold text-slate-700 hover:border-blue-200 transition-colors"
+                className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full frosted-pill shadow-2xs text-xs font-semibold text-slate-700 dark:text-slate-200 hover:border-blue-300 dark:hover:border-blue-500/40 transition-colors"
               >
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <span className="font-mono text-xs text-slate-800">{personalInfo.status}</span>
+                <span className="font-mono text-xs text-slate-800 dark:text-slate-100">{personalInfo.status}</span>
               </div>
             </motion.div>
 
             {/* Sub-label */}
             <motion.div variants={itemVariants} className="flex items-center gap-2 mb-2">
-              <span className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+              <span className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 font-bold">
                 Professional Tech Portfolio
               </span>
-              <span className="h-px w-6 bg-slate-300"></span>
-              <span className="text-xs text-slate-500 font-medium">{personalInfo.location}</span>
+              <span className="h-px w-6 bg-slate-300 dark:bg-slate-700"></span>
+              <span className="text-xs text-slate-600 dark:text-slate-300 font-medium">{personalInfo.location}</span>
             </motion.div>
 
             {/* Main Display Name */}
             <motion.h1
               variants={itemVariants}
               id="hero-name-display"
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-950 mb-3"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-950 dark:text-white mb-3"
             >
               {personalInfo.name}
             </motion.h1>
 
-            {/* Professional Tagline in Blue */}
+            {/* Professional Tagline with Distinct Chromatic Badges */}
             <motion.p
               variants={itemVariants}
               id="hero-tagline"
-              className="text-base sm:text-xl text-blue-600 font-medium mb-4 flex flex-wrap items-center gap-2"
+              className="text-base sm:text-xl font-medium mb-4 flex flex-wrap items-center gap-2"
             >
               <motion.span
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-1.5 bg-blue-50/90 text-blue-700 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold border border-blue-200/60 shadow-2xs cursor-default transition-colors hover:bg-blue-100/90"
+                className="inline-flex items-center gap-1.5 bg-sky-50/90 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 px-3.5 py-1 rounded-full text-xs sm:text-sm font-semibold border border-sky-200/80 dark:border-sky-700/50 shadow-2xs cursor-default transition-all hover:bg-sky-100/90 dark:hover:bg-sky-900/60"
               >
-                <Network className="w-3.5 h-3.5 text-blue-600" />
+                <Network className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
                 Cisco IT Specialist
               </motion.span>
-              <span className="text-slate-300">|</span>
+              <span className="text-slate-300 dark:text-slate-700">|</span>
               <motion.span
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-1.5 bg-blue-50/90 text-blue-700 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold border border-blue-200/60 shadow-2xs cursor-default transition-colors hover:bg-blue-100/90"
+                className="inline-flex items-center gap-1.5 bg-indigo-50/90 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 px-3.5 py-1 rounded-full text-xs sm:text-sm font-semibold border border-indigo-200/80 dark:border-indigo-700/50 shadow-2xs cursor-default transition-all hover:bg-indigo-100/90 dark:hover:bg-indigo-900/60"
               >
-                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
                 CAPACITI IT Support
               </motion.span>
-              <span className="text-slate-300">|</span>
+              <span className="text-slate-300 dark:text-slate-700">|</span>
               <motion.span
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-1.5 bg-blue-50/90 text-blue-700 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold border border-blue-200/60 shadow-2xs cursor-default transition-colors hover:bg-blue-100/90"
+                className="inline-flex items-center gap-1.5 bg-emerald-50/90 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-3.5 py-1 rounded-full text-xs sm:text-sm font-semibold border border-emerald-200/80 dark:border-emerald-700/50 shadow-2xs cursor-default transition-all hover:bg-emerald-100/90 dark:hover:bg-emerald-900/60"
               >
-                <Code2 className="w-3.5 h-3.5 text-blue-600" />
+                <Code2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 Software & Web Developer
               </motion.span>
             </motion.p>
@@ -265,7 +265,7 @@ export const Hero: React.FC = () => {
             <motion.p
               variants={itemVariants}
               id="hero-intro-text"
-              className="text-base sm:text-lg text-slate-600 leading-relaxed mb-6 max-w-xl"
+              className="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6 max-w-xl"
             >
               {personalInfo.summary || 'Cisco IT Specialist and aspiring software developer based in Cape Town. Combining hands-on network infrastructure and systems diagnostics with modern web development in Python, JavaScript, and React.'}
             </motion.p>
@@ -325,9 +325,9 @@ export const Hero: React.FC = () => {
                 whileTap={{ scale: 0.97 }}
                 id="hero-btn-contact-me"
                 href="#contact"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/80 border border-slate-200/80 text-slate-800 font-semibold text-sm hover:bg-white hover:border-slate-300 transition-all active:scale-95 shadow-2xs backdrop-blur-sm"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full frosted-pill border border-slate-200/80 dark:border-white/10 text-slate-800 dark:text-slate-100 font-semibold text-sm hover:border-blue-300 dark:hover:border-blue-400 transition-all active:scale-95 shadow-2xs"
               >
-                <Mail className="w-4 h-4 text-blue-600" />
+                <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span>Contact Me</span>
               </motion.a>
 
@@ -338,7 +338,7 @@ export const Hero: React.FC = () => {
                 href={personalInfo.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center p-3 rounded-full bg-white/80 border border-slate-200/80 text-slate-700 hover:text-blue-600 hover:border-blue-200 transition-colors shadow-2xs"
+                className="inline-flex items-center justify-center p-3 rounded-full frosted-pill border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-400 transition-colors shadow-2xs"
                 title="View GitHub Profile (@EmihleTom)"
                 aria-label="GitHub Profile"
               >
@@ -347,20 +347,20 @@ export const Hero: React.FC = () => {
             </motion.div>
 
             {/* Direct Email Quick Copy Pill */}
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full frosted-pill text-xs text-slate-600 shadow-2xs self-start hover:border-slate-300 transition-colors">
-              <span className="font-mono text-slate-400 select-none">email:</span>
-              <span className="font-mono text-slate-800 select-all font-medium">{personalInfo.email}</span>
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full frosted-pill text-xs text-slate-700 dark:text-slate-300 shadow-2xs self-start hover:border-blue-300 dark:hover:border-blue-400 transition-colors">
+              <span className="font-mono text-slate-500 dark:text-slate-400 select-none">email:</span>
+              <span className="font-mono text-slate-900 dark:text-slate-100 select-all font-semibold">{personalInfo.email}</span>
               <button
                 id="hero-copy-email-btn"
                 onClick={copyEmail}
                 type="button"
-                className="flex items-center gap-1 pl-2 text-slate-500 hover:text-blue-600 border-l border-slate-200 transition-colors cursor-pointer"
+                className="flex items-center gap-1 pl-2 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 border-l border-slate-200 dark:border-white/10 transition-colors cursor-pointer"
                 title="Copy email to clipboard"
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-600 font-semibold">Copied</span>
+                    <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Copied</span>
                   </>
                 ) : (
                   <>
@@ -377,13 +377,16 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-4 frosted-glass-card bento-item p-6 sm:p-8 flex flex-col items-center justify-center text-center border border-white/70 shadow-sm relative"
+            className="lg:col-span-4 frosted-glass-card bento-item p-6 sm:p-8 flex flex-col items-center justify-center text-center border border-white/80 dark:border-white/10 shadow-sm relative overflow-hidden"
           >
-            {/* Locked-in Official Portrait Container */}
+            {/* Ambient soft glow inside right card */}
+            <div className="absolute -top-16 -left-16 w-48 h-48 bg-indigo-100/60 dark:bg-indigo-900/20 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Locked-in Official Portrait Container with Specular Ring */}
             <div
               id="hero-locked-profile-card"
               onClick={() => openPictureViewer(photo, `${personalInfo.name} - Official Portrait`, personalInfo.tagline)}
-              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 border-2 border-white dark:border-white/20 shadow-md flex items-center justify-center overflow-hidden cursor-pointer group hover:shadow-xl transition-all"
+              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 border-2 border-white dark:border-white/20 shadow-md ring-1 ring-black/5 dark:ring-white/10 flex items-center justify-center overflow-hidden cursor-pointer group hover:shadow-xl hover:scale-[1.02] transition-all"
               title="Click to view full portrait"
             >
               <img
@@ -429,20 +432,20 @@ export const Hero: React.FC = () => {
             </a>
 
             {/* Quick Status Badges */}
-            <div className="w-full pt-4 border-t border-slate-200/60 dark:border-white/10 text-xs text-slate-500 dark:text-slate-400 flex flex-col gap-2">
-              <div className="flex items-center justify-center gap-2 frosted-pill py-1.5 px-3 rounded-full border border-white/80 dark:border-white/10 shadow-2xs">
+            <div className="w-full pt-4 border-t border-slate-200/60 dark:border-white/10 text-xs text-slate-600 dark:text-slate-400 flex flex-col gap-2">
+              <div className="flex items-center justify-center gap-2 frosted-pill py-1.5 px-3 rounded-full border border-slate-200/60 dark:border-white/10 shadow-2xs font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 <span>Available for Opportunities</span>
               </div>
-              <div className="flex items-center justify-center gap-2 frosted-pill py-1.5 px-3 rounded-full border border-white/80 dark:border-white/10 shadow-2xs">
+              <div className="flex items-center justify-center gap-2 frosted-pill py-1.5 px-3 rounded-full border border-slate-200/60 dark:border-white/10 shadow-2xs font-medium">
                 <span>{personalInfo.location}</span>
               </div>
             </div>
 
             {/* Tag */}
-            <div className="mt-4 pt-3 border-t border-slate-200/50 w-full flex items-center justify-between text-[11px] font-mono text-slate-400">
+            <div className="mt-4 pt-3 border-t border-slate-200/50 dark:border-white/10 w-full flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
               <span>College of Cape Town</span>
-              <span className="text-blue-600 font-semibold">2025</span>
+              <span className="text-blue-600 dark:text-blue-400 font-semibold">2025</span>
             </div>
           </motion.div>
         </div>

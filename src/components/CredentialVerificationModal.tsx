@@ -48,6 +48,17 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
     };
   }, [isOpen, setIsViewingCertificate]);
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !certification) return null;
 
   const certConfig = getCertificateConfig(certification);
@@ -118,9 +129,22 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
       role="dialog"
       aria-modal="true"
       aria-labelledby="verification-dialog-title"
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200 overscroll-contain"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      onWheel={(e) => {
+        if (e.target === e.currentTarget) {
+          e.preventDefault();
+        }
+      }}
     >
-      <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div 
+        className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] overscroll-contain"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Verification Top Header */}
         <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 p-5 sm:p-6 text-white relative border-b border-white/10">
           <button
@@ -186,7 +210,10 @@ export const CredentialVerificationModal: React.FC<CredentialVerificationModalPr
         </div>
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-800 dark:text-slate-200 text-sm space-y-5 bg-slate-50/50 dark:bg-slate-950/40">
+        <div 
+          data-scrollable="true"
+          className="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-800 dark:text-slate-200 text-sm space-y-5 bg-slate-50/50 dark:bg-slate-950/40 overscroll-contain"
+        >
           {activeTab === 'certificate' ? (
             /* Institutional Digital Certificate Graphic - Crisp, High-End Canvas */
             <div className="rounded-2xl border-2 border-slate-200/90 dark:border-white/10 bg-white dark:bg-slate-900/90 p-6 sm:p-8 shadow-sm relative overflow-hidden text-center select-text transition-all">

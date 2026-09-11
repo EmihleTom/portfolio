@@ -14,8 +14,11 @@ export const PictureViewerModal: React.FC = () => {
         role="dialog"
         aria-modal="true"
         aria-label="Full-screen image viewer"
-        className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-xl animate-in fade-in duration-200"
+        className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-xl animate-in fade-in duration-200 overscroll-contain"
         onClick={closePictureViewer}
+        onWheel={(e) => {
+          e.preventDefault();
+        }}
       >
         {/* Floating Top Close & Info Bar */}
         <div className="absolute top-4 sm:top-6 left-4 right-4 sm:left-6 sm:right-6 flex items-center justify-between pointer-events-auto z-10">

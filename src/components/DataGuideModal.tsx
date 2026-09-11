@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { HelpCircle, X, Check, Copy, FileText, ChevronRight, Sparkles, RefreshCw } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
+import { useMediaViewer } from '../utils/mediaViewerContext';
 
 export const DataGuideModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const { resetToDefaults, isEditMode } = usePortfolioData();
+  const { isViewing } = useMediaViewer();
   const [resetConfirm, setResetConfirm] = useState(false);
 
-  if (!isEditMode) {
+  if (!isEditMode || isViewing) {
     return null;
   }
 

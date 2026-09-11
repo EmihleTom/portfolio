@@ -33,20 +33,46 @@ export const MediaViewerProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setPictureData(null);
   };
 
-  // Lock body scroll and update document attributes when viewing media
+  // Lock body and html scroll completely when viewing media (certificates or pictures)
   useEffect(() => {
     if (isViewing) {
-      document.body.classList.add('media-viewing-active');
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.classList.remove('media-viewing-active');
-      document.body.style.overflow = '';
-    }
+      // Calculate scrollbar width to prevent page shift
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 
-    return () => {
-      document.body.classList.remove('media-viewing-active');
-      document.body.style.overflow = '';
-    };
+      document.documentElement.classList.add('media-viewing-active');
+      document.body.classList.add('media-viewing-active');
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overscrollBehavior = 'none';
+      document.body.style.overscrollBehavior = 'none';
+
+      if (scrollBarWidth > 0) {
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
+      }
+
+      // Intercept wheel/touch events on background
+      const handleTouchMove = (e: TouchEvent) => {
+        const target = e.target as HTMLElement | null;
+        if (!target) return;
+        const scrollable = target.closest('[data-scrollable="true"], .overflow-y-auto');
+        if (!scrollable) {
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+      return () => {
+        document.documentElement.classList.remove('media-viewing-active');
+        document.body.classList.remove('media-viewing-active');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        document.documentElement.style.overscrollBehavior = '';
+        document.body.style.overscrollBehavior = '';
+        document.body.style.paddingRight = '';
+        window.removeEventListener('touchmove', handleTouchMove);
+      };
+    }
   }, [isViewing]);
 
   // Close picture viewer on Escape key

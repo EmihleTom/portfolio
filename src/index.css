@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
 
 @theme {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -55,14 +55,15 @@
   --nav-unscrolled-bg: rgba(255, 255, 255, 0.65);
   --nav-border: rgba(255, 255, 255, 0.65);
 
-  /* Ambient Diffusion Orbs */
-  --ambient-orb-1: rgba(191, 219, 254, 0.6);
-  --ambient-orb-2: rgba(224, 231, 255, 0.5);
-  --ambient-orb-3: rgba(186, 230, 253, 0.4);
-  --ambient-orb-opacity: 0.7;
+  /* Ambient Diffusion Orbs (Vibrant Prismatic Light Spectrum) */
+  --ambient-orb-1: rgba(56, 189, 248, 0.36);  /* radiant azure cyan */
+  --ambient-orb-2: rgba(129, 140, 248, 0.30); /* soft royal violet */
+  --ambient-orb-3: rgba(52, 211, 153, 0.24);  /* mint teal spark */
+  --ambient-orb-4: rgba(251, 146, 60, 0.18);  /* gentle sunset peach */
+  --ambient-orb-opacity: 0.85;
 
   /* Tech Grid */
-  --grid-dot-color: rgba(148, 163, 184, 0.18);
+  --grid-dot-color: rgba(59, 130, 246, 0.14);
 
   /* Scrollbar */
   --scrollbar-track: #f8fafc;
@@ -119,6 +120,7 @@
   --ambient-orb-1: rgba(37, 99, 235, 0.22);
   --ambient-orb-2: rgba(99, 102, 241, 0.18);
   --ambient-orb-3: rgba(14, 165, 233, 0.16);
+  --ambient-orb-4: rgba(236, 72, 153, 0.12);
   --ambient-orb-opacity: 0.85;
 
   /* Tech Grid */
@@ -128,6 +130,54 @@
   --scrollbar-track: #0b0f17;
   --scrollbar-thumb: #334155;
   --scrollbar-thumb-hover: #475569;
+}
+
+/* ==========================================================================
+   Ambient Floating Orb Animations
+   ========================================================================== */
+@keyframes ambient-float-1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(45px, -35px) scale(1.08);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.96);
+  }
+}
+
+@keyframes ambient-float-2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-40px, 35px) scale(1.06);
+  }
+  66% {
+    transform: translate(30px, -40px) scale(0.95);
+  }
+}
+
+@keyframes ambient-float-3 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(35px, 45px) scale(1.1);
+  }
+}
+
+.animate-ambient-1 {
+  animation: ambient-float-1 22s ease-in-out infinite;
+}
+
+.animate-ambient-2 {
+  animation: ambient-float-2 26s ease-in-out infinite;
+}
+
+.animate-ambient-3 {
+  animation: ambient-float-3 19s ease-in-out infinite;
 }
 
 /* ==========================================================================
@@ -145,32 +195,54 @@
 
 .frosted-glass-card {
   background: var(--frosted-card-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
   border: 1px solid var(--frosted-card-border);
   box-shadow: var(--frosted-card-shadow);
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light mode card elevation and refined specular sheen */
+:root:not(.dark):not([data-theme="dark"]) .frosted-glass-card {
+  box-shadow: 
+    0 1px 0 0 rgba(255, 255, 255, 0.95) inset,
+    0 8px 24px -4px rgba(15, 23, 42, 0.04),
+    0 2px 6px -1px rgba(15, 23, 42, 0.02);
+}
+
+:root:not(.dark):not([data-theme="dark"]) .frosted-glass-card:hover {
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 
+    0 1px 0 0 #ffffff inset,
+    0 16px 36px -8px rgba(37, 99, 235, 0.09),
+    0 4px 12px -2px rgba(15, 23, 42, 0.03);
 }
 
 .frosted-glass-subtle {
   background: var(--frosted-subtle-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--frosted-subtle-border);
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .frosted-pill {
   background: var(--frosted-pill-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--frosted-pill-border);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+:root:not(.dark):not([data-theme="dark"]) .frosted-pill {
+  box-shadow: 
+    0 1px 0 0 rgba(255, 255, 255, 0.95) inset,
+    0 2px 6px -1px rgba(15, 23, 42, 0.03);
 }
 
 .bento-item {
   border-radius: 1.5rem;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 /* Tech grid background pattern using variable */
@@ -182,6 +254,14 @@
 .bg-tech-grid-dense {
   background-image: radial-gradient(var(--grid-dot-color) 1px, transparent 1px);
   background-size: 16px 16px;
+}
+
+/* Architectural blueprint canvas layer */
+.blueprint-canvas-light {
+  background-image: 
+    radial-gradient(rgba(59, 130, 246, 0.12) 1.25px, transparent 1.25px),
+    radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 65%);
+  background-size: 28px 28px, 100% 100%;
 }
 
 /* Base document setup */
@@ -229,11 +309,11 @@ body {
 }
 
 .dark .text-slate-500 {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
 .dark .text-slate-400 {
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .dark .bg-slate-50 {
@@ -244,8 +324,20 @@ body {
   background-color: var(--bg-tertiary);
 }
 
-.dark .bg-white {
+.dark .bg-white:not(.logo-plate) {
   background-color: var(--bg-secondary);
+}
+
+/* Institutional and Provider Logo Plates: ALWAYS keep on crisp white plate for brand fidelity */
+.logo-plate,
+.dark .logo-plate,
+[data-theme="dark"] .logo-plate {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+.logo-plate img {
+  filter: none !important;
 }
 
 .dark .border-slate-100,
@@ -265,10 +357,45 @@ body {
   border-color: var(--frosted-border);
 }
 
+.dark .bg-white\/95,
+.dark .bg-white\/90,
 .dark .bg-white\/80,
 .dark .bg-white\/70,
 .dark .bg-white\/65 {
   background-color: var(--frosted-pill-bg);
+}
+
+/* Semantic Badges in Dark Mode */
+.dark .bg-blue-50 {
+  background-color: rgba(30, 58, 138, 0.45);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.dark .bg-emerald-50 {
+  background-color: rgba(6, 78, 59, 0.45);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.dark .bg-amber-50 {
+  background-color: rgba(120, 53, 15, 0.45);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+/* Modal & Media Viewer Scroll-Locking to completely stop background scrolling */
+html.media-viewing-active,
+body.media-viewing-active {
+  overflow: hidden !important;
+  height: 100% !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+html.media-viewing-active [role="dialog"] .overflow-y-auto {
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
 }
 
 .dark .shadow-2xs,
