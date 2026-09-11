@@ -348,7 +348,9 @@ export const Projects: React.FC = () => {
                 key={`${project.id || 'proj'}-${index}`}
                 id={`project-card-${project.id}`}
                 delay={index * 0.08}
-                className="lg:col-span-8 frosted-glass-card bento-item rounded-3xl border border-white/80 dark:border-white/10 overflow-hidden shadow-xs hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col justify-between"
+                className={`${
+                  projectsList.length === 1 ? 'lg:col-span-8' : 'lg:col-span-6'
+                } frosted-glass-card bento-item rounded-3xl border border-white/80 dark:border-white/10 overflow-hidden shadow-xs hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col justify-between`}
               >
                 {/* Project Preview Canvas */}
                 <div className="relative aspect-video min-h-[220px] sm:min-h-[260px] w-full bg-slate-950 overflow-hidden group">
@@ -567,18 +569,22 @@ export const Projects: React.FC = () => {
               </SectionReveal>
             ))}
 
-            {/* Right Column: Project Slot & Add Action */}
+            {/* Right/Bottom Column: Project Slot & Add Action */}
             <SectionReveal
               delay={0.12}
-              className="lg:col-span-4 flex flex-col justify-between gap-6"
+              className={`${
+                projectsList.length === 1 ? 'lg:col-span-4' : 'lg:col-span-12'
+              } flex flex-col justify-between gap-6`}
             >
               <div
                 id="projects-future-card"
-                className="frosted-glass-card bento-item rounded-3xl border border-white/80 p-6 flex flex-col justify-between h-full shadow-2xs"
+                className={`frosted-glass-card bento-item rounded-3xl border border-white/80 dark:border-white/10 p-6 sm:p-8 flex flex-col ${
+                  projectsList.length > 1 ? 'md:flex-row md:items-center' : ''
+                } justify-between h-full shadow-2xs gap-6`}
               >
                 {isEditMode ? (
                   <>
-                    <div>
+                    <div className={projectsList.length > 1 ? 'max-w-2xl' : ''}>
                       <div className="w-10 h-10 rounded-2xl bg-blue-50/90 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4 shadow-2xs">
                         <PlusCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       </div>
@@ -602,7 +608,7 @@ export const Projects: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100/80 dark:border-white/10 space-y-2">
+                    <div className={`pt-4 ${projectsList.length > 1 ? 'md:pt-0 md:border-t-0 md:border-l md:pl-8 border-slate-100/80 dark:border-white/10 shrink-0 min-w-[220px]' : 'border-t border-slate-100/80 dark:border-white/10'} space-y-2`}>
                       <button
                         type="button"
                         onClick={() => handleOpenAdd()}
@@ -624,7 +630,7 @@ export const Projects: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <div>
+                    <div className={projectsList.length > 1 ? 'max-w-2xl' : ''}>
                       <div className="w-10 h-10 rounded-2xl bg-blue-50/90 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4 shadow-2xs">
                         <Github className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       </div>
@@ -646,7 +652,7 @@ export const Projects: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100/80 dark:border-white/10">
+                    <div className={`pt-4 ${projectsList.length > 1 ? 'md:pt-0 md:border-t-0 md:border-l md:pl-8 border-slate-100/80 dark:border-white/10 shrink-0 min-w-[220px]' : 'border-t border-slate-100/80 dark:border-white/10'}`}>
                       <a
                         href={personalInfo.githubUrl}
                         target="_blank"

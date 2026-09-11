@@ -146,6 +146,25 @@ export const projectsList: ProjectItem[] = [
     screenshotUrl: '/projects/ai-productivity-assistant.jpg',
     isPlaceholder: false,
   },
+  {
+    id: 'emihletom-portfolio',
+    name: 'Personal Tech Portfolio',
+    role: 'Full-Stack Developer & Systems Specialist',
+    description:
+      'The official responsive personal portfolio and technical showcase engineered to display Cisco IT specializations, full-stack applications, hardware diagnostics, and interactive systems with modern UI aesthetics.',
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Motion', 'Lucide React'],
+    keyFeatures: [
+      'Modern responsive UI with glassmorphism aesthetics, Bento grid architecture, and dark mode',
+      'Interactive project showcase with direct GitHub repository synchronization',
+      'Verified Cisco IT and technical credentials showcase with direct validation',
+      'Live contact messaging with 24-hour SAST timezone clock and CV download system',
+      'Client-side state persistence engine with automated schema migration',
+    ],
+    githubUrl: 'https://github.com/EmihleTom/portfolio',
+    liveUrl: 'https://emihle-emihle-tom-portfolio.ai.studio',
+    screenshotUrl: '/projects/portfolio-showcase.jpg?v=2',
+    isPlaceholder: false,
+  },
 ];
 
 export const experienceList: ExperienceItem[] = [

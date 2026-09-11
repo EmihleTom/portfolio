@@ -28,8 +28,10 @@ export interface PortfolioState {
   digitalBadgesList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v26';
+const STORAGE_KEY = 'emihle_portfolio_state_v28';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v27',
+  'emihle_portfolio_state_v26',
   'emihle_portfolio_state_v25',
   'emihle_portfolio_state_v24',
   'emihle_portfolio_state_v23',
@@ -488,7 +490,7 @@ function getInitialState(): PortfolioState {
         loadedSkillCategories = defaultSkillCategories;
       }
 
-      // Remove dummy project (portfolio-v1) if present and ensure authentic GitHub project is included
+      // Remove dummy project (portfolio-v1) if present and ensure authentic GitHub projects are included
       let loadedProjects = parsed.projectsList;
       if (loadedProjects && Array.isArray(loadedProjects) && loadedProjects.length > 0) {
         loadedProjects = loadedProjects
@@ -497,18 +499,25 @@ function getInitialState(): PortfolioState {
             const defaultMatch = defaultProjectsList.find(
               (d) => d.id === p.id || d.name.toLowerCase() === p.name.toLowerCase()
             );
+            if (p.id === 'emihletom-portfolio' || p.name.toLowerCase().includes('portfolio')) {
+              return { ...p, screenshotUrl: '/projects/portfolio-showcase.jpg?v=2' };
+            }
             if (defaultMatch?.screenshotUrl && (!p.screenshotUrl || p.screenshotUrl === '')) {
               return { ...p, screenshotUrl: defaultMatch.screenshotUrl };
             }
             return p;
           });
-        const hasGithubProject = loadedProjects.some(
-          (p: ProjectItem) =>
-            p.id === 'ai-productivity-assistant' ||
-            p.githubUrl?.toLowerCase().includes('ai-productivity-assistant')
-        );
-        if (!hasGithubProject && defaultProjectsList.length > 0) {
-          loadedProjects = [...defaultProjectsList, ...loadedProjects];
+
+        for (const defProject of defaultProjectsList) {
+          const exists = loadedProjects.some(
+            (p: ProjectItem) =>
+              p.id === defProject.id ||
+              p.githubUrl?.toLowerCase() === defProject.githubUrl?.toLowerCase() ||
+              p.name.toLowerCase() === defProject.name.toLowerCase()
+          );
+          if (!exists) {
+            loadedProjects.push(defProject);
+          }
         }
       } else {
         loadedProjects = defaultProjectsList;
