@@ -28,8 +28,9 @@ export interface PortfolioState {
   digitalBadgesList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v25';
+const STORAGE_KEY = 'emihle_portfolio_state_v26';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v25',
   'emihle_portfolio_state_v24',
   'emihle_portfolio_state_v23',
   'emihle_portfolio_state_v22',
@@ -397,11 +398,13 @@ function getInitialState(): PortfolioState {
       // Ensure all credentials from defaultCertificationsList are merged in
       let loadedCertifications = parsed.certificationsList;
       if (loadedCertifications && Array.isArray(loadedCertifications)) {
-        // Exclude removed Artificial Intelligence Bootcamp badge
+        // Exclude removed Artificial Intelligence Bootcamp badge & Google IT Support certificate
         loadedCertifications = loadedCertifications.filter(
           (cert: CertificationItem) =>
             cert.id !== 'cert-coursera-ai-bootcamp-badge' &&
-            !cert.name?.toLowerCase().includes('artificial intelligence bootcamp')
+            !cert.name?.toLowerCase().includes('artificial intelligence bootcamp') &&
+            cert.id !== 'cert-google-it-support' &&
+            !cert.name?.toLowerCase().includes('google it support')
         );
 
         // Map existing with latest info and ensure all default fields are up-to-date
@@ -427,12 +430,6 @@ function getInitialState(): PortfolioState {
             updatedCert.provider.toLowerCase().includes('capaciti')
           ) {
             delete (updatedCert as any).credentialUrl;
-          }
-          if (
-            updatedCert.id === 'cert-google-it-support' ||
-            updatedCert.name.toLowerCase().includes('google it support')
-          ) {
-            updatedCert.credentialUrl = 'https://www.coursera.org/professional-certificates/google-it-support';
           }
           let logoUrl = updatedCert.logoUrl;
           if (!logoUrl) {

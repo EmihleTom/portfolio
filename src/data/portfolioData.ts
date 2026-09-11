@@ -543,27 +543,6 @@ export const certificationsList: CertificationItem[] = [
       'TCP/IP & OSI Model',
     ],
   },
-  {
-    id: 'cert-google-it-support',
-    name: 'Google IT Support Professional Certificate',
-    provider: 'Google / Coursera',
-    category: 'Professional Certificate',
-    recipientName: 'Emihle Liyema Tom',
-    focus: 'Operating Systems, System Administration, Security & Troubleshooting',
-    date: '2025',
-    credentialId: 'GOOG-IT-642109',
-    credentialUrl: 'https://www.coursera.org/professional-certificates/google-it-support',
-    badgeType: 'google',
-    issuerLogoPlaceholder: 'Google',
-    logoUrl: '/logos/google-logo.svg',
-    skillsVerified: [
-      'Helpdesk Support',
-      'Active Directory',
-      'Linux & Windows CLI',
-      'Hardware Diagnostics',
-      'Customer Service',
-    ],
-  },
 
   // 2024 - Secondary Education Qualification
   {
