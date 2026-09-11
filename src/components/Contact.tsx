@@ -75,13 +75,14 @@ export const Contact: React.FC = () => {
             ? personalInfo.timezoneOffsetMinutes
             : -10;
         const now = new Date(Date.now() + offsetMinutes * 60 * 1000);
-        const timeString = new Intl.DateTimeFormat('en-ZA', {
+        const timeString = new Intl.DateTimeFormat('en-GB', {
           timeZone: 'Africa/Johannesburg',
           hour: '2-digit',
           minute: '2-digit',
-          hour12: true,
+          hour12: false,
+          hourCycle: 'h23',
         }).format(now);
-        setCurrentTime(timeString.toUpperCase());
+        setCurrentTime(timeString);
       } catch {
         setCurrentTime('SAST (UTC+2)');
       }
