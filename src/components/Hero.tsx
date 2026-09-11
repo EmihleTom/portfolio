@@ -17,8 +17,6 @@ import {
 import { usePortfolioData } from '../utils/portfolioStore';
 import { useProfilePhoto } from '../utils/photoStorage';
 import { downloadResumePDF } from '../utils/generateResume';
-import { useMediaViewer } from '../utils/mediaViewerContext';
-
 export const Hero: React.FC = () => {
   const {
     personalInfo,
@@ -32,7 +30,6 @@ export const Hero: React.FC = () => {
   const [isDownloadingCV, setIsDownloadingCV] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const { photo } = useProfilePhoto();
-  const { openPictureViewer } = useMediaViewer();
 
   const copyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -385,28 +382,19 @@ export const Hero: React.FC = () => {
             {/* Locked-in Official Portrait Container with Specular Ring */}
             <div
               id="hero-locked-profile-card"
-              onClick={() => openPictureViewer(photo, `${personalInfo.name} - Official Portrait`, personalInfo.tagline)}
-              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 border-2 border-white dark:border-white/20 shadow-md ring-1 ring-black/5 dark:ring-white/10 flex items-center justify-center overflow-hidden cursor-pointer group hover:shadow-xl hover:scale-[1.02] transition-all"
-              title="Click to view full portrait"
+              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 border-2 border-white dark:border-white/20 shadow-md ring-1 ring-black/5 dark:ring-white/10 flex items-center justify-center overflow-hidden select-none"
             >
               <img
                 id="hero-profile-image"
                 src={photo}
                 alt={personalInfo.name}
-                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover object-top select-none pointer-events-none"
                 referrerPolicy="no-referrer"
               />
               {/* Official Verified Badge */}
               <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/20 text-white flex items-center gap-1.5 shadow-xs pointer-events-none">
                 <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                 <span className="text-[10px] font-semibold tracking-wide uppercase">Verified</span>
-              </div>
-
-              {/* Hover View Hint */}
-              <div className="absolute inset-0 bg-slate-950/0 group-hover:bg-slate-950/20 transition-colors flex items-center justify-center pointer-events-none">
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 rounded-full bg-slate-950/80 text-white text-xs font-medium backdrop-blur-sm shadow-md">
-                  View Full Picture
-                </span>
               </div>
             </div>
 

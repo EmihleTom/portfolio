@@ -13,7 +13,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   const { personalInfo } = usePortfolioData();
   const { isDark, toggleTheme } = useTheme();
-  const { isViewing, openPictureViewer } = useMediaViewer();
+  const { isViewing } = useMediaViewer();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { photo } = useProfilePhoto();
@@ -53,27 +53,22 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
       >
         {/* Brand Display & Avatar */}
         <div className="flex items-center gap-2.5">
-          <button
-            type="button"
-            onClick={() => {
-              if (photo) {
-                openPictureViewer(photo, `${personalInfo.name} - Official Portrait`);
-              }
-            }}
-            title={photo ? "Click to view full portrait" : "Profile"}
-            className="w-8 h-8 rounded-full bg-blue-100/90 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-500/40 flex items-center justify-center font-mono text-xs font-black shadow-2xs hover:scale-110 active:scale-95 transition-transform overflow-hidden cursor-pointer"
+          <a
+            href="#home"
+            title={personalInfo.name}
+            className="w-8 h-8 rounded-full bg-blue-100/90 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-500/40 flex items-center justify-center font-mono text-xs font-black shadow-2xs overflow-hidden select-none"
           >
             {photo ? (
               <img
                 src={photo}
                 alt={personalInfo.name}
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-top select-none pointer-events-none"
                 referrerPolicy="no-referrer"
               />
             ) : (
               <span>ET</span>
             )}
-          </button>
+          </a>
           <a
             id="nav-brand"
             href="#home"
