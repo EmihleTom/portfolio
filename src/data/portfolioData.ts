@@ -20,7 +20,7 @@ export const personalInfo: PersonalInfo = {
   displayName: 'Emihle Tom',
   tagline: 'Cisco IT Specialist | Hardware & Systems | Web Development',
   summary:
-    'Cisco-certified IT Specialist & Full-Stack Developer bridging IT operations with modern software engineering.',
+    'Cisco IT Specialist and College of Cape Town graduate based in Western Cape, Cape Town. Specializing in hardware diagnostics, network troubleshooting, helpdesk support, and modern web development.',
   bio: `As a College of Cape Town graduate and CAPACITI IT Support candidate, I bridge the gap between reliable IT infrastructure and dynamic software development. I combine hands-on systems administration, hardware diagnostics, and network troubleshooting with modern full-stack development to build resilient, end-to-end technical solutions.
 
 Driven by a proactive problem-solving mindset and disciplined technical communication, I focus on maintaining high system uptime while continuously expanding my software engineering and systems capabilities.`,

@@ -264,7 +264,7 @@ export const Hero: React.FC = () => {
               id="hero-intro-text"
               className="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6 max-w-xl"
             >
-              {personalInfo.summary || 'Cisco IT Specialist and aspiring software developer based in Cape Town. Combining hands-on network infrastructure and systems diagnostics with modern web development in Python, JavaScript, and React.'}
+              {personalInfo.summary || 'Cisco IT Specialist and College of Cape Town graduate based in Western Cape, Cape Town. Specializing in hardware diagnostics, network troubleshooting, helpdesk support, and modern web development.'}
             </motion.p>
 
             {/* Primary Action Buttons */}

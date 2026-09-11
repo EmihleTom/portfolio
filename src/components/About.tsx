@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   User,
@@ -29,6 +29,11 @@ export const About: React.FC = () => {
   const [summaryText, setSummaryText] = useState(personalInfo.summary || '');
   const [activeTab, setActiveTab] = useState<'story' | 'highlights'>('story');
   const [selectedPillar, setSelectedPillar] = useState<number | null>(null);
+
+  useEffect(() => {
+    setBioText(personalInfo.bio);
+    setSummaryText(personalInfo.summary || '');
+  }, [personalInfo.bio, personalInfo.summary]);
 
   const handleStartEdit = () => {
     setBioText(personalInfo.bio);

@@ -28,8 +28,10 @@ export interface PortfolioState {
   digitalBadgesList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v23';
+const STORAGE_KEY = 'emihle_portfolio_state_v25';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v24',
+  'emihle_portfolio_state_v23',
   'emihle_portfolio_state_v22',
   'emihle_portfolio_state_v21',
   'emihle_portfolio_state_v20',
@@ -191,13 +193,16 @@ function getInitialState(): PortfolioState {
       // Permanently lock profile image to official portrait
       loadedPersonalInfo.profileImageUrl = defaultPersonalInfo.profileImageUrl;
 
-      // Migrate outdated single-sentence boilerplate bio or capaciti bio if present
+      // Migrate outdated bio or previous iteration to new narrative
       if (
         !loadedPersonalInfo.bio ||
         LEGACY_DEFAULT_BIOS.includes(loadedPersonalInfo.bio.trim()) ||
         loadedPersonalInfo.bio.includes('Information Technology Support Technician at CAPACITI') ||
         loadedPersonalInfo.bio.includes('My technical foundation was built through rigorous education') ||
-        loadedPersonalInfo.bio.includes('I am a Cisco IT Specialist, CAPACITI')
+        loadedPersonalInfo.bio.includes('I am a Cisco IT Specialist, CAPACITI') ||
+        loadedPersonalInfo.bio.includes('Cisco-certified IT Specialist, CAPACITI') ||
+        loadedPersonalInfo.bio.startsWith('Cisco-certified IT Specialist, CAPACITI') ||
+        !loadedPersonalInfo.bio.includes('As a College of Cape Town graduate and CAPACITI IT Support candidate')
       ) {
         loadedPersonalInfo.bio = defaultPersonalInfo.bio;
       } else if (loadedPersonalInfo.bio.toLowerCase().includes('eerste')) {
@@ -208,7 +213,9 @@ function getInitialState(): PortfolioState {
 
       if (
         !loadedPersonalInfo.summary ||
-        loadedPersonalInfo.summary.toLowerCase().includes('capaciti')
+        loadedPersonalInfo.summary.includes('Cisco-certified IT Specialist & Full-Stack Developer') ||
+        loadedPersonalInfo.summary.includes('Cisco-certified IT Specialist, CAPACITI') ||
+        !loadedPersonalInfo.summary.includes('Cisco IT Specialist and College of Cape Town graduate based in Western Cape, Cape Town')
       ) {
         loadedPersonalInfo.summary = defaultPersonalInfo.summary;
       } else if (loadedPersonalInfo.summary.toLowerCase().includes('eerste')) {
