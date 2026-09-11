@@ -28,8 +28,9 @@ export interface PortfolioState {
   digitalBadgesList: CertificationItem[];
 }
 
-const STORAGE_KEY = 'emihle_portfolio_state_v22';
+const STORAGE_KEY = 'emihle_portfolio_state_v23';
 const LEGACY_STORAGE_KEYS = [
+  'emihle_portfolio_state_v22',
   'emihle_portfolio_state_v21',
   'emihle_portfolio_state_v20',
   'emihle_portfolio_state_v19',
