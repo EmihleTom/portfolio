@@ -14,12 +14,14 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
+import { useMediaViewer } from '../utils/mediaViewerContext';
 import { ProjectItem } from '../types';
 import { AddProjectModal } from './AddProjectModal';
 import { SectionReveal } from './SectionReveal';
 
 export const Projects: React.FC = () => {
   const { projectsList, personalInfo, addProject, editProject, deleteProject, isEditMode } = usePortfolioData();
+  const { openPictureViewer } = useMediaViewer();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<ProjectItem | null>(null);
 
@@ -353,7 +355,21 @@ export const Projects: React.FC = () => {
                 } frosted-glass-card bento-item rounded-3xl border border-white/80 dark:border-white/10 overflow-hidden shadow-xs hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col justify-between`}
               >
                 {/* Project Preview Canvas */}
-                <div className="relative aspect-video min-h-[220px] sm:min-h-[260px] w-full bg-slate-950 overflow-hidden group">
+                <div
+                  className={`relative aspect-video min-h-[220px] sm:min-h-[260px] w-full bg-slate-950 overflow-hidden group ${
+                    project.screenshotUrl ? 'cursor-pointer' : ''
+                  }`}
+                  onClick={() => {
+                    if (project.screenshotUrl) {
+                      openPictureViewer(
+                        project.screenshotUrl,
+                        project.name,
+                        `${project.role} • Application Architecture Preview`
+                      );
+                    }
+                  }}
+                  title={project.screenshotUrl ? 'Click to view full preview' : undefined}
+                >
                   {project.screenshotUrl ? (
                     <div className="relative w-full h-full overflow-hidden">
                       <img
@@ -371,6 +387,14 @@ export const Projects: React.FC = () => {
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                           <span>Interactive Application</span>
                         </span>
+                      </div>
+
+                      {/* Hover view hint overlay */}
+                      <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                        <div className="px-3.5 py-1.5 rounded-full bg-slate-900/90 text-white border border-white/20 text-xs font-semibold flex items-center gap-1.5 shadow-lg backdrop-blur-md">
+                          <Eye className="w-3.5 h-3.5 text-blue-400" />
+                          <span>View Full Preview</span>
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -529,6 +553,24 @@ export const Projects: React.FC = () => {
                         ) : null
                       )}
 
+                      {project.screenshotUrl && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            openPictureViewer(
+                              project.screenshotUrl!,
+                              project.name,
+                              `${project.role} • Application Architecture Preview`
+                            )
+                          }
+                          className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-white/80 dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 text-xs font-semibold hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                          title="View full preview"
+                        >
+                          <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <span>View Preview</span>
+                        </button>
+                      )}
+
                       {project.liveUrl ? (
                         <a
                           id={`project-live-link-${project.id}`}
@@ -538,7 +580,7 @@ export const Projects: React.FC = () => {
                           className="inline-flex items-center justify-center min-h-[44px] gap-2 px-4 py-2.5 rounded-full bg-white/80 dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 text-xs font-semibold hover:bg-white dark:hover:bg-slate-700 transition-colors"
                         >
                           <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                          <span>Live Preview</span>
+                          <span>Live Demo</span>
                         </a>
                       ) : (
                         isEditMode ? (

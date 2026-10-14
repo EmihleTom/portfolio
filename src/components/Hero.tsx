@@ -7,17 +7,20 @@ import {
   Check,
   Copy,
   Sparkles,
-  Code2,
   Network,
   ShieldCheck,
   Download,
   FileText,
   Loader2,
+  Eye,
 } from 'lucide-react';
 import { usePortfolioData } from '../utils/portfolioStore';
 import { useProfilePhoto } from '../utils/photoStorage';
+import { useMediaViewer } from '../utils/mediaViewerContext';
 import { downloadResumePDF } from '../utils/generateResume';
+
 export const Hero: React.FC = () => {
+  const { openPictureViewer } = useMediaViewer();
   const {
     personalInfo,
     educationList,
@@ -83,91 +86,8 @@ export const Hero: React.FC = () => {
       id="home"
       className="relative min-h-[90vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* Ambient background micro-elements for subtle depth */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        {/* Subtle tech micro-grid pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:28px_28px] opacity-15" />
-
-        {/* Animated Network Constellation Lines */}
-        <svg
-          className="absolute inset-0 w-full h-full opacity-25 pointer-events-none"
-          viewBox="0 0 1000 600"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <motion.circle
-            cx="180"
-            cy="140"
-            r="3"
-            fill="#3b82f6"
-            animate={{ opacity: [0.3, 0.9, 0.3], r: [2.5, 4, 2.5] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.circle
-            cx="420"
-            cy="110"
-            r="3"
-            fill="#2563eb"
-            animate={{ opacity: [0.4, 1, 0.4], r: [2.5, 4.5, 2.5] }}
-            transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-          />
-          <motion.circle
-            cx="750"
-            cy="210"
-            r="3"
-            fill="#6366f1"
-            animate={{ opacity: [0.3, 0.85, 0.3], r: [3, 4.5, 3] }}
-            transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-          />
-          <motion.circle
-            cx="860"
-            cy="410"
-            r="3"
-            fill="#3b82f6"
-            animate={{ opacity: [0.4, 0.9, 0.4], r: [2.5, 4, 2.5] }}
-            transition={{ duration: 3.9, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}
-          />
-          <motion.path
-            d="M 180 140 L 420 110 L 750 210 L 860 410"
-            stroke="#93c5fd"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-            fill="none"
-            animate={{ strokeDashoffset: [0, -32] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          />
-        </svg>
-
-        {/* Gentle floating ambient glow 1 (Top Left) */}
-        <motion.div
-          animate={{
-            x: [0, 16, 0],
-            y: [0, -18, 0],
-            opacity: [0.28, 0.45, 0.28],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute top-1/4 left-1/10 w-96 h-96 bg-blue-200/50 rounded-full blur-3xl"
-        />
-
-        {/* Gentle floating ambient glow 2 (Bottom Right) */}
-        <motion.div
-          animate={{
-            x: [0, -20, 0],
-            y: [0, 22, 0],
-            opacity: [0.25, 0.4, 0.25],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute bottom-1/5 right-1/12 w-80 h-80 bg-indigo-200/40 rounded-full blur-3xl"
-        />
-      </div>
+      {/* Clean backdrop layer allowing global TechBackground to shine through */}
+      <div className="absolute inset-0 pointer-events-none -z-10" />
 
       <div className="max-w-5xl mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
@@ -178,19 +98,8 @@ export const Hero: React.FC = () => {
             animate="visible"
             className="lg:col-span-8 frosted-glass-card bento-item p-8 sm:p-10 relative overflow-hidden flex flex-col justify-center border border-white/80 dark:border-white/10 shadow-sm"
           >
-            {/* Ambient soft light shimmer inside card */}
-            <motion.div
-              animate={{
-                scale: [1, 1.08, 1],
-                opacity: [0.55, 0.75, 0.55],
-              }}
-              transition={{
-                duration: 7,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="absolute -right-12 -top-12 w-64 h-64 bg-blue-200/40 dark:bg-blue-900/30 rounded-full blur-3xl pointer-events-none"
-            />
+            {/* Static subtle light sheen in card corner */}
+            <div className="absolute -right-12 -top-12 w-64 h-64 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl pointer-events-none" />
 
             {/* Status / Availability Badge */}
             <motion.div variants={itemVariants} className="self-start mb-6">
@@ -215,14 +124,16 @@ export const Hero: React.FC = () => {
               <span className="text-xs text-slate-600 dark:text-slate-300 font-medium">{personalInfo.location}</span>
             </motion.div>
 
-            {/* Main Display Name */}
-            <motion.h1
-              variants={itemVariants}
-              id="hero-name-display"
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-950 dark:text-white mb-3"
-            >
-              {personalInfo.name}
-            </motion.h1>
+            {/* Main Display Headline with Typing Effect */}
+            <motion.div variants={itemVariants} className="mb-3">
+              <h1
+                id="hero-name-display"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-950 dark:text-white"
+              >
+                {personalInfo.name}
+              </h1>
+
+            </motion.div>
 
             {/* Professional Tagline with Distinct Chromatic Badges */}
             <motion.p
@@ -246,15 +157,6 @@ export const Hero: React.FC = () => {
               >
                 <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
                 CAPACITI IT Support
-              </motion.span>
-              <span className="text-slate-300 dark:text-slate-700">|</span>
-              <motion.span
-                whileHover={{ y: -2, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-1.5 bg-emerald-50/90 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-3.5 py-1 rounded-full text-xs sm:text-sm font-semibold border border-emerald-200/80 dark:border-emerald-700/50 shadow-2xs cursor-default transition-all hover:bg-emerald-100/90 dark:hover:bg-emerald-900/60"
-              >
-                <Code2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                Software & Web Developer
               </motion.span>
             </motion.p>
 
@@ -382,19 +284,35 @@ export const Hero: React.FC = () => {
             {/* Locked-in Official Portrait Container with Specular Ring */}
             <div
               id="hero-locked-profile-card"
-              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 border-2 border-white dark:border-white/20 shadow-md ring-1 ring-black/5 dark:ring-white/10 flex items-center justify-center overflow-hidden select-none"
+              onClick={() =>
+                openPictureViewer(
+                  photo,
+                  personalInfo.name,
+                  'Official Portrait • Cisco Certified IT Specialist'
+                )
+              }
+              className="relative mb-4 w-48 sm:w-56 aspect-[3/4] rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 border-2 border-white dark:border-white/20 shadow-md ring-1 ring-black/5 dark:ring-white/10 flex items-center justify-center overflow-hidden select-none cursor-pointer group"
+              title="Click to view full photo"
             >
               <img
                 id="hero-profile-image"
                 src={photo}
                 alt={personalInfo.name}
-                className="w-full h-full object-cover object-top select-none pointer-events-none"
+                className="w-full h-full object-cover object-top select-none group-hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"
               />
               {/* Official Verified Badge */}
               <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/20 text-white flex items-center gap-1.5 shadow-xs pointer-events-none">
                 <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                 <span className="text-[10px] font-semibold tracking-wide uppercase">Verified</span>
+              </div>
+
+              {/* Hover view hint overlay */}
+              <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <div className="px-3 py-1.5 rounded-full bg-slate-900/90 text-white border border-white/20 text-xs font-semibold flex items-center gap-1.5 shadow-lg backdrop-blur-md">
+                  <Eye className="w-3.5 h-3.5 text-blue-400" />
+                  <span>View Photo</span>
+                </div>
               </div>
             </div>
 

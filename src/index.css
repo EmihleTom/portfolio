@@ -133,53 +133,35 @@
 }
 
 /* ==========================================================================
-   Ambient Floating Orb Animations
+   Subtle Background Technical Micro-Animations
    ========================================================================== */
-@keyframes ambient-float-1 {
+@keyframes ambient-glow-breathe {
   0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(45px, -35px) scale(1.08);
-  }
-  66% {
-    transform: translate(-30px, 30px) scale(0.96);
-  }
-}
-
-@keyframes ambient-float-2 {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(-40px, 35px) scale(1.06);
-  }
-  66% {
-    transform: translate(30px, -40px) scale(0.95);
-  }
-}
-
-@keyframes ambient-float-3 {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
+    transform: translate(-50%, 0) scale(1);
+    opacity: 0.35;
   }
   50% {
-    transform: translate(35px, 45px) scale(1.1);
+    transform: translate(-50%, -15px) scale(1.05);
+    opacity: 0.52;
   }
 }
 
-.animate-ambient-1 {
-  animation: ambient-float-1 22s ease-in-out infinite;
+@keyframes grid-scan-line {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.28;
+  }
+  90% {
+    opacity: 0.28;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
 }
-
-.animate-ambient-2 {
-  animation: ambient-float-2 26s ease-in-out infinite;
-}
-
-.animate-ambient-3 {
-  animation: ambient-float-3 19s ease-in-out infinite;
-}
-
 /* ==========================================================================
    Frosted Glass Theme Utilities (Powered by CSS variables)
    ========================================================================== */
@@ -384,16 +366,13 @@ body {
   border-color: rgba(245, 158, 11, 0.35);
 }
 
-/* Modal & Media Viewer Scroll-Locking to completely stop background scrolling */
-html.media-viewing-active,
+/* Modal & Media Viewer Scroll-Locking without resetting page scroll position */
 body.media-viewing-active {
   overflow: hidden !important;
-  height: 100% !important;
   overscroll-behavior: none !important;
-  touch-action: none !important;
 }
 
-html.media-viewing-active [role="dialog"] .overflow-y-auto {
+body.media-viewing-active [role="dialog"] .overflow-y-auto {
   touch-action: pan-y !important;
   overscroll-behavior: contain !important;
 }

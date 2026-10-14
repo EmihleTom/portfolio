@@ -21,11 +21,20 @@ const MediaViewerContext = createContext<MediaViewerContextType | undefined>(und
 export const MediaViewerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isViewingCertificate, setIsViewingCertificate] = useState(false);
   const [pictureData, setPictureData] = useState<PictureData | null>(null);
+  const savedScrollYRef = React.useRef<number>(0);
 
   const isViewingPicture = !!pictureData;
   const isViewing = isViewingCertificate || isViewingPicture;
 
   const openPictureViewer = (src: string, title?: string, subtitle?: string) => {
+    // Record current scroll position right before viewing
+    const currentY =
+      window.scrollY ||
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+    savedScrollYRef.current = currentY;
     setPictureData({ src, title, subtitle });
   };
 
@@ -33,17 +42,41 @@ export const MediaViewerProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setPictureData(null);
   };
 
-  // Lock body and html scroll completely when viewing media (certificates or pictures)
+  const handleSetIsViewingCertificate = (viewing: boolean) => {
+    if (viewing) {
+      // Record current scroll position right before viewing certificate
+      const currentY =
+        window.scrollY ||
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+      savedScrollYRef.current = currentY;
+    }
+    setIsViewingCertificate(viewing);
+  };
+
+  // Lock body scroll cleanly without resetting window.scrollY or collapsing html height
   useEffect(() => {
     if (isViewing) {
+      // Re-verify saved scroll position if needed
+      if (savedScrollYRef.current === 0) {
+        const currentY =
+          window.scrollY ||
+          window.pageYOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop ||
+          0;
+        if (currentY > 0) {
+          savedScrollYRef.current = currentY;
+        }
+      }
+
       // Calculate scrollbar width to prevent page shift
       const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 
-      document.documentElement.classList.add('media-viewing-active');
       document.body.classList.add('media-viewing-active');
-      document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
-      document.documentElement.style.overscrollBehavior = 'none';
       document.body.style.overscrollBehavior = 'none';
 
       if (scrollBarWidth > 0) {
@@ -60,17 +93,52 @@ export const MediaViewerProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }
       };
 
+      const handleWheel = (e: WheelEvent) => {
+        const target = e.target as HTMLElement | null;
+        if (!target) return;
+        const scrollable = target.closest('[data-scrollable="true"], .overflow-y-auto');
+        if (!scrollable) {
+          e.preventDefault();
+        }
+      };
+
       window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      window.addEventListener('wheel', handleWheel, { passive: false });
 
       return () => {
-        document.documentElement.classList.remove('media-viewing-active');
+        window.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('wheel', handleWheel);
+
         document.body.classList.remove('media-viewing-active');
-        document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
-        document.documentElement.style.overscrollBehavior = '';
         document.body.style.overscrollBehavior = '';
         document.body.style.paddingRight = '';
-        window.removeEventListener('touchmove', handleTouchMove);
+
+        // Restore scroll position strictly to the current screen
+        const targetY = savedScrollYRef.current;
+        if (typeof targetY === 'number' && targetY >= 0) {
+          const htmlEl = document.documentElement;
+          const prevBehavior = htmlEl.style.scrollBehavior;
+          htmlEl.style.scrollBehavior = 'auto';
+
+          window.scrollTo({
+            top: targetY,
+            left: 0,
+            behavior: 'instant' as ScrollBehavior,
+          });
+
+          // Re-verify on subsequent microtasks to override any browser layout recalculation
+          requestAnimationFrame(() => {
+            window.scrollTo({
+              top: targetY,
+              left: 0,
+              behavior: 'instant' as ScrollBehavior,
+            });
+            setTimeout(() => {
+              htmlEl.style.scrollBehavior = prevBehavior;
+            }, 50);
+          });
+        }
       };
     }
   }, [isViewing]);
@@ -95,7 +163,7 @@ export const MediaViewerProvider: React.FC<{ children: React.ReactNode }> = ({ c
         pictureData,
         openPictureViewer,
         closePictureViewer,
-        setIsViewingCertificate,
+        setIsViewingCertificate: handleSetIsViewingCertificate,
       }}
     >
       {children}
